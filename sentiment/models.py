@@ -1,0 +1,257 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Remove `managed = False` lines for those models you wish to give write DB access
+# Feel free to rename the models, but don't rename db_table values or field names.
+#
+# Also note: You'll have to insert the output of 'django-admin.py sqlcustom [appname]'
+# into your database.
+from __future__ import unicode_literals
+
+from django.db import models
+
+class AuthGroup(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(unique=True, max_length=80)
+    class Meta:
+        managed = False
+        db_table = 'auth_group'
+
+class AuthGroupPermissions(models.Model):
+    id = models.IntegerField(primary_key=True)
+    group = models.ForeignKey(AuthGroup)
+    permission = models.ForeignKey('AuthPermission')
+    class Meta:
+        managed = False
+        db_table = 'auth_group_permissions'
+
+class AuthPermission(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=50)
+    content_type = models.ForeignKey('DjangoContentType')
+    codename = models.CharField(max_length=100)
+    class Meta:
+        managed = False
+        db_table = 'auth_permission'
+
+class AuthUser(models.Model):
+    id = models.IntegerField(primary_key=True)
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField()
+    is_superuser = models.IntegerField()
+    username = models.CharField(unique=True, max_length=30)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    email = models.CharField(max_length=75)
+    is_staff = models.IntegerField()
+    is_active = models.IntegerField()
+    date_joined = models.DateTimeField()
+    class Meta:
+        managed = False
+        db_table = 'auth_user'
+
+class AuthUserGroups(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(AuthUser)
+    group = models.ForeignKey(AuthGroup)
+    class Meta:
+        managed = False
+        db_table = 'auth_user_groups'
+
+class AuthUserUserPermissions(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user = models.ForeignKey(AuthUser)
+    permission = models.ForeignKey(AuthPermission)
+    class Meta:
+        managed = False
+        db_table = 'auth_user_user_permissions'
+
+class DjangoAdminLog(models.Model):
+    id = models.IntegerField(primary_key=True)
+    action_time = models.DateTimeField()
+    user = models.ForeignKey(AuthUser)
+    content_type = models.ForeignKey('DjangoContentType', blank=True, null=True)
+    object_id = models.TextField(blank=True)
+    object_repr = models.CharField(max_length=200)
+    action_flag = models.IntegerField()
+    change_message = models.TextField()
+    class Meta:
+        managed = False
+        db_table = 'django_admin_log'
+
+class DjangoContentType(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=100)
+    app_label = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+    class Meta:
+        managed = False
+        db_table = 'django_content_type'
+
+class DjangoSession(models.Model):
+    session_key = models.CharField(primary_key=True, max_length=40)
+    session_data = models.TextField()
+    expire_date = models.DateTimeField()
+    class Meta:
+        managed = False
+        db_table = 'django_session'
+
+class ImBrand(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nome = models.CharField(max_length=45, blank=True)
+    idcategoria = models.ForeignKey('ImCategoria', db_column='idcategoria', blank=True, null=True)
+    ignore = models.IntegerField(blank=True, null=True)
+    inserted_on = models.IntegerField(blank=True, null=True)
+    updated_on = models.IntegerField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'im_brand'
+
+class ImCanalesocial(models.Model):
+    id = models.IntegerField(primary_key=True)
+    idbrand = models.ForeignKey(ImBrand, db_column='idbrand', blank=True, null=True, related_name='idbrand')
+    idsocial = models.ForeignKey('ImSocial', db_column='idsocial', blank=True, null=True)
+    official = models.IntegerField(blank=True, null=True)
+    discovered_by = models.ForeignKey(ImBrand, db_column='discovered_by', blank=True, null=True, related_name='discovered_by')
+    username = models.CharField(max_length=45, blank=True)
+    lastupdated = models.IntegerField(blank=True, null=True)
+    usernameid = models.TextField(blank=True)
+    authtoken = models.TextField(blank=True)
+    class Meta:
+        managed = False
+        db_table = 'im_canalesocial'
+
+class ImCategoria(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nome = models.CharField(max_length=140)
+    slug = models.CharField(max_length=40, blank=True)
+    class Meta:
+        managed = False
+        db_table = 'im_categoria'
+
+class ImComment(models.Model):
+    id = models.IntegerField(primary_key=True)
+    idpost = models.ForeignKey('ImPost', db_column='idpost', blank=True, null=True)
+    content = models.TextField(blank=True)
+    from_id = models.TextField(blank=True)
+    created_on = models.IntegerField(blank=True, null=True)
+    originalidcomment = models.TextField(db_column='originalIdCommento', blank=True) # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'im_commento'
+
+class ImContratto(models.Model):
+    id = models.IntegerField(primary_key=True)
+    datainizio = models.IntegerField(blank=True, null=True)
+    datascadenza = models.IntegerField(blank=True, null=True)
+    iduser = models.ForeignKey('ImUser', db_column='iduser', blank=True, null=True)
+    idbrand = models.ForeignKey(ImBrand, db_column='idbrand', blank=True, null=True)
+    tipo = models.CharField(max_length=1, blank=True)
+    class Meta:
+        managed = False
+        db_table = 'im_contratto'
+
+class ImFollowers(models.Model):
+    id = models.IntegerField(primary_key=True)
+    idcanalesocial = models.ForeignKey(ImCanalesocial, db_column='idcanalesocial', blank=True, null=True)
+    timestamp = models.IntegerField(blank=True, null=True)
+    qty = models.IntegerField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'im_followers'
+
+class ImFollowing(models.Model):
+    id = models.IntegerField(primary_key=True)
+    idcanalesocial = models.ForeignKey(ImCanalesocial, db_column='idcanalesocial', blank=True, null=True)
+    timestamp = models.IntegerField(blank=True, null=True)
+    qty = models.IntegerField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'im_following'
+
+class ImMention(models.Model):
+    id = models.IntegerField(primary_key=True)
+    idpost = models.ForeignKey('ImPost', db_column='idpost', blank=True, null=True)
+    idbrand = models.ForeignKey(ImBrand, db_column='idbrand', blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'im_mention'
+
+class ImMetrica(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nome = models.CharField(max_length=120, blank=True)
+    slug = models.CharField(max_length=120, blank=True)
+    descrizione = models.TextField(blank=True)
+    icona = models.CharField(max_length=100, blank=True)
+    class Meta:
+        managed = False
+        db_table = 'im_metrica'
+
+class ImPost(models.Model):
+    id = models.IntegerField(primary_key=True)
+    idcanalesocial = models.ForeignKey(ImCanalesocial, db_column='idcanalesocial', blank=True, null=True)
+    content = models.TextField(blank=True)
+    link = models.TextField(blank=True)
+    likes = models.IntegerField(blank=True, null=True)
+    var_likes = models.IntegerField(blank=True, null=True)
+    comments = models.IntegerField(blank=True, null=True)
+    var_comments = models.IntegerField(blank=True, null=True)
+    shares = models.IntegerField(blank=True, null=True)
+    var_shares = models.IntegerField(blank=True, null=True)
+    img = models.TextField(blank=True)
+    originalidpost = models.TextField(db_column='originalIdPost', blank=True) # Field name made lowercase.
+    timestamp = models.IntegerField(blank=True, null=True)
+    inserted_on = models.IntegerField(blank=True, null=True)
+    updated_on = models.IntegerField(blank=True, null=True)
+    postlink = models.TextField(blank=True)
+    class Meta:
+        managed = False
+        db_table = 'im_post'
+
+class ImRuolo(models.Model):
+    id = models.IntegerField(unique=True, primary_key=True)
+    nomeruolo = models.CharField(max_length=45)
+    class Meta:
+        managed = False
+        db_table = 'im_ruolo'
+
+class ImSocial(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nome = models.CharField(max_length=45)
+    slug = models.CharField(unique=True, max_length=45, blank=True)
+    likesterm = models.CharField(max_length=40, blank=True)
+    basepath = models.CharField(max_length=200, blank=True)
+    data_available = models.IntegerField(blank=True, null=True)
+    has_login = models.IntegerField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'im_social'
+
+class ImUser(models.Model):
+    id = models.IntegerField(primary_key=True)
+    username = models.CharField(max_length=45, blank=True)
+    password = models.CharField(max_length=45, blank=True)
+    email = models.CharField(max_length=100, blank=True)
+    nome = models.CharField(max_length=45, blank=True)
+    idruolo = models.ForeignKey(ImRuolo, db_column='idruolo', blank=True, null=True)
+    idbrand = models.ForeignKey(ImBrand, db_column='idbrand', blank=True, null=True)
+    usertoken = models.CharField(max_length=100, blank=True)
+    lastlogin = models.IntegerField(blank=True, null=True)
+    tokenexpires = models.IntegerField(blank=True, null=True)
+    createdon = models.IntegerField(blank=True, null=True)
+    pic = models.TextField(blank=True)
+    class Meta:
+        managed = False
+        db_table = 'im_user'
+
+class ImValoremetrica(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=50, blank=True)
+    timestamp = models.IntegerField(blank=True, null=True)
+    value = models.IntegerField(blank=True, null=True)
+    idcanalesociale = models.ForeignKey(ImCanalesocial, db_column='idcanalesociale', blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'im_valoremetrica'
+
