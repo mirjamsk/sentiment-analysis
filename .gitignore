@@ -58,8 +58,14 @@ docs/_build/
 # PyBuilder
 target/
 
-#Ipython Notebook
+# Ipython Notebook
 .ipynb_checkpoints
+
+# Idea
+.idea/
 
 # mysqldumps
 mysqldump/
+
+#sqlite3
+*.sqlite3
