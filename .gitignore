@@ -69,3 +69,9 @@ mysqldump/
 
 #sqlite3
 *.sqlite3
+
+# OSX
+.DS_store
+
+# ignore django settings
+django_project/settings.py
