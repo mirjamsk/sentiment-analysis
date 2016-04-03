@@ -1,14 +1,13 @@
-from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from .models import ImPost, ImComment
 
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class ImPostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'groups')
+        model = ImPost
+        fields = ('id', 'content', 'link', 'likes', 'shares', 'comments')
 
 
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+class ImCommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Group
-        fields = ('url', 'name')
+        model = ImComment
+        fields = ('id', 'idpost','content')
