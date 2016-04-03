@@ -299,3 +299,36 @@ class Valoremetrica(models.Model):
     class Meta:
         managed = False
         db_table = 'im_valoremetrica'
+
+
+class PostSentiment(models.Model):
+    SENTIMENT_LABELS = (
+        ('positive', 'Positive'),
+        ('negative', 'Negative'),
+        ('neutral', 'Neutral'),
+    )
+    id = models.AutoField(primary_key=True)
+    idpost = models.ForeignKey('Post', db_column='idpost')
+    sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'im_post_sentiment'
+
+
+class CommentSentiment(models.Model):
+    SENTIMENT_LABELS = (
+        ('positive', 'Positive'),
+        ('negative', 'Negative'),
+        ('neutral', 'Neutral'),
+    )
+    id = models.AutoField(primary_key=True)
+    idcomment = models.ForeignKey('Comment', db_column='idcommento')
+    idpost = models.ForeignKey('Post', db_column='idpost')
+    sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'im_commento_sentiment'
