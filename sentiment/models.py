@@ -322,8 +322,10 @@ class PostSentiment(models.Model):
 class CommentSentiment(models.Model):
     id = models.AutoField(primary_key=True)
     idcomment = models.OneToOneField('Comment', db_column='idcommento', related_name='comment_sentiment')
-    sentiment_api1 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    sentiment_api1 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    sentiment_api2 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+
 
     class Meta:
         managed = True

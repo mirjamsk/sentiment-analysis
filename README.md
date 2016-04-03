@@ -2,6 +2,8 @@
 
 Live site lives on [sentiment-analysis.ml](http://sentiment-analysis.ml/)
 
+sentiment_api1 - [vivekn](http://sentiment.vivekn.com/api/text/)
+sentiment_api2 - [text-processing](http://text-processing.com/docs/sentiment.html)
 --
 #### The developed API
 Other than being able to access the API via a browser, it can also be done from the command-line, using tools like `curl`.
