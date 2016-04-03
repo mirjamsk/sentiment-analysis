@@ -10,6 +10,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from .utils import SENTIMENT_LABELS
 
 
 class AuthGroup(models.Model):
@@ -308,14 +309,9 @@ class Valoremetrica(models.Model):
 
 
 class PostSentiment(models.Model):
-    SENTIMENT_LABELS = (
-        ('positive', 'Positive'),
-        ('negative', 'Negative'),
-        ('neutral', 'Neutral'),
-    )
     id = models.AutoField(primary_key=True)
-    idpost = models.ForeignKey('Post', db_column='idpost', unique=True)
-    sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    idpost = models.OneToOneField('Post', db_column='idpost', related_name='post_sentiment')
+    sentiment_api1 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
 
     class Meta:
@@ -324,15 +320,9 @@ class PostSentiment(models.Model):
 
 
 class CommentSentiment(models.Model):
-    SENTIMENT_LABELS = (
-        ('positive', 'Positive'),
-        ('negative', 'Negative'),
-        ('neutral', 'Neutral'),
-    )
     id = models.AutoField(primary_key=True)
-    idcomment = models.ForeignKey('Comment', db_column='idcommento', unique=True)
-    idpost = models.ForeignKey('Post', db_column='idpost')
-    sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    idcomment = models.OneToOneField('Comment', db_column='idcommento', related_name='comment_sentiment')
+    sentiment_api1 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
 
     class Meta:

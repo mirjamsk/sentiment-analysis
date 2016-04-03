@@ -1,7 +1,7 @@
 from rest_framework import generics
 
-from .serializers import PostSerializer, CommentSerializer, CommentSentimentSerializer
-from .models import Post, Comment, CommentSentiment
+from .serializers import PostSerializer, CommentSerializer
+from .models import Post, Comment
 
 # Create your views here.
 # def index(request):
@@ -27,9 +27,5 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
-
-class CommentSentimentDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = CommentSentiment.objects.all()
-    serializer_class = CommentSentimentSerializer
 
 
