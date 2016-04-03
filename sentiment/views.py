@@ -13,7 +13,7 @@ class PostList(generics.ListAPIView):
     serializer_class = PostSerializer
 
 
-class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+class PostDetail(generics.RetrieveUpdateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -23,7 +23,7 @@ class CommentList(generics.ListAPIView):
     serializer_class = CommentSerializer
 
 
-class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+class CommentDetail(generics.RetrieveUpdateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
