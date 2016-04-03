@@ -314,7 +314,7 @@ class PostSentiment(models.Model):
         ('neutral', 'Neutral'),
     )
     id = models.AutoField(primary_key=True)
-    idpost = models.ForeignKey('Post', db_column='idpost')
+    idpost = models.ForeignKey('Post', db_column='idpost', unique=True)
     sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
 
@@ -330,7 +330,7 @@ class CommentSentiment(models.Model):
         ('neutral', 'Neutral'),
     )
     id = models.AutoField(primary_key=True)
-    idcomment = models.ForeignKey('Comment', db_column='idcommento')
+    idcomment = models.ForeignKey('Comment', db_column='idcommento', unique=True)
     idpost = models.ForeignKey('Post', db_column='idpost')
     sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
