@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import ImPost, ImComment
+from .models import Post, Comment
 
 # Register your models here.
 
-class ImPostAdmin(admin.ModelAdmin):
+class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'content', 'likes', 'comments')
 
-admin.site.register(ImPost, ImPostAdmin)
-admin.site.register(ImComment)
+admin.site.register(Post, PostAdmin)
+admin.site.register(Comment)

@@ -1,26 +1,26 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
 
-from .serializers import ImPostSerializer, ImCommentSerializer
-from .models import ImPost, ImComment
+from .serializers import PostSerializer, CommentSerializer
+from .models import Post, Comment
 
 # Create your views here.
 #def index(request):
 #    return HttpResponse("Hello, world! Bok bok")
 
 
-class ImPostList(generics.ListCreateAPIView):
-    queryset = ImPost.objects.all()
-    serializer_class = ImPostSerializer
+class PostList(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
-class ImPostDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ImPost.objects.all()
-    serializer_class = ImPostSerializer
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
-class ImCommentList(generics.ListCreateAPIView):
-    queryset = ImComment.objects.all()
-    serializer_class = ImCommentSerializer
+class CommentList(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
-class ImCommentDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ImComment.objects.all()
-    serializer_class = ImCommentSerializer
+class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer

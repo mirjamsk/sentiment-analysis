@@ -97,10 +97,10 @@ class DjangoSession(models.Model):
         managed = False
         db_table = 'django_session'
 
-class ImBrand(models.Model):
+class Brand(models.Model):
     id = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=45, blank=True)
-    idcategoria = models.ForeignKey('ImCategoria', db_column='idcategoria', blank=True, null=True)
+    idcategoria = models.ForeignKey('Categoria', db_column='idcategoria', blank=True, null=True)
     ignore = models.IntegerField(blank=True, null=True)
     inserted_on = models.IntegerField(blank=True, null=True)
     updated_on = models.IntegerField(blank=True, null=True)
@@ -108,12 +108,12 @@ class ImBrand(models.Model):
         managed = False
         db_table = 'im_brand'
 
-class ImCanalesocial(models.Model):
+class Canalesocial(models.Model):
     id = models.IntegerField(primary_key=True)
-    idbrand = models.ForeignKey(ImBrand, db_column='idbrand', blank=True, null=True, related_name='idbrand')
-    idsocial = models.ForeignKey('ImSocial', db_column='idsocial', blank=True, null=True)
+    idbrand = models.ForeignKey(Brand, db_column='idbrand', blank=True, null=True, related_name='idbrand')
+    idsocial = models.ForeignKey('Social', db_column='idsocial', blank=True, null=True)
     official = models.IntegerField(blank=True, null=True)
-    discovered_by = models.ForeignKey(ImBrand, db_column='discovered_by', blank=True, null=True, related_name='discovered_by')
+    discovered_by = models.ForeignKey(Brand, db_column='discovered_by', blank=True, null=True, related_name='discovered_by')
     username = models.CharField(max_length=45, blank=True)
     lastupdated = models.IntegerField(blank=True, null=True)
     usernameid = models.TextField(blank=True)
@@ -122,7 +122,7 @@ class ImCanalesocial(models.Model):
         managed = False
         db_table = 'im_canalesocial'
 
-class ImCategoria(models.Model):
+class Categoria(models.Model):
     id = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=140)
     slug = models.CharField(max_length=40, blank=True)
@@ -130,9 +130,9 @@ class ImCategoria(models.Model):
         managed = False
         db_table = 'im_categoria'
 
-class ImComment(models.Model):
+class Comment(models.Model):
     id = models.IntegerField(primary_key=True)
-    idpost = models.ForeignKey('ImPost', db_column='idpost', blank=True, null=True)
+    idpost = models.ForeignKey('Post', db_column='idpost', blank=True, null=True)
     content = models.TextField(blank=True)
     from_id = models.TextField(blank=True)
     created_on = models.IntegerField(blank=True, null=True)
@@ -141,44 +141,44 @@ class ImComment(models.Model):
         managed = False
         db_table = 'im_commento'
 
-class ImContratto(models.Model):
+class Contratto(models.Model):
     id = models.IntegerField(primary_key=True)
     datainizio = models.IntegerField(blank=True, null=True)
     datascadenza = models.IntegerField(blank=True, null=True)
-    iduser = models.ForeignKey('ImUser', db_column='iduser', blank=True, null=True)
-    idbrand = models.ForeignKey(ImBrand, db_column='idbrand', blank=True, null=True)
+    iduser = models.ForeignKey('User', db_column='iduser', blank=True, null=True)
+    idbrand = models.ForeignKey(Brand, db_column='idbrand', blank=True, null=True)
     tipo = models.CharField(max_length=1, blank=True)
     class Meta:
         managed = False
         db_table = 'im_contratto'
 
-class ImFollowers(models.Model):
+class Followers(models.Model):
     id = models.IntegerField(primary_key=True)
-    idcanalesocial = models.ForeignKey(ImCanalesocial, db_column='idcanalesocial', blank=True, null=True)
+    idcanalesocial = models.ForeignKey(Canalesocial, db_column='idcanalesocial', blank=True, null=True)
     timestamp = models.IntegerField(blank=True, null=True)
     qty = models.IntegerField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'im_followers'
 
-class ImFollowing(models.Model):
+class Following(models.Model):
     id = models.IntegerField(primary_key=True)
-    idcanalesocial = models.ForeignKey(ImCanalesocial, db_column='idcanalesocial', blank=True, null=True)
+    idcanalesocial = models.ForeignKey(Canalesocial, db_column='idcanalesocial', blank=True, null=True)
     timestamp = models.IntegerField(blank=True, null=True)
     qty = models.IntegerField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'im_following'
 
-class ImMention(models.Model):
+class Mention(models.Model):
     id = models.IntegerField(primary_key=True)
-    idpost = models.ForeignKey('ImPost', db_column='idpost', blank=True, null=True)
-    idbrand = models.ForeignKey(ImBrand, db_column='idbrand', blank=True, null=True)
+    idpost = models.ForeignKey('Post', db_column='idpost', blank=True, null=True)
+    idbrand = models.ForeignKey(Brand, db_column='idbrand', blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'im_mention'
 
-class ImMetrica(models.Model):
+class Metrica(models.Model):
     id = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=120, blank=True)
     slug = models.CharField(max_length=120, blank=True)
@@ -188,9 +188,9 @@ class ImMetrica(models.Model):
         managed = False
         db_table = 'im_metrica'
 
-class ImPost(models.Model):
+class Post(models.Model):
     id = models.IntegerField(primary_key=True)
-    idcanalesocial = models.ForeignKey(ImCanalesocial, db_column='idcanalesocial', blank=True, null=True)
+    idcanalesocial = models.ForeignKey(Canalesocial, db_column='idcanalesocial', blank=True, null=True)
     content = models.TextField(blank=True)
     link = models.TextField(blank=True)
     likes = models.IntegerField(blank=True, null=True)
@@ -209,14 +209,14 @@ class ImPost(models.Model):
         managed = False
         db_table = 'im_post'
 
-class ImRuolo(models.Model):
+class Ruolo(models.Model):
     id = models.IntegerField(unique=True, primary_key=True)
     nomeruolo = models.CharField(max_length=45)
     class Meta:
         managed = False
         db_table = 'im_ruolo'
 
-class ImSocial(models.Model):
+class Social(models.Model):
     id = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=45)
     slug = models.CharField(unique=True, max_length=45, blank=True)
@@ -228,14 +228,14 @@ class ImSocial(models.Model):
         managed = False
         db_table = 'im_social'
 
-class ImUser(models.Model):
+class User(models.Model):
     id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=45, blank=True)
     password = models.CharField(max_length=45, blank=True)
     email = models.CharField(max_length=100, blank=True)
     nome = models.CharField(max_length=45, blank=True)
-    idruolo = models.ForeignKey(ImRuolo, db_column='idruolo', blank=True, null=True)
-    idbrand = models.ForeignKey(ImBrand, db_column='idbrand', blank=True, null=True)
+    idruolo = models.ForeignKey(Ruolo, db_column='idruolo', blank=True, null=True)
+    idbrand = models.ForeignKey(Brand, db_column='idbrand', blank=True, null=True)
     usertoken = models.CharField(max_length=100, blank=True)
     lastlogin = models.IntegerField(blank=True, null=True)
     tokenexpires = models.IntegerField(blank=True, null=True)
@@ -245,12 +245,12 @@ class ImUser(models.Model):
         managed = False
         db_table = 'im_user'
 
-class ImValoremetrica(models.Model):
+class Valoremetrica(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=50, blank=True)
     timestamp = models.IntegerField(blank=True, null=True)
     value = models.IntegerField(blank=True, null=True)
-    idcanalesociale = models.ForeignKey(ImCanalesocial, db_column='idcanalesociale', blank=True, null=True)
+    idcanalesociale = models.ForeignKey(Canalesocial, db_column='idcanalesociale', blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'im_valoremetrica'

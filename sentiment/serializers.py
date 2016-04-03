@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from .models import ImPost, ImComment
+from .models import Post, Comment
 
-class ImPostSerializer(serializers.HyperlinkedModelSerializer):
+class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = ImPost
+        model = Post
         fields = ('id', 'content', 'link', 'likes', 'shares', 'comments')
 
 
-class ImCommentSerializer(serializers.HyperlinkedModelSerializer):
+class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = ImComment
+        model = Comment
         fields = ('id', 'idpost','content')
