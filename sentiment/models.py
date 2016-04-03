@@ -167,6 +167,9 @@ class Comment(models.Model):
         managed = False
         db_table = 'im_commento'
 
+    def __str__(self):
+        return 'comment_id: %s, %s, content: %s' % (self.id, self.idpost, self.content[:20])
+
 
 class Contratto(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -246,6 +249,9 @@ class Post(models.Model):
     class Meta:
         managed = False
         db_table = 'im_post'
+
+    def __str__(self):
+        return 'post_id: %s' % self.id
 
 
 class Ruolo(models.Model):

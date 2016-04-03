@@ -36,4 +36,8 @@ urlpatterns += format_suffix_patterns([
     url(r'^comments/(?P<pk>[0-9]+)/$',
         views.CommentDetail.as_view(),
         name='comment-detail'),
+    url(r'^comments/sentiments/(?P<pk>[0-9]+)/$',
+        views.CommentSentimentDetail.as_view(),
+        name='sentiment-detail'),
+
 ])
