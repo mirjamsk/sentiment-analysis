@@ -1,19 +1,14 @@
 from django.conf.urls import patterns, include, url
-
 from django.contrib import admin
-from sentiment import views
 from rest_framework.urlpatterns import format_suffix_patterns
-
-from rest_framework import routers
-
-router = routers.DefaultRouter()
+from sentiment import views
 
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
     #url(r'^$', index, name='index'),
-    url(r'^', include(router.urls)),
+    url(r'^$', views.api_root),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 )
@@ -32,5 +27,4 @@ urlpatterns += format_suffix_patterns([
     url(r'^comments/(?P<pk>[0-9]+)/$',
         views.CommentDetail.as_view(),
         name='comment-detail'),
-
 ])
