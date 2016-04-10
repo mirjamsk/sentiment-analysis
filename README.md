@@ -1,57 +1,24 @@
 # Sentiment analysis tesina
 
+### Description
+The repo contains software developed as a part of a master thesis on sentiment analysis of social media posts regarding the fashion industry. The live site lives on  [sentiment-analysis.ml][1]
 
-Live site lives on [sentiment-analysis.ml](http://sentiment-analysis.ml/)
+### Documentation
+Usage, documentation, issues and much more can be found in the repo's [wiki][2].
+The wiki consists of:
++ [TO-DO][3]
++ [Technical specification][4]
++ [External API descriptions][5]
++ [External API issues & solutions][6]
++ User manuals for:
+ + [the developed API][7]
+ + [scripts to analyze sentiment with external APIs][8]
 
---
-#### Resources software:
-+ [Django 1.9](https://www.djangoproject.com/)
-+ [Django REST framework](http://www.django-rest-framework.org/)
-
---
-#### Resources APIs:
-The table maps used API's links to the column name in our database where the results of the API calls are stored
-
-| API                  | Database column | 
-|:--------------------:|:---------------:| 
-| [vivekn][1]          | sentiment_api1  | 
-| [text-processing][2] | sentiment_api2  |  
-
-
-[1]: http://sentiment.vivekn.com/api/text/
-[2]: http://text-processing.com/docs/sentiment.html
-
---
-#### The developed API
-Other than being able to access the API via a browser, it can also be done from the command-line, using tools like `curl`.
-For e.g.
-+ To get a list of posts:
-
- ``` bash
- curl -H 'Accept: application/json; indent=4' -u admin:sentiment1234 http://sentiment-analysis.ml/posts/
- ```
-+ To get single post detail:
-
- ``` bash
- curl -H 'Accept: application/json; indent=4' -u admin:sentiment1234 http://sentiment-analysis.ml/posts/<id>/
- ```
-+ To get a list of comments:
-
- ``` bash
- curl -H 'Accept: application/json; indent=4' -u admin:sentiment1234 http://sentiment-analysis.ml/comments/
- ```
-+ To get single comment detail:
-
- ``` bash
- curl -H 'Accept: application/json; indent=4' -u admin:sentiment1234 http://sentiment-analysis.ml/comments/<id>/
- ```
- 
---
-
-####TO-DO:
-+ Build front-end
-+ Check reliability of the APIs
-+ Clustering
-  + [Weka](https://en.wikipedia.org/wiki/Weka_(machine_learning))
-  + [Knime](https://www.knime.org/knime-cluster)
-  + [Rapid miner](https://rapidminer.com/)
+[1]: http://sentiment-analysis.ml/
+[2]: ../../wiki
+[3]: ../../wiki/TO-DO
+[4]: ../../wiki/Technical-specification
+[5]: ../../wiki/External-API-descriptions
+[6]: ../../wiki/External-API-issues-&-solutions
+[7]: ../../wiki/User-manual:-the-developed-API
+[8]: ../../wiki/User-manual:-scripts-to-analyze-sentiment-with-external-APIs
