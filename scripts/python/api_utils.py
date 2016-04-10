@@ -18,6 +18,9 @@ class _API(object):
     def is_request_successful(self):
         return self.response.status_code == 200
 
+    def get_status_code(self):
+        return self.response.status_code
+
     @abstractmethod
     def set_data(self, text):
         pass

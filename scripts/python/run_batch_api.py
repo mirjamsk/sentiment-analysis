@@ -26,13 +26,15 @@ def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment
         api.set_data(content)
         api.post()
 
-        if api.is_request_successful:
+        if api.is_request_successful():
             print ("Predicted sentiment: %s" % api.get_sentiment())
             db_sentiment.update(
                 comment_id=comment_id,
                 sentiment=api.get_sentiment(),
                 sentiment_api_column=api.sentiment_api_column)
-
+        else:
+            print("API request was NOT successful: returned %d status code" % api.get_status_code())
+            break
         print (29 * "-")
 
     db.close()
