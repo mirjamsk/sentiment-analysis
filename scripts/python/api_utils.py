@@ -1,7 +1,10 @@
+from abc import ABCMeta as _ABCMeta, abstractmethod
 from requests import post
 
 
-class API(object):
+class _API(object):
+    __metaclass__ = _ABCMeta
+
     def __init__(self, url, data, sentiment_labels, sentiment_api_column):
         self.url = url
         self.data = data
@@ -15,15 +18,23 @@ class API(object):
     def is_request_successful(self):
         return self.response.status_code == 200
 
+    @abstractmethod
+    def set_data(self, text):
+        pass
 
-class ViveknApi(API):
+    @abstractmethod
+    def get_sentiment(self):
+        pass
+
+
+class ViveknApi(_API):
     def __init__(self):
         SENTIMENT_LABELS = {
             'Positive': 'positive',
             'Negative': 'negative',
             'Neutral' : 'neutral'
         }
-        API.__init__(
+        _API.__init__(
             self,
             url='http://sentiment.vivekn.com/api/text/',
             data={'txt': ''},
@@ -41,14 +52,14 @@ class ViveknApi(API):
         return 'Vivek API: ' + self.url
 
 
-class TextProcessingApi(API):
+class TextProcessingApi(_API):
     def __init__(self):
         SENTIMENT_LABELS = {
           'pos': 'positive',
           'neg': 'negative',
           'neutral': 'neutral'}
 
-        API.__init__(
+        _API.__init__(
             self,
             url='http://text-processing.com/api/sentiment/',
             data={'text': ''},
