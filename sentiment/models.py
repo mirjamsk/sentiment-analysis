@@ -311,8 +311,8 @@ class Valoremetrica(models.Model):
 class PostSentiment(models.Model):
     id = models.AutoField(primary_key=True)
     idpost = models.OneToOneField('Post', db_column='idpost', related_name='post_sentiment')
-    sentiment_api1 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    sentiment_api1 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -325,6 +325,8 @@ class CommentSentiment(models.Model):
     real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     sentiment_api1 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     sentiment_api2 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    sentiment_api3 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    sentiment_api4 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
 
 
     class Meta:
