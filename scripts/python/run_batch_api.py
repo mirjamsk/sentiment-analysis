@@ -1,6 +1,6 @@
-from db_utils import CommentDbConnection, CommentSentimentDbConnection
-from api_utils import TextProcessingApi, ViveknApi
 import argparse
+from db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbConnection
+from api_utils.sentiment_api import TextProcessingAPI, ViveknAPI
 
 
 def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment_db"):
@@ -42,8 +42,8 @@ def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment
 
 
 def main():
-    API_choices = {ViveknApi.__name__: ViveknApi,
-                   TextProcessingApi.__name__: TextProcessingApi}
+    API_choices = {ViveknAPI.__name__: ViveknAPI,
+                   TextProcessingAPI.__name__: TextProcessingAPI}
 
     parser = argparse.ArgumentParser(
         description='Script for making api calls to determine the sentiment of comment and store it in a database')

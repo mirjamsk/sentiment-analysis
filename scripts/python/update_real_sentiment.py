@@ -1,6 +1,5 @@
-from db_utils import CommentDbConnection, CommentSentimentDbConnection
-from api_utils import TextProcessingApi, ViveknApi
 import argparse
+from db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbConnection
 
 
 def get_input_label():

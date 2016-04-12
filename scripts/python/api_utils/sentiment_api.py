@@ -1,25 +1,18 @@
 from abc import ABCMeta as _ABCMeta, abstractmethod
-from requests import post
+from base_api import BaseAPI
 
 
-class _API(object):
+class _SentimentAPI(BaseAPI):
     __metaclass__ = _ABCMeta
 
-    def __init__(self, url, data, sentiment_labels, sentiment_api_column):
-        self.url = url
-        self.data = data
-        self.response = None
-        self.SENTIMENT_LABELS = sentiment_labels
+    def __init__(self, url='', data={}, params={},  sentiment_api_column=''):
+        BaseAPI.__init__(
+            self,
+            url=url,
+            data=data,
+            params=params)
+
         self.sentiment_api_column = sentiment_api_column
-
-    def post(self):
-        self.response = post(url=self.url, data=self.data)
-
-    def is_request_successful(self):
-        return self.response.status_code == 200
-
-    def get_status_code(self):
-        return self.response.status_code
 
     @abstractmethod
     def set_data(self, text):
@@ -30,18 +23,17 @@ class _API(object):
         pass
 
 
-class ViveknApi(_API):
+class ViveknAPI(_SentimentAPI):
     def __init__(self):
-        SENTIMENT_LABELS = {
+        self.SENTIMENT_LABELS = {
             'Positive': 'positive',
             'Negative': 'negative',
             'Neutral' : 'neutral'
         }
-        _API.__init__(
+        _SentimentAPI.__init__(
             self,
             url='http://sentiment.vivekn.com/api/text/',
             data={'txt': ''},
-            sentiment_labels=SENTIMENT_LABELS,
             sentiment_api_column='sentiment_api1')
 
     def set_data(self, text):
@@ -55,18 +47,17 @@ class ViveknApi(_API):
         return 'Vivek API: ' + self.url
 
 
-class TextProcessingApi(_API):
+class TextProcessingAPI(_SentimentAPI):
     def __init__(self):
-        SENTIMENT_LABELS = {
+        self.SENTIMENT_LABELS = {
           'pos': 'positive',
           'neg': 'negative',
           'neutral': 'neutral'}
 
-        _API.__init__(
+        _SentimentAPI.__init__(
             self,
             url='http://text-processing.com/api/sentiment/',
             data={'text': ''},
-            sentiment_labels=SENTIMENT_LABELS,
             sentiment_api_column='sentiment_api2')
 
     def set_data(self, text):
@@ -78,3 +69,4 @@ class TextProcessingApi(_API):
 
     def __str__(self):
         return 'Text-processing API: ' + self.url
+
