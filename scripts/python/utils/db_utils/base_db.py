@@ -30,10 +30,13 @@ class Database(object):
         except MySQLdb.Error as e:
             print ("Error in connecting to db: %s" % e)
 
-    def fetch_all(self, select="*", from_clause="", where=""):
+    def fetch_all(self, select="*", from_clause="", where="", order_by=""):
         sql = "SELECT %s FROM %s" % (select, from_clause)
+
         if where != "":
             sql += " WHERE %s" % where
+        if order_by != "":
+            sql += " ORDER BY %s" % order_by
 
         self.cursor.execute(sql)
         return self.cursor.fetchall()

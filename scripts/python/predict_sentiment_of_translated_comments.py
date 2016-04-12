@@ -18,13 +18,21 @@ def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment
 
     print ('\nUsing %s ' % api)
     print (50 * "-")
+
+    # skip empty comments
+    if select_where_clause != '':
+        select_where_clause = select_where_clause.replace('id', 'c.id') + ' AND '
+
+    select_where_clause += "s.english_translation != ''"
+
     results = db.fetch_all(
         select='c.id, c.content, s.english_translation',
         from_clause=
         'im_commento AS c JOIN   \
         im_commento_sentiment AS s\
         ON c.id = s.idcommento',
-        where=select_where_clause.replace('id', 'c.id') + " AND s.english_translation!=''")
+        where=select_where_clause,
+        order_by='c.id ASC')
 
     for row in results:
         comment_id = row[0]
