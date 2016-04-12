@@ -1,20 +1,22 @@
-import argparse
-from db_utils.base_db import Database
-from api_utils.google_translate_api import GoogleTranslateAPI
+from utils.db_utils.base_db import Database
+from utils.db_utils.sentiment_db import CommentDbConnection
+from utils.api_utils.google_translate_api import GoogleTranslateAPI
+from utils.parser_utils.comment_argument_parser import CommentArgumentParser
 
 
 def detect_lang_and_translate_content(select_where_clause="", db_name="sentiment_db"):
     # Open database connections
     # we need two: one for fetch records and another for update records)
-    db = Database(db=db_name)
-    db.connect()
+    db_comment = CommentDbConnection(db=db_name)
+    db_comment.connect()
 
     db_language = Database(db=db_name)
     db_language.connect()
 
-    print ('\nUsing %s ' % api)
+    api = GoogleTranslateAPI()
+    print ('\nUsing GoogleTranslateAPI')
     print (50 * "-")
-    results = db.fetch_all(where=select_where_clause)
+    results = db_comment.fetch_all(where=select_where_clause)
 
     for row in results:
         comment_id = row[0]
@@ -23,58 +25,37 @@ def detect_lang_and_translate_content(select_where_clause="", db_name="sentiment
         print ("Comment_id: %s" % comment_id)
         print ("Content: %s" % content)
 
-        api.set_data(content)
-        api.post()
+        api.set_text(content)
+        api.get()
 
         if api.is_request_successful():
-            print ("Predicted sentiment: %s" % api.get_sentiment())
+            print ("Detected language: %s" % api.get_detected_language())
+            print ("English translation: %s" % api.get_translation())
             db_language.update(
-                comment_id=comment_id,
-                sentiment=api.get_sentiment(),
-                sentiment_api_column=api.sentiment_api_column)
+                table="im_commento_sentiment",
+                where="idcommento = %d" % comment_id,
+                set={
+                    api.language_column: api.get_detected_language(),
+                    api.english_translation_column: api.get_translation().replace("'", "\\'")})
         else:
             print("API request was NOT successful: returned %d status code" % api.get_status_code())
             break
         print (29 * "-")
 
-    db.close()
+    db_comment.close()
     db_language.close()
 
 
 def main():
-    parser = argparse.ArgumentParser(
+    parser = CommentArgumentParser(
         description=
         'Makes api calls to Google to \
         determine the language and the \
         english translation of comments \
         and store the results in a database')
 
-    parser.add_argument('-ideq',
-                        type=int,
-                        required=False,
-                        help='Update a specific comment by specifying it\'s id')
-    parser.add_argument('-idlt',
-                        type=int,
-                        required=False,
-                        help='Update all comments with id less than the specified id')
-    parser.add_argument('-idgt',
-                        type=int,
-                        required=False,
-                        help='Update all comments with id greater than the specified id')
-
-    args = parser.parse_args()
-
-    where_clause = ''
-    if args.ideq is not None:
-        where_clause = 'id=%d' % args.ideq
-    else:
-        if args.idlt is not None:
-            where_clause = 'id < %d' % args.idlt
-        if args.idgt is not None:
-            where_clause += ' AND ' if where_clause != '' else ''
-            where_clause += 'id > %d' % args.idgt
-
-    detect_lang_and_translate_content(select_where_clause=where_clause)
+    parser.parse_args()
+    detect_lang_and_translate_content(select_where_clause=parser.where_clause)
 
 
 if __name__ == '__main__':
