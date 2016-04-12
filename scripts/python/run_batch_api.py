@@ -1,11 +1,14 @@
-import argparse
-from db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbConnection
-from api_utils.sentiment_api import TextProcessingAPI, ViveknAPI
+from utils.api_utils.sentiment_api import TextProcessingAPI, ViveknAPI
+from utils.db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbConnection
+from utils.parser_utils.comment_argument_parser import CommentArgumentParser
 
 
 def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment_db"):
-    # Open database connections
-    # we need two: one for fetch records and another for update records)
+    """
+    Open two database connections:
+        - one to fetch comment records
+        - another to update comment_sentiment records
+    """
     db = CommentDbConnection(db=db_name)
     db.connect()
 
@@ -42,42 +45,27 @@ def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment
 
 
 def main():
-    API_choices = {ViveknAPI.__name__: ViveknAPI,
-                   TextProcessingAPI.__name__: TextProcessingAPI}
+    API_choices = {
+        ViveknAPI.__name__: ViveknAPI,
+        TextProcessingAPI.__name__: TextProcessingAPI}
 
-    parser = argparse.ArgumentParser(
-        description='Script for making api calls to determine the sentiment of comment and store it in a database')
-    parser.add_argument('-api',
-                        required=True,
-                        choices=API_choices.keys(),
-                        help='Choose from the listed api options')
+    parser = CommentArgumentParser(
+        description=
+        'Makes api calls to determine \
+        the sentiment of a comment and \
+        store the results in a database')
 
-    parser.add_argument('-ideq',
-                        type=int,
-                        required=False,
-                        help='Update a specific comment by specifying it\'s id')
-    parser.add_argument('-idlt',
-                        type=int,
-                        required=False,
-                        help='Update all comments with id less than the specified id')
-    parser.add_argument('-idgt',
-                        type=int,
-                        required=False,
-                        help='Update all comments with id greater than the specified id')
+    parser.add_argument_with_choices(
+        '-api',
+        required=True,
+        choices=API_choices.keys(),
+        help='Choose from the listed api options')
 
-    args = parser.parse_args()
+    parser.parse_args()
 
-    where_clause = ''
-    if args.ideq is not None:
-        where_clause = 'id=%d' % args.ideq
-    else:
-        if args.idlt is not None:
-            where_clause = 'id < %d' % args.idlt
-        if args.idgt is not None:
-            where_clause += ' AND ' if where_clause != '' else ''
-            where_clause += 'id > %d' % args.idgt
-
-    run_sentiment_api_batch(api=API_choices.get(args.api)(), select_where_clause=where_clause)
+    run_sentiment_api_batch(
+        api=API_choices.get(parser.args.api)(),
+        select_where_clause=parser.where_clause)
 
 
 if __name__ == '__main__':
