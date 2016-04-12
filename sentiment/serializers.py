@@ -11,7 +11,16 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         related_fields = ['post_sentiment']
-        fields = ('id', 'detail_link', 'content', 'link', 'likes', 'shares', 'comments', 'real_sentiment', 'sentiment_api1')
+        fields = (
+            'id',
+            'detail_link',
+            'content',
+            'link',
+            'likes',
+            'shares',
+            'comments',
+            'real_sentiment',
+            'sentiment_api1')
         read_only_fields = ('id', 'detail_link', 'content', 'link', 'likes', 'shares', 'comments')
 
     def update(self, instance, validated_data):
@@ -36,11 +45,24 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     real_sentiment = serializers.ChoiceField(source='comment_sentiment.real_sentiment', choices=SENTIMENT_LABELS)
     sentiment_api1 = serializers.CharField(source='comment_sentiment.sentiment_api1', read_only=True)
     sentiment_api2 = serializers.CharField(source='comment_sentiment.sentiment_api2', read_only=True)
+    sentiment_api3 = serializers.CharField(source='comment_sentiment.sentiment_api3', read_only=True)
+    sentiment_api4 = serializers.CharField(source='comment_sentiment.sentiment_api4', read_only=True)
 
     class Meta:
         model = Comment
         related_fields = ['comment_sentiment']
-        fields = ('id', 'language', 'content', 'english_translation', 'real_sentiment', 'sentiment_api1', 'sentiment_api2', 'idpost', 'detail_link')
+        fields = (
+            'id',
+            'language',
+            'content',
+            'english_translation',
+            'real_sentiment',
+            'sentiment_api1',
+            'sentiment_api2',
+            'sentiment_api3',
+            'sentiment_api4',
+            'idpost',
+            'detail_link')
         read_only_fields = ('id', 'detail_link', 'idpost', 'content')
 
     def update(self, instance, validated_data):

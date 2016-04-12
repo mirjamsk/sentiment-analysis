@@ -34,7 +34,7 @@ class ViveknAPI(_SentimentAPI):
             self,
             url='http://sentiment.vivekn.com/api/text/',
             data={'txt': ''},
-            sentiment_api_column='sentiment_api1')
+            sentiment_api_column='sentiment_api1_en')
 
     def set_data(self, text):
         self.data['txt'] = text
@@ -58,7 +58,7 @@ class TextProcessingAPI(_SentimentAPI):
             self,
             url='http://text-processing.com/api/sentiment/',
             data={'text': ''},
-            sentiment_api_column='sentiment_api2')
+            sentiment_api_column='sentiment_api2_en')
 
     def set_data(self, text):
         self.data['text'] = text
@@ -70,3 +70,43 @@ class TextProcessingAPI(_SentimentAPI):
     def __str__(self):
         return 'Text-processing API: ' + self.url
 
+
+class _IndicoAPI(_SentimentAPI):
+    def __init__(self, url, ApiKey, sentiment_api_column):
+        _SentimentAPI.__init__(self,
+            url=url + ApiKey,
+            data={'language': 'english', 'data': ''},
+            sentiment_api_column=sentiment_api_column)
+
+    def set_data(self, text):
+        self.data['data'] = text
+
+    def get_sentiment(self):
+        sentiment = self.response.json()['results']
+        if sentiment >= 0.6:
+            return 'positive'
+        elif sentiment <= 0.4:
+            return 'negative'
+        else:
+            return 'neutral'
+
+    def __str__(self):
+        return 'Indico API: ' + self.url
+
+
+class IndicoAPI(_IndicoAPI):
+    def __init__(self):
+        _IndicoAPI.__init__(
+            self,
+            url='http://apiv2.indico.io/sentiment?key=',
+            ApiKey='fc1f6326eadb01b3f71b41295336516a',
+            sentiment_api_column='sentiment_api3')
+
+
+class IndicoHqAPI(_IndicoAPI):
+    def __init__(self):
+        _IndicoAPI.__init__(
+            self,
+            url='https://apiv2.indico.io/sentimenthq?key=',
+            ApiKey='fc1f6326eadb01b3f71b41295336516a',
+            sentiment_api_column='sentiment_api4')
