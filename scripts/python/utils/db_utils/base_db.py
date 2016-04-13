@@ -26,7 +26,7 @@ class Database(object):
                 use_unicode=True
             )
             self.cursor = self.connection.cursor()
-
+            print ("Database connection open")
         except MySQLdb.Error as e:
             print ("Error in connecting to db: %s" % e)
 
@@ -43,16 +43,15 @@ class Database(object):
 
     def update(self, table="", set={}, where=""):
         set_query = ''
-
         for column, value in set.items():
             set_query += "%s='%s'," % (column, value)
 
         set_query = set_query[:-1]  # remove the trailing comma (,)
         sql = "UPDATE %s SET %s WHERE %s" % (table, set_query, where)
-
         try:
             self.cursor.execute(sql)
             self.connection.commit()
+            print("Updating %s... %d rows affected" % (table, self.cursor.rowcount))
         except MySQLdb.Error as e:
             print ("Error in updating db: %s" % e)
 

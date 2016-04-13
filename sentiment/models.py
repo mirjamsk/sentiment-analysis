@@ -10,6 +10,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from jsonfield import JSONField
 from .utils import SENTIMENT_LABELS
 
 
@@ -312,7 +313,13 @@ class PostSentiment(models.Model):
     id = models.AutoField(primary_key=True)
     idpost = models.OneToOneField('Post', db_column='idpost', related_name='post_sentiment')
     real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
-    sentiment_api1 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    sentiment_api1 = JSONField(blank=True, null=True)
+    sentiment_api2 = JSONField(blank=True, null=True)
+    sentiment_api3 = JSONField(blank=True, null=True)
+    sentiment_api4 = JSONField(blank=True, null=True)
+
+    sentiment_api1_en = JSONField(blank=True, null=True)
+    sentiment_api2_en = JSONField(blank=True, null=True)
 
     class Meta:
         managed = True

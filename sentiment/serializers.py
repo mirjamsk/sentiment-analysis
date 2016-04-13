@@ -6,7 +6,13 @@ from .utils import SENTIMENT_LABELS
 class PostSerializer(serializers.ModelSerializer):
     detail_link = serializers.HyperlinkedIdentityField(view_name='post-detail')
     real_sentiment = serializers.ChoiceField(source='post_sentiment.real_sentiment', choices=SENTIMENT_LABELS)
-    sentiment_api1 = serializers.CharField(source='post_sentiment.sentiment_api1', read_only=True)
+    sentiment_api1_ol = serializers.JSONField(source='post_sentiment.sentiment_api1', read_only=True)
+    sentiment_api1_en = serializers.JSONField(source='post_sentiment.sentiment_api1_en', read_only=True)
+    sentiment_api2_ol = serializers.JSONField(source='post_sentiment.sentiment_api2', read_only=True)
+    sentiment_api2_en = serializers.JSONField(source='post_sentiment.sentiment_api2_en', read_only=True)
+
+    sentiment_api3 = serializers.JSONField(source='post_sentiment.sentiment_api3', read_only=True)
+    sentiment_api4 = serializers.JSONField(source='post_sentiment.sentiment_api4', read_only=True)
 
     class Meta:
         model = Post
@@ -20,7 +26,13 @@ class PostSerializer(serializers.ModelSerializer):
             'shares',
             'comments',
             'real_sentiment',
-            'sentiment_api1')
+            'sentiment_api1_ol',
+            'sentiment_api1_en',
+            'sentiment_api2_ol',
+            'sentiment_api2_en',
+            'sentiment_api3',
+            'sentiment_api4',
+        )
         read_only_fields = ('id', 'detail_link', 'content', 'link', 'likes', 'shares', 'comments')
 
     def update(self, instance, validated_data):
