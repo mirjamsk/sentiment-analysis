@@ -43,8 +43,12 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     language = serializers.CharField(source='comment_sentiment.language', read_only=True)
     english_translation = serializers.CharField(source='comment_sentiment.english_translation', read_only=True)
     real_sentiment = serializers.ChoiceField(source='comment_sentiment.real_sentiment', choices=SENTIMENT_LABELS)
-    sentiment_api1 = serializers.CharField(source='comment_sentiment.sentiment_api1', read_only=True)
-    sentiment_api2 = serializers.CharField(source='comment_sentiment.sentiment_api2', read_only=True)
+
+    sentiment_api1_ol = serializers.CharField(source='comment_sentiment.sentiment_api1', read_only=True)
+    sentiment_api2_ol = serializers.CharField(source='comment_sentiment.sentiment_api2', read_only=True)
+    sentiment_api1_en = serializers.CharField(source='comment_sentiment.sentiment_api1_en', read_only=True)
+    sentiment_api2_en = serializers.CharField(source='comment_sentiment.sentiment_api2_en', read_only=True)
+
     sentiment_api3 = serializers.CharField(source='comment_sentiment.sentiment_api3', read_only=True)
     sentiment_api4 = serializers.CharField(source='comment_sentiment.sentiment_api4', read_only=True)
 
@@ -57,8 +61,10 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
             'content',
             'english_translation',
             'real_sentiment',
-            'sentiment_api1',
-            'sentiment_api2',
+            'sentiment_api1_ol',
+            'sentiment_api1_en',
+            'sentiment_api2_ol',
+            'sentiment_api2_en',
             'sentiment_api3',
             'sentiment_api4',
             'idpost',

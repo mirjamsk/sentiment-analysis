@@ -330,6 +330,8 @@ class CommentSentiment(models.Model):
     sentiment_api3 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     sentiment_api4 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
 
+    sentiment_api1_en = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    sentiment_api2_en = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
 
     class Meta:
         managed = True
