@@ -6,7 +6,7 @@ def get_input_label():
     return raw_input("pos/neg/neu? ").strip()
 
 
-def update_real_sentiment_batch(select_where_clause="", db_name="sentiment_db"):
+def update_real_sentiment_batch(id_selection="", db_name="sentiment_db"):
     """
     Open two database connections:
         - one to fetch comment records
@@ -24,7 +24,7 @@ def update_real_sentiment_batch(select_where_clause="", db_name="sentiment_db"):
     db_sentiment = CommentSentimentDbConnection(db=db_name)
     db_sentiment.connect()
 
-    results = db.fetch_all(where=select_where_clause)
+    results = db.fetch_all(where=id_selection)
 
     for row in results:
         print (35 * "-")
@@ -55,7 +55,7 @@ def update_real_sentiment_batch(select_where_clause="", db_name="sentiment_db"):
 def main():
     parser = CommentArgumentParser(description='Script for manually updating  real_sentiment of comments')
     parser.parse_args()
-    update_real_sentiment_batch(select_where_clause=parser.where_clause)
+    update_real_sentiment_batch(id_selection=parser.id_selection)
 
 
 if __name__ == '__main__':

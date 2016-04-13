@@ -4,7 +4,7 @@ from utils.api_utils.sentiment_api import TextProcessingAPI, ViveknAPI, IndicoAP
 from utils.parser_utils.comment_argument_parser import CommentArgumentParser
 
 
-def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment_db"):
+def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
     """
     Open two database connections:
         - one to fetch comment records
@@ -19,11 +19,8 @@ def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment
     print ('\nUsing %s ' % api)
     print (50 * "-")
 
-    # skip empty comments
-    if select_where_clause != '':
-        select_where_clause = select_where_clause.replace('id', 'c.id') + ' AND '
-
-    select_where_clause += "s.english_translation != ''"
+    if id_selection != '':
+        id_selection = id_selection.replace('id', 'c.id') + ' AND '
 
     results = db.fetch_all(
         select='c.id, c.content, s.english_translation',
@@ -31,7 +28,7 @@ def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment
         'im_commento AS c JOIN   \
         im_commento_sentiment AS s\
         ON c.id = s.idcommento',
-        where=select_where_clause,
+        where=id_selection + "s.english_translation != ''",
         order_by='c.id ASC')
 
     for row in results:
@@ -84,7 +81,7 @@ def main():
 
     run_sentiment_api_batch(
         api=API_choices.get(parser.args.api)(),
-        select_where_clause=parser.where_clause)
+        id_selection=parser.id_selection)
 
 
 if __name__ == '__main__':

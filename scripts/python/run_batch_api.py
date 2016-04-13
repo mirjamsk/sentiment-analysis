@@ -3,7 +3,7 @@ from utils.db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbC
 from utils.parser_utils.comment_argument_parser import CommentArgumentParser
 
 
-def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment_db"):
+def run_sentiment_api_batch(api=None,id_selection="", db_name="sentiment_db"):
     """
     Open two database connections:
         - one to fetch comment records
@@ -17,7 +17,7 @@ def run_sentiment_api_batch(api=None, select_where_clause="", db_name="sentiment
 
     print ('\nUsing %s ' % api)
     print (50 * "-")
-    results = db.fetch_all(where=select_where_clause)
+    results = db.fetch_all(where=id_selection)
 
     for row in results:
         comment_id = row[0]
@@ -65,7 +65,7 @@ def main():
 
     run_sentiment_api_batch(
         api=API_choices.get(parser.args.api)(),
-        select_where_clause=parser.where_clause)
+       id_selection=parser.id_selection)
 
 
 if __name__ == '__main__':

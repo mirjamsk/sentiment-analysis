@@ -4,7 +4,7 @@ from utils.api_utils.google_translate_api import GoogleTranslateAPI
 from utils.parser_utils.comment_argument_parser import CommentArgumentParser
 
 
-def detect_lang_and_translate_content(select_where_clause="", db_name="sentiment_db"):
+def detect_lang_and_translate_content(id_selection="", db_name="sentiment_db"):
     # Open database connections
     # we need two: one for fetch records and another for update records)
     db_comment = CommentDbConnection(db=db_name)
@@ -16,7 +16,7 @@ def detect_lang_and_translate_content(select_where_clause="", db_name="sentiment
     api = GoogleTranslateAPI()
     print ('\nUsing GoogleTranslateAPI')
     print (50 * "-")
-    results = db_comment.fetch_all(where=select_where_clause)
+    results = db_comment.fetch_all(where=id_selection)
 
     for row in results:
         comment_id = row[0]
@@ -55,7 +55,7 @@ def main():
         and store the results in a database')
 
     parser.parse_args()
-    detect_lang_and_translate_content(select_where_clause=parser.where_clause)
+    detect_lang_and_translate_content(id_selection=parser.id_selection)
 
 
 if __name__ == '__main__':

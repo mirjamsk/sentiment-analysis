@@ -5,7 +5,7 @@ import utils.db_utils.helpers as db_helpers
 class CommentArgumentParser(object):
     def __init__(self, description=''):
         self.args = None
-        self.where_clause = ''
+        self.id_selection = ''
         self.parser = argparse.ArgumentParser(description=description)
 
         self.parser.add_argument(
@@ -28,7 +28,7 @@ class CommentArgumentParser(object):
 
     def parse_args(self):
         self.args = self.parser.parse_args()
-        self.where_clause = db_helpers.build_where_clause(
+        self.id_selection = db_helpers.build_id_selection_condition(
             id_equals=self.args.ideq,
             id_less_than=self.args.idlt,
             id_greater_than=self.args.idgt)

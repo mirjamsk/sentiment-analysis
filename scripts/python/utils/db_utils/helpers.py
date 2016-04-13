@@ -3,7 +3,7 @@
 """
 
 
-def build_where_clause(id_equals='', id_greater_than='', id_less_than=''):
+def build_id_selection_condition(id_equals='', id_greater_than='', id_less_than=''):
     where_clause = ''
     if id_equals is not None:
         where_clause = 'id=%d' % id_equals
