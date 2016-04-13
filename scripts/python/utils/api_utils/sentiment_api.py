@@ -108,5 +108,5 @@ class IndicoHqAPI(_IndicoAPI):
         _IndicoAPI.__init__(
             self,
             url='https://apiv2.indico.io/sentimenthq?key=',
-            ApiKey='fc1f6326eadb01b3f71b41295336516a',
+            ApiKey='9b0d19c33f87ff807dfe344378d9a73d',
             sentiment_api_column='sentiment_api4')
