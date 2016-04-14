@@ -64,8 +64,8 @@ target/
 # Idea
 .idea/
 
-# mysqldumps
-mysqldump/
+# temp_sqldumps
+temp_sqldumps/
 
 #sqlite3
 *.sqlite3
