@@ -1,5 +1,6 @@
 from utils.db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbConnection
 from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
+from utils.print_utils.helpers import print_horizontal_rule
 
 
 def get_input_label():
@@ -25,10 +26,8 @@ def update_real_sentiment_batch(id_selection="", db_name="sentiment_db"):
     db_sentiment.connect()
 
     results = db.fetch_all(where=id_selection)
-
     for row in results:
-        print (35 * "-")
-
+        print_horizontal_rule()
         comment_id = row[0]
         content = row[1]
 
@@ -48,6 +47,7 @@ def update_real_sentiment_batch(id_selection="", db_name="sentiment_db"):
 
         print ("Updated real_sentiment: %s" % SENTIMENT_LABELS[real_sentiment])
 
+    print_horizontal_rule()
     db.close()
     db_sentiment.close()
 

@@ -1,5 +1,6 @@
 from utils.db_utils.base_db import Database
 from utils.db_utils.sentiment_db import CommentDbConnection
+from utils.print_utils.helpers import print_horizontal_rule
 from utils.api_utils.google_translate_api import GoogleTranslateAPI
 from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 
@@ -15,10 +16,11 @@ def detect_lang_and_translate_content(id_selection="", db_name="sentiment_db"):
 
     api = GoogleTranslateAPI()
     print ('\nUsing GoogleTranslateAPI')
-    print (50 * "-")
+    
     results = db_comment.fetch_all(where=id_selection)
 
     for row in results:
+        print_horizontal_rule()
         comment_id = row[0]
         content = row[1]
 
@@ -40,8 +42,8 @@ def detect_lang_and_translate_content(id_selection="", db_name="sentiment_db"):
         else:
             print("API request was NOT successful: returned %d status code" % api.get_status_code())
             break
-        print (29 * "-")
 
+    print_horizontal_rule()
     db_comment.close()
     db_language.close()
 

@@ -1,3 +1,4 @@
+from utils.print_utils.helpers import print_horizontal_rule
 from utils.db_utils.base_db import Database
 from utils.db_utils.sentiment_db import CommentSentimentDbConnection
 from utils.api_utils.sentiment_api import TextProcessingAPI, ViveknAPI, IndicoAPI, IndicoHqAPI
@@ -17,7 +18,6 @@ def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
     db_sentiment.connect()
 
     print ('\nUsing %s ' % api)
-    print (50 * "-")
 
     if id_selection != '':
         id_selection = id_selection.replace('id', 'c.id') + ' AND '
@@ -32,6 +32,7 @@ def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
         order_by='c.id ASC')
 
     for row in results:
+        print_horizontal_rule()
         comment_id = row[0]
         content = row[1]
         english_translation = row[2]
@@ -50,10 +51,10 @@ def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
                 sentiment=api.get_sentiment(),
                 sentiment_api_column=api.sentiment_api_column)
         else:
-            print("API request was NOT successful: returned %d status code" % api.get_status_code())
+            print ("API request was NOT successful: returned %d status code" % api.get_status_code())
             break
-        print (29 * "-")
 
+    print_horizontal_rule()
     db.close()
     db_sentiment.close()
 

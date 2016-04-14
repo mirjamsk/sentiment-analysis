@@ -1,3 +1,4 @@
+from utils.print_utils.helpers import print_horizontal_rule
 from utils.api_utils.sentiment_api import TextProcessingAPI, ViveknAPI
 from utils.db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbConnection
 from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
@@ -16,10 +17,10 @@ def run_sentiment_api_batch(api=None,id_selection="", db_name="sentiment_db"):
     db_sentiment.connect()
 
     print ('\nUsing %s ' % api)
-    print (50 * "-")
     results = db.fetch_all(where=id_selection)
 
     for row in results:
+        print_horizontal_rule()
         comment_id = row[0]
         content = row[1]
 
@@ -38,8 +39,8 @@ def run_sentiment_api_batch(api=None,id_selection="", db_name="sentiment_db"):
         else:
             print("API request was NOT successful: returned %d status code" % api.get_status_code())
             break
-        print (29 * "-")
 
+    print_horizontal_rule()
     db.close()
     db_sentiment.close()
 
@@ -64,8 +65,8 @@ def main():
     parser.parse_args()
 
     run_sentiment_api_batch(
-        api=API_choices.get(parser.args.api)(),
-       id_selection=parser.id_selection)
+        id_selection=parser.id_selection,
+        api=API_choices.get(parser.args.api)())
 
 
 if __name__ == '__main__':

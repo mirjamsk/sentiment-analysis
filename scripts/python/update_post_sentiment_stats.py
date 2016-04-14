@@ -2,6 +2,7 @@ import json
 import operator
 from copy import deepcopy
 from utils.db_utils.base_db import Database
+from utils.print_utils.helpers import print_horizontal_rule
 from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 
 
@@ -153,9 +154,6 @@ def get_most_frequent_label(stats={}):
     stats.pop('total', None)
     return max(stats.items(), key=operator.itemgetter(1))[0]
 
-
-def print_horizontal_rule(length=50):
-    print (length * "-")
 
 if __name__ == '__main__':
     main()
