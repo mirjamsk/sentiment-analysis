@@ -6,25 +6,26 @@ from sentiment import views
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    #url(r'^$', index, name='index'),
-    url(r'^$', views.api_root),
+urlpatterns = patterns(
+    '',
+    url(r'^$', views.index, name='index'),
+    url(r'^api/$', views.api_root),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api/api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 )
 
 # API endpoints
 urlpatterns += format_suffix_patterns([
-    url(r'^posts/$',
+    url(r'^api/posts/$',
         views.PostList.as_view(),
         name='post-list'),
-    url(r'^posts/(?P<pk>[0-9]+)/$',
+    url(r'^api/posts/(?P<pk>[0-9]+)/$',
         views.PostDetail.as_view(),
         name='post-detail'),
-    url(r'^comments/$',
+    url(r'^api/comments/$',
         views.CommentList.as_view(),
         name='comment-list'),
-    url(r'^comments/(?P<pk>[0-9]+)/$',
+    url(r'^api/comments/(?P<pk>[0-9]+)/$',
         views.CommentDetail.as_view(),
         name='comment-detail'),
 ])

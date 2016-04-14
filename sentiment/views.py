@@ -1,14 +1,15 @@
+from django.http import HttpResponse
 from rest_framework import generics
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 from .serializers import PostSerializer, CommentSerializer
 from .models import Post, Comment
 
-# Create your views here.
-# def index(request):
-#    return HttpResponse("Hello, world! Bok bok")
+
+def index(request):
+    return HttpResponse("Placeholder za front-end part :)")
 
 
 @api_view(['GET'])
