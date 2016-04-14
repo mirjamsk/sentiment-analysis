@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.shortcuts import render
+
 from rest_framework import generics
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
@@ -9,8 +10,9 @@ from .models import Post, Comment
 
 
 def index(request):
-    return HttpResponse("Placeholder za front-end part :)")
-
+    message = "Front-end under construction :)"
+    context = {'message': message}
+    return render(request, 'sentiment/index.html', context)
 
 @api_view(['GET'])
 def api_root(request, format=None):
