@@ -1,7 +1,7 @@
 from utils.db_utils.base_db import Database
 from utils.db_utils.sentiment_db import CommentSentimentDbConnection
 from utils.api_utils.sentiment_api import TextProcessingAPI, ViveknAPI, IndicoAPI, IndicoHqAPI
-from utils.parser_utils.comment_argument_parser import CommentArgumentParser
+from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 
 
 def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
@@ -65,7 +65,7 @@ def main():
         IndicoHqAPI.__name__: IndicoHqAPI,
         TextProcessingAPI.__name__: TextProcessingAPI}
 
-    parser = CommentArgumentParser(
+    parser = IdSelectionArgumentParser(
         description=
         'Makes api calls to determine \
         the sentiment of a comment and \

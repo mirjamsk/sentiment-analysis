@@ -2,7 +2,7 @@ import argparse
 import utils.db_utils.helpers as db_helpers
 
 
-class CommentArgumentParser(object):
+class IdSelectionArgumentParser(object):
     def __init__(self, description=''):
         self.args = None
         self.id_selection = ''
@@ -12,19 +12,19 @@ class CommentArgumentParser(object):
             '-ideq',
             type=int,
             required=False,
-            help='Update a specific comment by specifying it\'s id')
+            help='run for a specific record by specifying its id')
 
         self.parser.add_argument(
             '-idlt',
             type=int,
             required=False,
-            help='Update all comments with id less than the specified id')
+            help='run for records with id less than the specified id')
 
         self.parser.add_argument(
             '-idgt',
             type=int,
             required=False,
-            help='Update all comments with id greater than the specified id')
+            help='run for records with id greater than the specified id')
 
     def parse_args(self):
         self.args = self.parser.parse_args()

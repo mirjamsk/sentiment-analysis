@@ -1,6 +1,6 @@
 from utils.api_utils.sentiment_api import TextProcessingAPI, ViveknAPI
 from utils.db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbConnection
-from utils.parser_utils.comment_argument_parser import CommentArgumentParser
+from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 
 
 def run_sentiment_api_batch(api=None,id_selection="", db_name="sentiment_db"):
@@ -49,7 +49,7 @@ def main():
         ViveknAPI.__name__: ViveknAPI,
         TextProcessingAPI.__name__: TextProcessingAPI}
 
-    parser = CommentArgumentParser(
+    parser = IdSelectionArgumentParser(
         description=
         'Makes api calls to determine \
         the sentiment of a comment and \

@@ -1,7 +1,7 @@
 from utils.db_utils.base_db import Database
 from utils.db_utils.sentiment_db import CommentDbConnection
 from utils.api_utils.google_translate_api import GoogleTranslateAPI
-from utils.parser_utils.comment_argument_parser import CommentArgumentParser
+from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 
 
 def detect_lang_and_translate_content(id_selection="", db_name="sentiment_db"):
@@ -47,7 +47,7 @@ def detect_lang_and_translate_content(id_selection="", db_name="sentiment_db"):
 
 
 def main():
-    parser = CommentArgumentParser(
+    parser = IdSelectionArgumentParser(
         description=
         'Makes api calls to Google to \
         determine the language and the \

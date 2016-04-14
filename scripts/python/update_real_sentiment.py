@@ -1,5 +1,5 @@
 from utils.db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbConnection
-from utils.parser_utils.comment_argument_parser import CommentArgumentParser
+from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 
 
 def get_input_label():
@@ -53,7 +53,7 @@ def update_real_sentiment_batch(id_selection="", db_name="sentiment_db"):
 
 
 def main():
-    parser = CommentArgumentParser(description='Script for manually updating  real_sentiment of comments')
+    parser = IdSelectionArgumentParser(description='Script for manually updating  real_sentiment of comments')
     parser.parse_args()
     update_real_sentiment_batch(id_selection=parser.id_selection)
 

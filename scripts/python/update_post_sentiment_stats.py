@@ -2,7 +2,7 @@ import json
 import operator
 from copy import deepcopy
 from utils.db_utils.base_db import Database
-from utils.parser_utils.comment_argument_parser import CommentArgumentParser
+from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 
 
 SENTIMENT_DEFAULT_STATS = {
@@ -22,7 +22,7 @@ def main():
         'sentiment_api3',
         'sentiment_api4'
     )
-    parser = CommentArgumentParser(
+    parser = IdSelectionArgumentParser(
         description=
         'Calculates posts\' sentiment \
         stats using comment labels and \
