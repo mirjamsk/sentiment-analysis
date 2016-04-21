@@ -11,8 +11,8 @@ The wiki consists of:
 + [External API descriptions][5]
 + [External API issues & solutions][6]
 + User manuals for:
- + [the developed API][7]
- + [scripts to analyze sentiment with external APIs][8]
+ + [The developed API][7]
+ + [Scripts to analyze sentiment with external APIs][8]
 
 [1]: http://sentiment-analysis.ml/
 [2]: ../../wiki
