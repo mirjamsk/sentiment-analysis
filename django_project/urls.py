@@ -8,7 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    url(r'^$', views.index, name='index'),
+    url(r'^', include('sentiment.urls', namespace='sentiment', app_name='sentiment')),
     url(r'^api/$', views.api_root),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/api-auth/', include('rest_framework.urls', namespace='rest_framework'))

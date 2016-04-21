@@ -1,18 +1,11 @@
-from django.shortcuts import render
-
 from rest_framework import generics
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from .serializers import PostSerializer, CommentSerializer
-from .models import Post, Comment
+from ..serializers import PostSerializer, CommentSerializer
+from ..models import Post, Comment
 
-
-def index(request):
-    message = "Front-end under construction :)"
-    context = {'message': message}
-    return render(request, 'sentiment/index.html', context)
 
 @api_view(['GET'])
 def api_root(request, format=None):
