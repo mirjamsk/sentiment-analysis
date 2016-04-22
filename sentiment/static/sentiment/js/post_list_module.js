@@ -35,7 +35,7 @@
 */
 
 $( function(){
-PostListModule = (function(){
+ var PostListModule = (function(){
 	var data = {
 		currentPage:  1,
 		lastPage:     1,
@@ -119,6 +119,9 @@ PostListModule = (function(){
 		},
 		getNumberOfPages: function(){
 			return data.lastPage;
+		},
+		getCurrentPage: function(){
+			return data.currentPage;
 		}
 	};
 
@@ -127,13 +130,22 @@ PostListModule = (function(){
 		util.ajaxRequest(data.url, data.params, function(response){
 			data.postCount = response.count;
 			data.lastPage = Math.ceil(data.postCount/data.postPerPage);
+			console.log(data.lastPage);
 			util.clearPostList();
 			util.populatePostList(response);
+
+			if (typeof PostListModule === "undefined") {
+		    	console.log("PaginationModule is undefined");
+			}else{
+				PaginationModule(PostListModule);	
+			}
 		});
 	})();
 	
 	// Methods available for external use
 	return paginationAPI;
-
 })();
+
+
+
 });
