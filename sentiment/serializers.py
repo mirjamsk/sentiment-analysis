@@ -1,6 +1,13 @@
 from rest_framework import serializers
+from rest_framework import  pagination
 from .models import Post, Comment
 from .utils import SENTIMENT_LABELS
+
+
+class CustomPaginationSerializer(pagination.PageNumberPagination):
+    max_page_size = 10
+    last_page_strings = ('last',)
+    page_size_query_param = 'limit'
 
 
 class PostSerializer(serializers.ModelSerializer):
