@@ -51,6 +51,7 @@ $( function(){
 	var util = {
 		$postListContainer : $('#post-list-container'),
 		$postItemTemplate  : $('.post-list-item').clone(),
+		$postPaginationContainer : $('#post-list-pagination'),
 
 		clearPostList: function(){
 			this.$postListContainer.empty();
@@ -94,34 +95,15 @@ $( function(){
 	};
 
 	var paginationAPI = {
-		requestPage : function(){
+		requestPage : function(page){
+            console.log('called back: '+page)
+            data.currentPage = page;
 			data.params.page = data.currentPage;
 			util.clearPostList();
 			util.ajaxRequest(data.url, data.params, util.populatePostList);
 		},
-		requestFirstPage: function(){
-			data.currentPage = 1;
-			this.requestPage();
-		},	
-		requestLastPage:  function(){
-			data.currentPage = data.lastPage;
-			this.requestPage();
-		},
-		requestNextPage:  function(){
-			if (data.currentPage == data.lastPage) return;
-			data.currentPage += 1;
-			this.requestPage();	
-		},
-		requestPreviousPage: function(){
-			if (data.currentPage == 1) return;
-			data.currentPage -= 1;
-			this.requestPage();
-		},
 		getNumberOfPages: function(){
 			return data.lastPage;
-		},
-		getCurrentPage: function(){
-			return data.currentPage;
 		}
 	};
 
@@ -134,11 +116,13 @@ $( function(){
 			util.clearPostList();
 			util.populatePostList(response);
 
-			if (typeof PostListModule === "undefined") {
-		    	console.log("PaginationModule is undefined");
-			}else{
-				PaginationModule(PostListModule);	
-			}
+            util.$postPaginationContainer.materializePagination({
+                align: 'center',
+                lastPage: data.lastPage ,
+                urlParameter:'post-page',
+                onClickCallback: paginationAPI.requestPage
+            });
+
 		});
 	})();
 	
