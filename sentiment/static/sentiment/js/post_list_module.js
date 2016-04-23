@@ -58,8 +58,9 @@ $( function(){
 		},
         populatePostList: function(response){
 			$.each( response.results, function( index, post ) {
-               var $postItem = util.createListItem(post);
-               util.appendPostItem($postItem);
+                var $postItem = util.createListItem(post);
+                util.appendPostItem($postItem);
+                $postItem.fadeIn('slow');
           	});
 		},
 		appendPostItem: function($postItem){
@@ -96,7 +97,6 @@ $( function(){
 
 	var paginationAPI = {
 		requestPage : function(page){
-            console.log('called back: '+page)
             data.currentPage = page;
 			data.params.page = data.currentPage;
 			util.clearPostList();
@@ -112,7 +112,6 @@ $( function(){
 		util.ajaxRequest(data.url, data.params, function(response){
 			data.postCount = response.count;
 			data.lastPage = Math.ceil(data.postCount/data.postPerPage);
-			console.log(data.lastPage);
 			util.clearPostList();
 			util.populatePostList(response);
 

@@ -26,3 +26,11 @@
 .material-icons.positive{ color: #26A69A; }
 .material-icons.negative{ color: #EF5350; }
 .material-icons.neutral { color: #78909C; }
+
+#post-list-container{
+    min-height: 460px;
+}
+
+.post-list-item{
+    display:none;
+}
