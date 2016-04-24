@@ -76,7 +76,6 @@
         requestFirstPage: function() {
             this.currentPage = 1;
             this.purgeVisiblePages();
-            this.$firstPage.addClass('active');
 
             for (var page = 1; page < this.maxVisiblePages; page += 1) {
                 this.visiblePages.push($(''));
@@ -94,7 +93,6 @@
         requestLastPage: function() {
             this.currentPage = this.config.lastPage;
             this.purgeVisiblePages();
-            this.$firstPage.addClass('active');
 
             for (var page = 1; page < this.maxVisiblePages; page += 1) {
                 this.visiblePages.push($(''));
@@ -113,10 +111,10 @@
         requestPage: function(page) {
             this.currentPage = page;
             this.purgeVisiblePages();
-            this.visiblePages.push(this.insertPrevPaginationComponent(this.currentPage - 1));
+            this.visiblePages.push(this.insertNextPaginationComponent(this.currentPage - 1));
             this.visiblePages.push(this.insertNextPaginationComponent(this.currentPage));
             this.visiblePages.push(this.insertNextPaginationComponent(this.currentPage + 1));
-            this.renderActivePage();
+            
             if (this.currentPage >= this.config.firstPage + this.maxVisiblePages)
                 this.$prevEllipsis.removeClass('hide');
             if (this.currentPage <= this.config.lastPage - this.maxVisiblePages)
@@ -145,6 +143,7 @@
                 } else if (!isNaN(pageData) && pageData == self.config.lastPage) {
                     self.requestLastPage();
                 }
+                //console.log('Click! CurrentPage '+ self.currentPage);
                 self.renderActivePage();
             });
 
@@ -185,19 +184,19 @@
                     this.requestPage(requestedPage);
                     break;
             }
-
+            this.renderActivePage();
             this.$elem.append(this.$container);
         },
 
         util: {
-            $paginationComponent: $('<li class="waves-effect" data-page="1"><a href="#!">1</a></li>'),
+            $paginationComponent: $('<li class="waves-effect" data-page="1">1</li>'),
             $paginationEllipsis: $('<li class="hide">...</li>'),
         },
 
         createPaginationComponent: function(pageNumber) {
             var $paginationComponent = this.util.$paginationComponent.clone();
             $paginationComponent.attr('data-page', pageNumber);
-            $paginationComponent.find('a').text(pageNumber);
+            $paginationComponent.text(pageNumber);
             return $paginationComponent;
         },
 
@@ -209,7 +208,7 @@
         },
 
         insertNextPaginationComponent: function(pageNumber) {
-            if (isNaN(pageNumber) || pageNumber >= this.config.lastPage) return $('');
+            if (isNaN(pageNumber) || pageNumber <= this.config.firstPage || pageNumber >= this.config.lastPage) return $('');
             var $paginationComponent = this.createPaginationComponent(pageNumber);
             $paginationComponent.insertBefore(this.$nextEllipsis);
             return $paginationComponent;
@@ -218,8 +217,8 @@
         createPaginationChevron: function(type) {
             var direction = type === 'next' ? 'right' : 'left';
             return $(
-                '<li data-page="' + type + '">\
-				        <a href="#!"><i class="material-icons">chevron_' + direction + '</i></a>\
+                '<li class="waves-effect" data-page="' + type + '">\
+				    <i class="material-icons">chevron_' + direction + '</i>\
 			    </li>'
             );
         },
