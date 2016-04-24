@@ -119,6 +119,7 @@ $( function(){
                 align: 'center',
                 lastPage: data.lastPage ,
                 urlParameter:'post-page',
+				useUrlParameters:   true,
                 onClickCallback: paginationAPI.requestPage
             });
 
