@@ -1,19 +1,34 @@
+<div id="post-detail-container" class="row z-depth-1">
 
-<div id="post-detail-container" class="row">
-    <div id="post-detail-content" class="col s12 m4 l8 " >
-        Post content
+    <div id="post-detail-content" class="col s12 m4 l7 ">
+        <div class="section">
+            <h5>Content</h5>
+            <p id="post-content"></p>
+            <a href="#" target="_blank" id="post-link">Original link</a>
+            <a href="#" target="_blank" id="post-api-link">API link</a>
+        </div>
+        <div class="divider"></div>
+        <div id="post-stats">
+            <p>
+                <i class="material-icons ">share</i><span id="post-shares"></span>
+                <i class="material-icons">thumb_up</i><span id="post-likes"></span>
+                <i class="material-icons">mode_comment</i><span id="post-comment-nb"></span>
+            </p>
+        </div>
     </div>
-    <div id="post-detail-stats" class="col s12 m8 l4">
-        <div class="row">
+
+    <div id="post-detail-stats" class="col s12 m8 l4 offset-l1">
+
+        <div class="row section">
             <div class="col s12">
                 <ul class="tabs ">
                     <li class="tab col s2"><a href="#sentiment_api1_ol" class="active">API1 <sub><sup>ol</sup></sub></a></li>
-                    <li class="tab col s2"><a href="#sentiment_api1_en">API1 <sub><sup>en</sup></sub></a></li>
-                    <li class="tab col s2"><a href="#sentiment_api2_ol">API2 <sub><sup>ol</sup></sub></a></li>
-                    <li class="tab col s2"><a href="#sentiment_api2_en">API2 <sub><sup>en</sup></sub></a></li>
+                    <li class="tab col s2"><a href="#sentiment_api1_en">API 1 <sub><sup>en</sup></sub></a></li>
+                    <li class="tab col s2"><a href="#sentiment_api2_ol">API 2 <sub><sup>ol</sup></sub></a></li>
+                    <li class="tab col s2"><a href="#sentiment_api2_en">API 2 <sub><sup>en</sup></sub></a></li>
                     <li class="tab col s2"><a href="#sentiment_api3">API 3</a></li>
-                    <li class="tab col s2"><a href="#sentiment_api4">API 4</a></li>                    
-                </ul>
+                    <li class="tab col s2"><a href="#sentiment_api4">API 4</a></li>
+                </ul
             </div>
             <div id="post-sentiment-tabs">
                 <div id="sentiment_api1_ol" class="col s12"></div>

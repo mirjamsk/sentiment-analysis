@@ -2118,7 +2118,7 @@ ul {
 blockquote {
   margin: 20px 0;
   padding-left: 1.5rem;
-  border-left: 5px solid #546e7a; }
+  border-left: 5px solid #212121; }
 
 i {
   line-height: inherit; }
@@ -2289,7 +2289,7 @@ ul.staggered-list li {
 footer.page-footer {
   margin-top: 20px;
   padding-top: 20px;
-  background-color: #546e7a; }
+  background-color: #212121; }
   footer.page-footer .footer-copyright {
     overflow: hidden;
     height: 50px;
@@ -3035,13 +3035,13 @@ input[type=range] + .thumb {
         left: 100%; } }
 
 nav {
-  color: #546e7a;
-  background-color: #546e7a;
+  color: #212121;
+  background-color: #212121;
   width: 100%;
   height: 56px;
   line-height: 56px; }
   nav a {
-    color: #546e7a; }
+    color: #212121; }
   nav i,
   nav [class^="mdi-"], nav [class*="mdi-"],
   nav i.material-icons {
@@ -3066,7 +3066,7 @@ nav {
       line-height: 56px; }
   nav .brand-logo {
     position: absolute;
-    color: #546e7a;
+    color: #212121;
     display: inline-block;
     font-size: 1.7rem;
     padding: 0 1rem;
@@ -3100,7 +3100,7 @@ nav {
     nav ul a {
       transition: background-color .3s;
       font-size: 1rem;
-      color: #546e7a;
+      color: #212121;
       display: inline-block;
       padding: 0 15px;
       cursor: pointer; }
@@ -3129,7 +3129,7 @@ nav {
         color: rgba(255, 255, 255, 0.7);
         transition: color .3s; }
       nav .input-field label.active i {
-        color: #546e7a; }
+        color: #212121; }
       nav .input-field label.active {
         transform: translateY(0); }
 
@@ -3487,7 +3487,7 @@ small {
     width: 15%;
     min-width: 80px; }
     .tabs .tab a {
-      color: #546e7a;
+      color: #212121;
       display: block;
       width: 100%;
       height: 100%;
@@ -3495,15 +3495,15 @@ small {
       overflow: hidden;
       transition: color .28s ease; }
       .tabs .tab a:hover {
-        color: #87a1ad; }
+        color: #545454; }
     .tabs .tab.disabled a {
-      color: #87a1ad;
+      color: #545454;
       cursor: default; }
   .tabs .indicator {
     position: absolute;
     bottom: 0;
     height: 2px;
-    background-color: #7895a2;
+    background-color: #474747;
     will-change: left, right; }
 
 .material-tooltip {
@@ -5049,7 +5049,7 @@ input[type=range]:focus::-ms-fill-upper {
       transform: translateX(105%); } }
 .side-nav .collapsible-body li.active,
 .side-nav.fixed .collapsible-body li.active {
-  background-color: #546e7a; }
+  background-color: #212121; }
   .side-nav .collapsible-body li.active a,
   .side-nav.fixed .collapsible-body li.active a {
     color: #fff; }

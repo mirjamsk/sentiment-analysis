@@ -1,5 +1,5 @@
 $(function() {
-    PostDetailModule = (function() {
+    var PostDetailModule = (function() {
         var data = {
             currentPost: -1,
             url: '/api/posts/'
@@ -51,12 +51,20 @@ $(function() {
         };
 
         var clearPostDetail = function() {
-            util.$postDetailContent.empty();
+            util.$postDetailContent.find('#post-content').hide();
+            util.$postDetailContent.find('#post-likes').hide();
+            util.$postDetailContent.find('#post-shares').hide();
+            util.$postDetailContent.find('#post-comment-nb').hide();
         };
 
         var loadPostDetails = function(response) {
             clearPostDetail();
-            util.$postDetailContent.html(JSON.stringify(response.content));
+            util.$postDetailContent.find('#post-content').html(response.content).fadeIn('slow');
+            util.$postDetailContent.find('#post-likes').text(response.likes).fadeIn('slow');
+            util.$postDetailContent.find('#post-shares').text(response.shares).fadeIn('slow');
+            util.$postDetailContent.find('#post-comment-nb').text(response.comments).fadeIn('slow');
+            util.$postDetailContent.find('#post-link').attr('href',response.link);
+            util.$postDetailContent.find('#post-api-link').attr('href',response.detail_link.replace('.json','/'));
 
             for (var i in util.postSentimentTabs) {
                 var chartWrapper = util.postSentimentTabs[i].chartWrapper;
