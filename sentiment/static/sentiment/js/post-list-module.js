@@ -68,6 +68,7 @@ $( function(){
 		},
 		createListItem: function(post){
 			var tempListItem = this.$postItemTemplate.clone();
+				tempListItem.attr('data-post-id', post.id);
 	        	tempListItem
 	        		.find('.collapsible-header-text')
 		        	.html(post.id);	        	

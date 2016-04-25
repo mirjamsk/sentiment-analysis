@@ -22,13 +22,16 @@
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
 }
-
-.material-icons.positive{ color: #26A69A; }
-.material-icons.negative{ color: #EF5350; }
-.material-icons.neutral { color: #78909C; }
-
+/*
+.material-icons.positive{ color: #C8E6C9; }
+.material-icons.negative{ color: #BCAAA4; }
+.material-icons.neutral { color: #CFD8DC; }
+*/
 #post-list-container{
     min-height: 460px;
+}
+#post-detail-container{
+    margin: 0.5rem 0 1rem 0
 }
 
 .post-list-item{
