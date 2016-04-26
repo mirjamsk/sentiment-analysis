@@ -73,7 +73,7 @@ $( function(){
 	        		.find('.collapsible-header-text')
 		        	.html(post.id);	        	
 	        	tempListItem
-	        		.find('.collapsible-body p')
+	        		.find('.collapsible-body .post-list-content')
 		        	.html(post.content);
     			tempListItem
 					.find('.material-icons')
