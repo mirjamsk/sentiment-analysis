@@ -2,10 +2,12 @@ $(function () {
     var PostDetailModule = (function () {
         var data = {
             currentPost: -1,
-            url: '/api/posts/'
+            url: '/api/posts/',
+            urlParam: 'post-id'
         };
 
         var util = {
+            urlParser: urlParser() || null,
             postSentimentTabs: [],
             $currentApiChoice: $('#current-api-choice '),
             $sentimentApiTabs: $('#post-sentiment-stats ul.tabs'),
@@ -28,7 +30,6 @@ $(function () {
                 backgroundColor: {fill: 'transparent'},
                 colors: ['#CFD8DC', '#C8E6C9', '#BCAAA4']
             },
-
             createChartData: function (stats) {
                 return {
                     "cols": [
@@ -42,6 +43,21 @@ $(function () {
                          {"c": [{"v": "negative", "f": null}, {"v": stats.negative, "f": null}]}]
                 };
             },
+            
+            getDefaultPostId: function(){
+                return parseInt(this.$postListContainer.find('li:first-child').data('post-id'));
+            },
+            sanitizePostRequest: function(requestedPost){
+                requestedPost = isNaN(requestedPost) ? 
+                    this.getDefaultPostId() : parseInt(requestedPost);
+                this.urlParser.updateUrlParam(data.urlParam, requestedPost);  
+                return requestedPost;
+            },           
+            parseUrl: function(){
+                var requestedPost = this.urlParser.getUrlParamByName(data.urlParam) || data.currentPost;
+                return this.sanitizePostRequest(requestedPost);
+            },
+
 
             ajaxRequest: function (url, success_function) {
                 $.ajax({
@@ -51,13 +67,19 @@ $(function () {
                     contentType: 'application/json; charset=utf-8',
                     success: success_function,
                     error: function (requestObject, error, errorThrown) {
-                        console.log("Error in post_detail_module::Util::loadContent: " + errorThrown);
+                        if (requestObject.status === 404)
+                            util.$postDetailContent.find('#post-content')
+                            .html('<p class="error">Post '+data.currentPost + ' ' +requestObject.statusText+'</p>')
+                            .fadeIn('slow');
+
+                        console.error("Error in post_detail_module::Util::loadContent: " + errorThrown);
                     }
                 });
             }
         };
 
         var clearPostDetail = function () {
+            util.$postDetailContent.find('#post-id span').hide();
             util.$postDetailContent.find('#post-content').hide();
             util.$postDetailContent.find('#post-likes').hide();
             util.$postDetailContent.find('#post-shares').hide();
@@ -66,6 +88,7 @@ $(function () {
 
         var loadPostDetails = function (response) {
             clearPostDetail();
+            util.$postDetailContent.find('#post-id span').html(response.id).fadeIn('slow');
             util.$postDetailContent.find('#post-content').html(response.content).fadeIn('slow');
             util.$postDetailContent.find('#post-likes').text(response.likes).fadeIn('slow');
             util.$postDetailContent.find('#post-shares').text(response.shares).fadeIn('slow');
@@ -84,6 +107,7 @@ $(function () {
             }
         };
 
+
         var requestPost = function (requestedPost) {
             if (data.currentPost === requestedPost) return;
             data.currentPost = requestedPost;
@@ -100,8 +124,8 @@ $(function () {
         };
 
         var bindPostListClickListener = function () {
-            util.$postListContainer.on('click', 'li', function () {
-                var requestedPost = parseInt($(this).data('post-id'));
+            util.$postListContainer.on('click', 'a', function () {
+                var requestedPost = util.sanitizePostRequest($(this).data('post-id'));
                 requestPost(requestedPost);
             });
         };
@@ -117,9 +141,10 @@ $(function () {
         (function () {
             bindPostListClickListener();
             bindApiDropdownClickListener();
-
+            data.currentPost = util.getDefaultPostId();
             google.charts.load('current', {'packages': ['corechart']});
             google.charts.setOnLoadCallback(function () {
+                requestPost(util.parseUrl());
 
                 $('#post-sentiment-tabs').children().each(function () { // init a pie chart for each snetiment api
                     var $sentimentTab = $(this);
@@ -135,7 +160,6 @@ $(function () {
                         chartWrapper: chartWrapper,
                         $sentimentTab: $sentimentTab
                     });
-                    requestPost($('#post-list-container').find('li:first-child').data('post-id'));
                 });
             });
         })();

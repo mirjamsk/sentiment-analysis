@@ -29,6 +29,7 @@
 .material-icons.neutral { color: #CFD8DC; }
 */
 
+.error{color:darkred}
 .container{
     margin-top: 0.5rem;
 }
@@ -41,10 +42,16 @@
     margin: 0.5rem 0 1rem 0;
     padding: 1rem;
 }
-
-#post-list-container .collapsible-body i {
-    float: left;
-    margin-right: 2%;
+#post-id{
+    margin: 0.64rem 0 0 0;
+}
+.post-list-item p > a {
+    float: right;
+    margin-top: 1%;
+    margin-left: 5%;
+}
+.post-list-item a > i {
+    font-size: 1.1rem;
 }
 
 .post-list-item {

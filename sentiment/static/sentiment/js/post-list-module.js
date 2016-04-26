@@ -53,6 +53,11 @@ $( function(){
 		$postItemTemplate  : $('.post-list-item').clone(),
 		$postPaginationContainer : $('#post-list-pagination'),
 
+		truncateString: function(str, maxChars){
+			maxChars = maxChars || 60;
+			return str.length <= maxChars ? str : str.substring(0,maxChars) + '...';
+
+		},
 		clearPostList: function(){
 			this.$postListContainer.empty();
 		},
@@ -70,11 +75,14 @@ $( function(){
 			var tempListItem = this.$postItemTemplate.clone();
 				tempListItem.attr('data-post-id', post.id);
 	        	tempListItem
+	        		.find('a')
+	        		.attr('data-post-id', post.id);
+	        	tempListItem
 	        		.find('.collapsible-header-text')
 		        	.html(post.id);	        	
 	        	tempListItem
 	        		.find('.collapsible-body .post-list-content')
-		        	.html(post.content);
+		        	.html(this.truncateString(post.content));
     			tempListItem
 					.find('.material-icons')
 					.addClass(post.real_sentiment);
