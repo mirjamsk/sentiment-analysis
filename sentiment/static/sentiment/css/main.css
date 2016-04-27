@@ -21,7 +21,6 @@
     -webkit-font-smoothing: antialiased;
 }
 
-
 /*
 .material-icons.positive{ color: #C8E6C9; }
 .material-icons.negative{ color: #BCAAA4; }
@@ -42,6 +41,26 @@
     min-height: 460px;
 }
 
+
+/* Post list
+   ================================== */
+
+.post-list-item {
+    display: none;
+}
+
+.post-list-item span > a {
+    margin-top: 2%;
+}
+
+.post-list-item a > i {
+    font-size: 1.1rem;
+}
+
+
+/* Post details
+   ================================== */
+
 #post-detail-container {
     margin: 0.5rem 0 1rem 0;
     padding: 1rem;
@@ -51,31 +70,21 @@
     margin: 0.64rem 0 0 0;
 }
 
-.post-list-item p > a {
-    float: right;
-    margin-top: 1%;
-    margin-left: 5%;
-}
-
-.post-list-item a > i {
-    font-size: 1.1rem;
-}
-
-.post-list-item {
-    display: none;
-}
-
-#post-stats {
+#post-social-stats {
     color: #555;
 }
 
-#post-stats i {
+#post-social-stats i {
     padding: 0 0.2rem 0 1rem;
 }
 
 #post-details a {
     margin-right: 2rem;
 }
+
+
+/* Sentiment api stats
+   ================================== */
 
 #post-sentiment-stats ul.tabs {
     display: none;

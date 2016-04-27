@@ -1,0 +1,39 @@
+<div id="post-sentiment-stats" class="col s12 m7 l4 offset-l1 offset-m1">
+    <div class="section">
+        <!-- Dropdown Trigger -->
+        <a id="api-dropdown-button" class="dropdown-button btn" href="#" data-activates="api-dropdown-choices">
+            choose API </a>
+        <!-- Dropdown Structure -->
+        <ul id="api-dropdown-choices" class="dropdown-content">
+            <li data-api="sentiment_api1_ol"><a>API 1 <sub><sup>ol</sup></sub></a></li>
+            <li data-api="sentiment_api1_en"><a>API 1 <sub><sup>en</sup></sub></a></li>
+            <li class="divider"></li>
+            <li data-api="sentiment_api2_ol"><a>API 2 <sub><sup>ol</sup></sub></a></li>
+            <li data-api="sentiment_api2_en"><a>API 2 <sub><sup>en</sup></sub></a></li>
+            <li class="divider"></li>
+            <li data-api="sentiment_api3"><a>API 3</a></li>
+            <li class="divider"></li>
+            <li data-api="sentiment_api4"><a>API 4</a></li>
+        </ul>
+        <div id="current-api-choice" class="chip">sentiment api1 ol</div>
+    </div>
+    <div class="divider"></div>
+
+    <ul class="tabs hidden">
+        <li class="tab col s2"><a href="#sentiment_api1_ol" class="active">API1 ol></a></li>
+        <li class="tab col s2"><a href="#sentiment_api1_en">API 1 en</a></li>
+        <li class="tab col s2"><a href="#sentiment_api2_ol">API 2 ol</a></li>
+        <li class="tab col s2"><a href="#sentiment_api2_en">API 2 en</a></li>
+        <li class="tab col s2"><a href="#sentiment_api3">API 3</a></li>
+        <li class="tab col s2"><a href="#sentiment_api4">API 4</a></li>
+    </ul>
+
+    <div id="post-sentiment-tabs">
+        <div id="sentiment_api1_ol" class="col s12"></div>
+        <div id="sentiment_api1_en" class="col s12"></div>
+        <div id="sentiment_api2_ol" class="col s12"></div>
+        <div id="sentiment_api2_en" class="col s12"></div>
+        <div id="sentiment_api3" class="col s12"></div>
+        <div id="sentiment_api4" class="col s12"></div>
+    </div>
+</div>
