@@ -1,9 +1,11 @@
 <div id="post-detail-container" class="row z-depth-1">
 
-    <div id="post-detail-content" class="col s12 m4 l7 ">
+    <div id="post-details" class="col s12 m4 l7 ">
+
         <p class="light" id="post-id">POST <span></span></p>
         <div class="divider"></div>
-        <div class="section">
+        <div class="error-msg section"></div>
+        <div class="section post-content">
             <h5>Content</h5>
             <p id="post-content"></p>
             <a href="#" target="_blank" id="post-link">Original link</a>
@@ -22,14 +24,18 @@
     <div id="post-sentiment-stats" class="col s12 m7 l4 offset-l1 offset-m1">
         <div class="section">
             <!-- Dropdown Trigger -->
-            <a  id="api-dropdown-button" class="dropdown-button btn" href="#" data-activates="api-dropdown-choices"> choose API </a>
+            <a id="api-dropdown-button" class="dropdown-button btn" href="#" data-activates="api-dropdown-choices">
+                choose API </a>
             <!-- Dropdown Structure -->
             <ul id="api-dropdown-choices" class="dropdown-content">
                 <li data-api="sentiment_api1_ol"><a>API 1 <sub><sup>ol</sup></sub></a></li>
-                <li data-api="sentiment_api1_en"><a>API 1 <sub><sup>en</sup></sub></a></li><li class="divider"></li>
+                <li data-api="sentiment_api1_en"><a>API 1 <sub><sup>en</sup></sub></a></li>
+                <li class="divider"></li>
                 <li data-api="sentiment_api2_ol"><a>API 2 <sub><sup>ol</sup></sub></a></li>
-                <li data-api="sentiment_api2_en"><a>API 2 <sub><sup>en</sup></sub></a></li><li class="divider"></li>
-                <li data-api="sentiment_api3"><a>API 3</a></li><li class="divider"></li>
+                <li data-api="sentiment_api2_en"><a>API 2 <sub><sup>en</sup></sub></a></li>
+                <li class="divider"></li>
+                <li data-api="sentiment_api3"><a>API 3</a></li>
+                <li class="divider"></li>
                 <li data-api="sentiment_api4"><a>API 4</a></li>
             </ul>
             <div id="current-api-choice" class="chip">sentiment api1 ol</div>

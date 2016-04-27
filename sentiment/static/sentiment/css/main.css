@@ -2,9 +2,7 @@
     font-family: 'Material Icons';
     font-style: normal;
     font-weight: 400;
-    src: local('Material Icons'),
-    local('MaterialIcons-Regular'),
-    url('../fonts/material-design-icons/Material-Design-Icons.woff2') format('woff2')
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url('../fonts/material-design-icons/Material-Design-Icons.woff2') format('woff2')
 }
 
 .material-icons {
@@ -23,16 +21,22 @@
     -webkit-font-smoothing: antialiased;
 }
 
+
 /*
 .material-icons.positive{ color: #C8E6C9; }
 .material-icons.negative{ color: #BCAAA4; }
 .material-icons.neutral { color: #CFD8DC; }
 */
 
-.error{color:darkred}
-.container{
+.error-msg {
+    color: darkred;
+    display: none;
+}
+
+.container {
     margin-top: 0.5rem;
 }
+
 #post-list-container,
 #post-detail-container {
     min-height: 460px;
@@ -42,14 +46,17 @@
     margin: 0.5rem 0 1rem 0;
     padding: 1rem;
 }
-#post-id{
+
+#post-id {
     margin: 0.64rem 0 0 0;
 }
+
 .post-list-item p > a {
     float: right;
     margin-top: 1%;
     margin-left: 5%;
 }
+
 .post-list-item a > i {
     font-size: 1.1rem;
 }
@@ -66,7 +73,7 @@
     padding: 0 0.2rem 0 1rem;
 }
 
-#post-detail-content a {
+#post-details a {
     margin-right: 2rem;
 }
 
