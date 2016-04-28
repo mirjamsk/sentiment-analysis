@@ -63,11 +63,12 @@ $(function() {
 
         var loadPostDetails = function(response) {
             clearPostDetail();
+            var total_comments = response.sentiment_api4.sentiment_stats.total;
             util.$postDetails.find('#post-id span').text(response.id).fadeIn('slow');
             util.$postDetails.find('#post-content').html(response.content).fadeIn('slow');
             util.$postDetails.find('#post-likes').text(response.likes).fadeIn('slow');
             util.$postDetails.find('#post-shares').text(response.shares).fadeIn('slow');
-            util.$postDetails.find('#post-comment-nb').text(response.comments).fadeIn('slow');
+            util.$postDetails.find('#post-comment-nb').text(total_comments).fadeIn('slow');
             util.$postDetails.find('#post-link').attr('href', response.link);
             util.$postDetails.find('#post-api-link').attr('href', response.detail_link.replace('.json', '/'));
 
