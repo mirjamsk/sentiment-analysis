@@ -99,7 +99,7 @@ $(function() {
             $('#api-dropdown-button').dropdown({ belowOrigin: true });
             $('#api-dropdown-choices').on('click', 'li', function() {
                 util.$sentimentApiTabs.tabs('select_tab', $(this).data('api'));
-                util.$currentApiChoice.text($(this).data('api').replace(/_/g, ' '));
+                util.$currentApiChoice.text($(this).data('api').replace(/sentiment|_|(\d)/g, ' $1'));
             });
         };
 
