@@ -28,4 +28,6 @@ urlpatterns += format_suffix_patterns([
     url(r'^api/comments/(?P<pk>[0-9]+)/$',
         views.CommentDetail.as_view(),
         name='comment-detail'),
+    url('^api/comments/by/(?P<idpost>\w+)/$',
+        views.CommentsByPostList.as_view()),
 ])

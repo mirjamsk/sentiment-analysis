@@ -35,4 +35,20 @@ class CommentDetail(generics.RetrieveUpdateAPIView):
     serializer_class = CommentSerializer
 
 
+class CommentsByPostList(generics.ListAPIView):
+    serializer_class = CommentSerializer
+
+    def paginate_queryset(self, queryset, view=None):
+        # couldn't find a better solution
+        return None
+
+    def get_queryset(self):
+        """
+        This view should return a list of all models by
+        the maker passed in the URL
+        """
+        post = self.kwargs['idpost']
+        return Comment.objects.filter(idpost=post)
+
+
 

@@ -42,9 +42,24 @@
     padding: 1rem;
 }
 
+#comment-list-container {
+    margin: 0.5rem 0 1rem 0;
+    padding: 1rem;
+}
+
+.comment-id {
+    margin: 0;
+}
+
+.comment-APIs{
+    margin: 1.5rem 0 0 0;
+}
+
 #post-id {
     margin: 1.5rem 0 0 0;
 }
+
+
 
 #post-social-stats {
     color: #555;
