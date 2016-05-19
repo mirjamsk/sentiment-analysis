@@ -16,6 +16,7 @@ SENTIMENT_DEFAULT_STATS = {
 
 def main():
     sentiment_api_columns = (
+        'real_sentiment',
         'sentiment_api1',
         'sentiment_api1_en',
         'sentiment_api2',
