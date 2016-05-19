@@ -19,20 +19,22 @@ def update_real_sentiment_batch(id_selection="", db_name="sentiment_db"):
         'neu': 'neutral'}
     label_choices = set(SENTIMENT_LABELS.keys())
 
-    db = CommentDbConnection(db=db_name)
-    db.connect()
+    db_comment = CommentDbConnection(db=db_name)
+    db_comment.connect()
 
     db_sentiment = CommentSentimentDbConnection(db=db_name)
     db_sentiment.connect()
 
-    results = db.fetch_all(where=id_selection)
+    results = db_comment.fetch_all(where=id_selection)
     for row in results:
         print_horizontal_rule()
         comment_id = row[0]
         content = row[1]
+        english_translation = db_sentiment.fetch_by_comment_id(comment_id)[0][2]
 
         print ("Comment_id: %s" % comment_id)
         print ("Content: %s" % content)
+        print ("English translation: %s" % english_translation)
         print ("Determine the real_sentiment:")
 
         real_sentiment = get_input_label()
@@ -48,8 +50,8 @@ def update_real_sentiment_batch(id_selection="", db_name="sentiment_db"):
         print ("Updated real_sentiment: %s" % SENTIMENT_LABELS[real_sentiment])
 
     print_horizontal_rule()
-    db.close()
     db_sentiment.close()
+    db_comment.close()
 
 
 def main():
