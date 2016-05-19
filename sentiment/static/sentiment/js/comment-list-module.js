@@ -211,9 +211,16 @@ $( function(){
             });
         };
 
+	 var bindToggleCommentsListener = function(){
+		$('#toggle-comments-button').click(function(){
+				util.$commentListContainer.toggleClass('hide');
+		});
+	 };
+
 	// initial setup
 	(function(){
 		bindPostListClickListener();
+		bindToggleCommentsListener();
 		bindApiDropdownClickListener();
 		data.currentPost = util.getDefaultPostId();
 		requestPost(util.parseUrl());

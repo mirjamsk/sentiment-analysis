@@ -42,24 +42,9 @@
     padding: 1rem;
 }
 
-#comment-list-container {
-    margin: 0.5rem 0 1rem 0;
-    padding: 1rem;
-}
-
-.comment-id {
-    margin: 0;
-}
-
-.comment-APIs{
-    margin: 1.5rem 0 0 0;
-}
-
 #post-id {
     margin: 1.5rem 0 0 0;
 }
-
-
 
 #post-social-stats {
     color: #555;
@@ -71,6 +56,23 @@
 
 #post-details a {
     margin-right: 2rem;
+}
+
+
+/* Comments
+   ================================== */
+
+#comment-list-container,
+#toggle-comments-button{
+    margin: 1rem 0 0 0;
+}
+
+.comment-id {
+    margin: 0;
+}
+
+.comment-APIs{
+    margin: 1.5rem 0 0 0;
 }
 
 
@@ -90,15 +92,26 @@
     vertical-align: bottom;
 }
 #current-api-choice {
-    margin-left: 2%;
-    vertical-align: bottom;
+    margin-top: 2%;
     text-transform: uppercase;
+}
+#post-determined-sentiment-container .section span {
+    padding-right: 7%;
 }
 
 #api-dropdown-button{
     color: black;
     background-color:white;
-    box-shadow:0 1px 5px 0 rgba(0, 0, 0, 0.16), 0 0px 0px 0 rgba(0, 0, 0, 0.12)
+    vertical-align: bottom;
+    box-shadow:-1px -1px 0px 0px rgba(0, 0, 0, 0.12), 1px 0px 0px 0px rgba(0, 0, 0, 0.12);
 }
 
+#post-real-sentiment-container  {
+    margin-bottom: 1rem;
+}
+
+#post-sentiment-stats .section {
+    padding-bottom: 0;
+    margin: 1.5rem 0 0 0;
+}
 

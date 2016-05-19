@@ -7,6 +7,7 @@ $(function() {
         };
 
         var util = {
+            postRealSentimentPieChart: null,
             postSentimentTabs: [],
             $currentApiChoice: $('#current-api-choice '),
             $sentimentApiTabs: $('#post-sentiment-stats ul.tabs'),
@@ -72,6 +73,8 @@ $(function() {
             util.$postDetails.find('#post-link').attr('href', response.link);
             util.$postDetails.find('#post-api-link').attr('href', response.detail_link.replace('.json', '/'));
 
+            util.postRealSentimentPieChart.setData(response.real_sentiment.sentiment_stats);
+            util.postRealSentimentPieChart.draw();
             for (var i in util.postSentimentTabs) {
                 var pieChart = util.postSentimentTabs[i].pieChart;
                 var $sentimentTab = util.postSentimentTabs[i].$sentimentTab;
@@ -113,6 +116,8 @@ $(function() {
             google.charts.setOnLoadCallback(function() {
 
                 requestPost(util.parseUrl());
+                util.postRealSentimentPieChart = new SentimentPieChart({ 'total': 0 }, 'post-real-sentiment-chart');
+
                 $('#post-sentiment-tabs').children().each(function() { // init a pie chart for each snetiment api tab
                     var $sentimentTab = $(this);
                     var chart_id = 'chart_' + $sentimentTab.attr('id');
