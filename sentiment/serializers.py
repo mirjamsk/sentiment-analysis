@@ -61,6 +61,8 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     detail_link = serializers.HyperlinkedIdentityField(view_name='comment-detail')
     language = serializers.CharField(source='comment_sentiment.language', read_only=True)
     english_translation = serializers.CharField(source='comment_sentiment.english_translation', read_only=True)
+    spam = serializers.JSONField(source='comment_sentiment.spam', read_only=True)
+
     real_sentiment = serializers.ChoiceField(source='comment_sentiment.real_sentiment', choices=SENTIMENT_LABELS)
 
     sentiment_api1_ol = serializers.CharField(source='comment_sentiment.sentiment_api1', read_only=True)
@@ -86,6 +88,7 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
             'sentiment_api2_en',
             'sentiment_api3',
             'sentiment_api4',
+            'spam',
             'idpost',
             'detail_link')
         read_only_fields = ('id', 'detail_link', 'idpost', 'content')

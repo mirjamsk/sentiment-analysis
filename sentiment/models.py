@@ -8,7 +8,7 @@
 # Also note: You'll have to insert the output of 'django-admin.py sqlcustom [appname]'
 # into your database.
 from __future__ import unicode_literals
-
+import json
 from django.db import models
 from jsonfield import JSONField
 from .utils import SENTIMENT_LABELS
@@ -329,14 +329,17 @@ class PostSentiment(models.Model):
 class CommentSentiment(models.Model):
     id = models.AutoField(primary_key=True)
     idcomment = models.OneToOneField('Comment', db_column='idcommento', related_name='comment_sentiment')
+
     language = models.CharField(max_length=45, blank=True)
     english_translation = models.TextField(blank=True)
+
+    spam = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
+
     real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     sentiment_api1 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     sentiment_api2 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     sentiment_api3 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     sentiment_api4 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
-
     sentiment_api1_en = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
     sentiment_api2_en = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
 
