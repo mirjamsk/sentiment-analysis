@@ -46,6 +46,7 @@ $( function(){
         };
 
 	var util = {
+		$commentNumber: $('#toggle-comment-nb'),
 		$currentApiChoice: $('#current-api-choice '),
 		$postListContainer: $('#post-list-container'),
 		$commentListContainer : $('#comment-list-container'),
@@ -89,6 +90,9 @@ $( function(){
 	        	tempListItem
 	        		.find('.header-text')
 		        	.html(comment.id);
+				tempListItem
+	        		.find('a.comment-api-link')
+		        	.attr('href', comment.detail_link.split('.json')[0]);
 	        	tempListItem
 	        		.find('#comment-content-ol span')
 		        	.html(comment.content);
@@ -115,7 +119,7 @@ $( function(){
 		        	.html(comment.sentiment_api4);
 				tempListItem
 	        		.find('.comment-real-sentiment span')
-		        	.html(comment.real_sentiment).show();
+		        	.html(comment.real_sentiment);
 				tempListItem
 	        		.find('.comment_sentiment_api1_ol').show();
 	        return tempListItem;
@@ -132,7 +136,8 @@ $( function(){
 		        dataType: 'json',
         		contentType: 'application/json; charset=utf-8',
 		        success: function(response){
-					console.log("I am in success callback");
+					var commentNb = Object.keys(response).length;
+					util.$commentNumber.html(commentNb + (commentNb == 1 ? ' comment' : ' comments'));
 					util.currentAPI = data.defaultAPI;
 					util.clearCommentList();
 					util.populateCommentList(response);
@@ -160,8 +165,10 @@ $( function(){
         };
 
 	 var bindToggleCommentsListener = function(){
+		 var $toggleArrow =$('#toggle-comments-button i');
 		$('#toggle-comments-button').click(function(){
-				util.$commentListContainer.toggleClass('hide');
+			util.$commentListContainer.slideToggle(150, 'linear');
+			$toggleArrow.toggleClass('rotate-up, rotate-down');
 		});
 	 };
 

@@ -13,10 +13,9 @@
     display: none;
 }
 
-
 /* Post list
    ================================== */
-#post-list-container{
+#post-list-container {
     min-height: 460px;
     margin-top: 1.4rem;
 }
@@ -33,7 +32,6 @@
     font-size: 1.1rem;
 }
 
-
 /* Post details
    ================================== */
 
@@ -48,6 +46,7 @@
 
 #post-social-stats {
     color: #555;
+    margin-bottom: 3rem;
 }
 
 #post-social-stats i {
@@ -58,33 +57,84 @@
     margin-right: 2rem;
 }
 
-
 /* Comments
    ================================== */
 
-#comment-list-container,
-#toggle-comments-button{
-    margin: 1rem 0 0 0;
+#toggle-comments-button {
+    cursor: pointer;
+}
+#toggle-comments-button:hover {
+    color:black !important;
 }
 
-.comment-id {
-    margin: 0;
+#toggle-comments-button i {
+    vertical-align: bottom;
 }
 
-.comment-APIs{
-    margin: 1.5rem 0 0 0;
+
+#toggle-comments-button .rotate-up {
+    transition: 1s;
+    transform: rotateX(180deg);
 }
-.comment-APIs  div{
-    display: none;
+
+#toggle-comments-button .rotate-down {
+    transition: 1s;
+    transform: rotateX(0deg);
 }
+
 #comment-content-ol {
     font-size: 0.9rem;
     margin-left: 1rem;
     padding-left: 0.5rem;
     border-left: 1px solid #e4e4e4;
 }
-#comment-content-ol div{
+
+#comment-content-ol div {
     font-weight: 500;
+}
+
+.comment-api-link {
+    float: right;
+    font-size: 0.9rem;
+    margin: 0 !important;
+}
+
+.comment-APIs {
+    margin-top: 10px;
+}
+
+.comment-APIs .activator i {
+    margin-top: -20px;
+}
+
+.comment-APIs tr {
+    border-bottom: 0 !important;
+}
+
+.comment-APIs td {
+    padding: 5px 10px;
+}
+
+.comment-APIs td:first-child {
+    width: 110px;
+    text-align: right;
+    border-right: 1px solid #d0d0d0;
+    padding-left: 0;
+}
+
+.comment-APIs tbody tr:not(:first-child) {
+    display: none;
+}
+
+table.comment-full-sentiment {
+    margin: 0 5%;
+    max-width: 80%;
+    font-size: 0.95rem;
+}
+
+table.comment-full-sentiment td:first-child {
+    font-weight: 500;
+
 }
 
 /* Sentiment api stats
@@ -93,31 +143,35 @@
 #post-sentiment-stats ul.tabs {
     display: none;
 }
+
 #post-sentiment-stats .section {
     padding-top: 0;
     padding-bottom: 0.5rem;
 }
-#post-sentiment-stats i{
+
+#post-sentiment-stats i {
     font-size: 1.6rem;
-    margin-right:-20%;
+    margin-right: -20%;
     vertical-align: bottom;
 }
+
 #current-api-choice {
     margin-top: 2%;
     text-transform: uppercase;
 }
+
 #post-determined-sentiment-container .section span {
     padding-right: 7%;
 }
 
-#api-dropdown-button{
+#api-dropdown-button {
     color: black;
-    background-color:white;
+    background-color: white;
     vertical-align: bottom;
-    box-shadow:-1px -1px 0px 0px rgba(0, 0, 0, 0.12), 1px 0px 0px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: -1px -1px 0px 0px rgba(0, 0, 0, 0.12), 1px 0px 0px 0px rgba(0, 0, 0, 0.12);
 }
 
-#post-real-sentiment-container  {
+#post-real-sentiment-container {
     margin-bottom: 1rem;
 }
 

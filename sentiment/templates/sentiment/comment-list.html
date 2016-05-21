@@ -1,23 +1,34 @@
 <div>
-    <a id="toggle-comments-button" class="waves-effect waves-light btn-tiny">Toggle comments...</a>
+    <a id="toggle-comments-button" class="grey-text text-darken-2">
+        <i class="material-icons rotate-up">keyboard_arrow_down</i>
+        Show/hide <span id="toggle-comment-nb">comments</span>...</a>
     <ul id="comment-list-container">
-        <li class="card-panel comment-list-item">
-            <p class="comment-id title">COMMENT <span class="header-text title"></span></p>
-            <div class="divider"></div>
-            <div class="section comment-content">
-                <div id="comment-content-translated"></div>
-                <div id="comment-content-ol" class="grey-text text-darken-2"><span></span><div>Original comment</div></div>
+        <li class="card comment-list-item">
+            <div class="card-content">
+                <p class="comment-id title">COMMENT <span class="header-text title"></span>
+                    <a href="#" target="_blank" class="comment-api-link">API link</a>
+                </p>
+                <div class="divider"></div>
+                <div class="section comment-content">
+                    <div id="comment-content-translated"></div>
+                    <div id="comment-content-ol" class="grey-text text-darken-2"><span></span>
+                        <div>Original comment</div>
+                    </div>
+                </div>
+                <div class="divider"></div>
+
+                <div class=" comment-APIs">
+                    {% include 'sentiment/comment-sentiment-table.html' %}
+                    <span class="activator grey-text text-darken-4"><i class="material-icons right">add</i> </span>
+                </div>
             </div>
-            <div class="divider"></div>
-            <div class="comment-APIs">
-                <p class="comment-real-sentiment">Real sentiment: <span></span></p>
-                <div class="comment_sentiment_api1_ol">API1 OL: <span></span></div>
-                <div class="comment_sentiment_api1_en"> API1 EN: <span></span></div>
-                <div class="comment_sentiment_api2_ol"> API2 OL: <span></span></div>
-                <div class="comment_sentiment_api2_en"> API2 EN: <span></span></div>
-                <div class="comment_sentiment_api3"> API3: <span></span></div>
-                <div class="comment_sentiment_api4"> API4: <span></span></div>
+
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">
+                    <i class="material-icons right">close</i></span>
+                {% include 'sentiment/comment-sentiment-table.html' %}
             </div>
         </li>
     </ul>
 </div>
+
