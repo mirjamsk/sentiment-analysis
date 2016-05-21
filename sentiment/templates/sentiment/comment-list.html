@@ -1,24 +1,22 @@
 <div>
-     <a id="toggle-comments-button" class="waves-effect waves-light btn-tiny">Toggle comments...</a>
-    <ul id="comment-list-container" >
+    <a id="toggle-comments-button" class="waves-effect waves-light btn-tiny">Toggle comments...</a>
+    <ul id="comment-list-container">
         <li class="card-panel comment-list-item">
             <p class="comment-id title">COMMENT <span class="header-text title"></span></p>
             <div class="divider"></div>
             <div class="section comment-content">
-                <p class="comment-content"><b>Original Content: </b><span></span></p>
-                <p class="comment-content-translated"><b>Translated Content: </b><span></span></p>
-                <div class="divider"></div>
-                <div class="comment-APIs">
-                    <p class="comment-real-sentiment">Real sentiment: <span></span></p>
-                    <div class="comment-APIs">
-                        <span class="api1_ol">API1 OL: <span></span></span>
-                        <span class="api1_en"> API1 EN: <span></span></span>
-                        <span class="api2_ol"> API2 OL: <span></span></span>
-                        <span class="api2_en"> API2 EN: <span></span></span>
-                        <span class="api3"> API3: <span></span></span>
-                        <span class="api4"> API4: <span></span></span>
-                    </div>
-                </div>
+                <div id="comment-content-translated"></div>
+                <div id="comment-content-ol" class="grey-text text-darken-2"><span></span><div>Original comment</div></div>
+            </div>
+            <div class="divider"></div>
+            <div class="comment-APIs">
+                <p class="comment-real-sentiment">Real sentiment: <span></span></p>
+                <div class="comment_sentiment_api1_ol">API1 OL: <span></span></div>
+                <div class="comment_sentiment_api1_en"> API1 EN: <span></span></div>
+                <div class="comment_sentiment_api2_ol"> API2 OL: <span></span></div>
+                <div class="comment_sentiment_api2_en"> API2 EN: <span></span></div>
+                <div class="comment_sentiment_api3"> API3: <span></span></div>
+                <div class="comment_sentiment_api4"> API4: <span></span></div>
             </div>
         </li>
     </ul>

@@ -74,7 +74,18 @@
 .comment-APIs{
     margin: 1.5rem 0 0 0;
 }
-
+.comment-APIs  div{
+    display: none;
+}
+#comment-content-ol {
+    font-size: 0.9rem;
+    margin-left: 1rem;
+    padding-left: 0.5rem;
+    border-left: 1px solid #e4e4e4;
+}
+#comment-content-ol div{
+    font-weight: 500;
+}
 
 /* Sentiment api stats
    ================================== */

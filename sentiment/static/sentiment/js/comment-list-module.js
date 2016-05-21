@@ -41,7 +41,8 @@ $( function(){
 	var data = {
             currentPost: -1,
             url: '/api/comments/by/',
-            urlParam: 'post-id'
+            urlParam: 'post-id',
+			defaultAPI:'api1_ol'
         };
 
 	var util = {
@@ -49,7 +50,7 @@ $( function(){
 		$postListContainer: $('#post-list-container'),
 		$commentListContainer : $('#comment-list-container'),
 		$commentItemTemplate  : $('.comment-list-item').clone(),
-		currentAPI: 'api1_ol',
+		currentAPI: data.defaultAPI,
 		urlParser: urlParser() || null,
 
 		getDefaultPostId: function() {
@@ -66,49 +67,8 @@ $( function(){
 			return this.sanitizePostRequest(requestedPost);
 		},
 		showParticularAPIsentiment: function(api){
-			util.$commentListContainer.find('.comment-APIs span').hide();
-			console.log(api)
-			switch(api) {
-				case ("api1_ol"):
-				{
-					util.$commentListContainer.find('.api1_ol').show();
-					util.$commentListContainer.find('.api1_ol span:first').show();
-					break;
-				}
-				case ("api1_en"):
-				{
-					util.$commentListContainer.find('.api1_en').show();
-					util.$commentListContainer.find('.api1_en span:first').show();
-					break;
-				}
-				case ("api2_ol"):
-				{
-					util.$commentListContainer.find('.api2_ol').show();
-					util.$commentListContainer.find('.api2_ol span:first').show();
-					break;
-				}
-				case ("api2_en"):
-				{
-					util.$commentListContainer.find('.api2_en').show();
-					util.$commentListContainer.find('.api2_en span:first').show();
-					break;
-				}
-				case ("api3"):
-				{
-					util.$commentListContainer.find('.api3').show();
-					util.$commentListContainer.find('.api3 span:first').show();
-					break;
-				}
-				case ("api4"):
-				{
-					util.$commentListContainer.find('.api4').show();
-					util.$commentListContainer.find('.api4 span:first').show();
-					break;
-				}
-					default:
-						console.log("I am in default showParticularAPI")
-
-			}
+			util.$commentListContainer.find('.comment_sentiment_' + util.currentAPI).hide();
+			util.$commentListContainer.find('.comment_sentiment_' + api).show();
 		},
 		clearCommentList: function(){
 			this.$commentListContainer.empty();
@@ -130,47 +90,34 @@ $( function(){
 	        		.find('.header-text')
 		        	.html(comment.id);
 	        	tempListItem
-	        		.find('.comment-content span:first')
+	        		.find('#comment-content-ol span')
 		        	.html(comment.content);
 				tempListItem
-	        		.find('.comment-content-translated span:first')
+	        		.find('#comment-content-translated')
 		        	.html(comment.english_translation);
 				tempListItem
-	        		.find('.api1_ol span:first')
-		        	.html(comment.sentiment_api1_ol).show();
+	        		.find('.comment_sentiment_api1_ol span')
+		        	.html(comment.sentiment_api1_ol);
 				tempListItem
-	        		.find('.api1_en span:first')
-		        	.html(comment.sentiment_api1_en).hide();
+	        		.find('.comment_sentiment_api1_en span')
+		        	.html(comment.sentiment_api1_en);
 				tempListItem
-	        		.find('.api2_ol span:first')
-		        	.html(comment.sentiment_api2_ol).hide();
+	        		.find('.comment_sentiment_api2_ol span')
+		        	.html(comment.sentiment_api2_ol);
 				tempListItem
-	        		.find('.api2_en span:first')
-		        	.html(comment.sentiment_api2_en).hide();
+	        		.find('.comment_sentiment_api2_en span')
+		        	.html(comment.sentiment_api2_en);
 				tempListItem
-	        		.find('.api3 span:first')
-		        	.html(comment.sentiment_api3).hide();
+	        		.find('.comment_sentiment_api3 span')
+		        	.html(comment.sentiment_api3);
 				tempListItem
-	        		.find('.api4 span:first')
-		        	.html(comment.sentiment_api4).hide();
+	        		.find('.comment_sentiment_api4 span')
+		        	.html(comment.sentiment_api4);
 				tempListItem
 	        		.find('.comment-real-sentiment span')
-		        	.html(comment.real_sentiment);
+		        	.html(comment.real_sentiment).show();
 				tempListItem
-	        		.find('.api1_ol').show();
-				tempListItem
-	        		.find('.api2_ol').hide();
-				tempListItem
-	        		.find('.api1_en').hide();
-				tempListItem
-	        		.find('.api2_en').hide();
-				tempListItem
-	        		.find('.api3').hide();
-				tempListItem
-	        		.find('.api4').hide();
-				
-
-
+	        		.find('.comment_sentiment_api1_ol').show();
 	        return tempListItem;
 		}
 	};
@@ -186,6 +133,7 @@ $( function(){
         		contentType: 'application/json; charset=utf-8',
 		        success: function(response){
 					console.log("I am in success callback");
+					util.currentAPI = data.defaultAPI;
 					util.clearCommentList();
 					util.populateCommentList(response);
            		},
@@ -199,15 +147,15 @@ $( function(){
             util.$postListContainer.on('click', 'a', function() {
                 var requestedPost = util.sanitizePostRequest($(this).data('post-id'));
                 requestPost(requestedPost);
-
             });
         };
 
 	 var bindApiDropdownClickListener = function() {
             $('#api-dropdown-button').dropdown({ belowOrigin: true });
             $('#api-dropdown-choices').on('click', 'li', function() {
-                util.showParticularAPIsentiment($(this).data('api').substr(10));
-				util.currentAPI = $(this).data('api').substr(10);
+				var requestedApi = $(this).data('api').split('sentiment_')[1];
+                util.showParticularAPIsentiment(requestedApi );
+				util.currentAPI = requestedApi ;
             });
         };
 
@@ -228,7 +176,5 @@ $( function(){
 	})();
 	 
 })();
-
-
 
 });
