@@ -64,8 +64,12 @@ target/
 # Idea
 .idea/
 
-# temp_sqldumps
+# sqldumps
 temp_sqldumps/
+
+#ignore all .sql files except the ones in scripts/mysql/
+*.sql
+!scripts/mysql/*sql
 
 # sqlite3
 *.sqlite3
