@@ -63,14 +63,14 @@
 #toggle-comments-button {
     cursor: pointer;
 }
+
 #toggle-comments-button:hover {
-    color:black !important;
+    color: black !important;
 }
 
 #toggle-comments-button i {
     vertical-align: bottom;
 }
-
 
 #toggle-comments-button .rotate-up {
     transition: 1s;
@@ -156,12 +156,11 @@ table.comment-full-sentiment td:first-child {
 }
 
 #current-api-choice {
-    margin-top: 2%;
     text-transform: uppercase;
 }
 
 #post-determined-sentiment-container .section span {
-    padding-right: 7%;
+    padding-right: 5%;
 }
 
 #api-dropdown-button {
@@ -172,11 +171,10 @@ table.comment-full-sentiment td:first-child {
 }
 
 #post-real-sentiment-container {
-    margin-bottom: 1rem;
+    margin-bottom: 4rem;
 }
 
 #post-sentiment-stats .section {
     padding-bottom: 0;
     margin: 1.5rem 0 0 0;
 }
-
