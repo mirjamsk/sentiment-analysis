@@ -34,8 +34,8 @@
 }	
 */
 
-$( function(){
  var PostListModule = (function(){
+    var instance;
 	var data = {
 		currentPage:  1,
 		lastPage:     1,
@@ -110,14 +110,11 @@ $( function(){
 			data.params.page = data.currentPage;
 			util.clearPostList();
 			util.ajaxRequest(data.url, data.params, util.populatePostList);
-		},
-		getNumberOfPages: function(){
-			return data.lastPage;
 		}
 	};
 
-	// initial setup
-	(function(){
+	var init = function(requestedPage, ajaxCallback){
+		data.params.page = requestedPage;
 		util.ajaxRequest(data.url, data.params, function(response){
 			data.postCount = response.count;
 			data.lastPage = Math.ceil(data.postCount/data.postPerPage);
@@ -132,13 +129,21 @@ $( function(){
                 onClickCallback: paginationAPI.requestPage
             });
 
+            // returns the the ID of the first post in the list
+            if( typeof ajaxCallback === 'function'){
+            	ajaxCallback(response.results[0].id);
+            }
+
 		});
-	})();
-	
-	// Methods available for external use
-	return paginationAPI;
+		return this;
+	};
+
+	 return {
+		 paginationAPI: paginationAPI,
+		 init: function (requestedPage, ajaxCallback) {
+			 if (!instance) {
+				 instance = init(requestedPage, ajaxCallback);
+			 }
+		 }
+	 };
 })();
-
-
-
-});

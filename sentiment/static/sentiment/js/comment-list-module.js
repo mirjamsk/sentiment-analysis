@@ -52,7 +52,6 @@
 		$postListContainer: $('#post-list-container'),
 		$commentListContainer : $('#comment-list-container'),
 		$commentItemTemplate  : $('.comment-list-item').clone(),
-		urlParser: urlParser() || null,
 
         getDefaultPostId: function () {
             return parseInt($('#post-id span').text());
@@ -60,13 +59,8 @@
         sanitizePostRequest: function (requestedPost) {
             requestedPost = isNaN(requestedPost) ?
                 this.getDefaultPostId() : parseInt(requestedPost);
-                this.urlParser.updateUrlParam(data.urlParam, requestedPost);
             return requestedPost;
         },
-		parseUrl: function() {
-			var requestedPost = this.urlParser.getUrlParamByName(data.urlParam) || data.currentPost;
-			return this.sanitizePostRequest(requestedPost);
-		},
 		showParticularAPIsentiment: function(api){
 			util.$commentListContainer.find('.comment_' + data.currentAPI).hide();
 			util.$commentListContainer.find('.comment_' + api).show();
@@ -128,6 +122,7 @@
      var requestPost = function (requestedPost) {
          if (data.currentPost === requestedPost) return;
          data.currentPost = requestedPost;
+         console.log('Requesting comments for post_id: '+  requestedPost);
          $.ajax({
              url: data.url + requestedPost + '.json/',
              data: data,
@@ -171,21 +166,19 @@
          });
      };
 
-     var init = function (sentimentLabels) {
+     var init = function (requestedPost, sentimentLabels) {
          data.sentimentLabels = sentimentLabels;
-         data.currentPost = util.getDefaultPostId();
-
          bindPostListClickListener();
          bindToggleCommentsListener();
          bindApiDropdownClickListener();
-         requestPost(util.parseUrl());
+         requestPost(requestedPost);
          return this;
      };
 
      return {
-         init: function (sentimentLabels) {
+         init: function (requestedPost, sentimentLabels) {
              if (!instance) {
-                 instance = init(sentimentLabels);
+                 instance = init(requestedPost, sentimentLabels);
              }
          }
      };
