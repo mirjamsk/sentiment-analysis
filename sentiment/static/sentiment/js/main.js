@@ -27,7 +27,7 @@ requirejs.config({
             deps: ['jquery', 'google', 'materialize', 'url-parser', 'sentiment-pie-chart'],
         },
         'comment-list-module': {
-            deps: ['jquery', 'materialize', 'url-parser'],
+            deps: ['jquery', 'url-parser', 'post-detail-module'], // TO-DO make the sentiment stats it's own module
         }
     }
 

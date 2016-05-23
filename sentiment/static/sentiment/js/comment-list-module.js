@@ -156,7 +156,6 @@ $( function(){
         };
 
 	 var bindApiDropdownClickListener = function() {
-            $('#api-dropdown-button').dropdown({ belowOrigin: true });
             $('#api-dropdown-choices').on('click', 'li', function() {
 				var requestedApi = $(this).data('api').split('sentiment_')[1];
                 util.showParticularAPIsentiment(requestedApi );
