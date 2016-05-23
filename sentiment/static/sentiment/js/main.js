@@ -34,9 +34,22 @@ requirejs.config({
 });
 
 
-define(['jquery', 'post-list-module', 'post-detail-module', 'comment-list-module'],
-    function ($) {
+require(['jquery', 'post-list-module', 'post-detail-module', 'comment-list-module'], function ($) {
+    $(function () {
+        var sentimentLabels = {
+            realSentiment: 'real_sentiment',
+            sentimentAPIs: [
+                'sentiment_api1_ol',
+                'sentiment_api1_en',
+                'sentiment_api2_ol',
+                'sentiment_api2_en',
+                'sentiment_api3',
+                'sentiment_api4'
+            ],
+            defaultAPI: 'sentiment_api1_ol'
+        };
+        CommentListModule.init(sentimentLabels);
         console.log('loaded');
 
-    }
-);
+    })
+});

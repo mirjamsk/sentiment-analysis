@@ -36,13 +36,14 @@
 ]
 */
 
-$( function(){
  var CommentListModule = (function(){
+    var instance;
 	var data = {
             currentPost: -1,
             url: '/api/comments/by/',
             urlParam: 'post-id',
-			defaultAPI:'api1_ol'
+			currentAPI: '',
+			sentimentLabels: []
         };
 
 	var util = {
@@ -51,7 +52,6 @@ $( function(){
 		$postListContainer: $('#post-list-container'),
 		$commentListContainer : $('#comment-list-container'),
 		$commentItemTemplate  : $('.comment-list-item').clone(),
-		currentAPI: data.defaultAPI,
 		urlParser: urlParser() || null,
 
 		getDefaultPostId: function() {
@@ -68,8 +68,8 @@ $( function(){
 			return this.sanitizePostRequest(requestedPost);
 		},
 		showParticularAPIsentiment: function(api){
-			util.$commentListContainer.find('.comment_sentiment_' + util.currentAPI).hide();
-			util.$commentListContainer.find('.comment_sentiment_' + api).show();
+			util.$commentListContainer.find('.comment_' + data.currentAPI).hide();
+			util.$commentListContainer.find('.comment_' + api).show();
 		},
 		clearCommentList: function(){
 			this.$commentListContainer.empty();
@@ -99,29 +99,14 @@ $( function(){
 				tempListItem
 	        		.find('#comment-content-translated')
 		        	.html(comment.english_translation);
-				tempListItem
-	        		.find('.comment_sentiment_api1_ol span')
-		        	.html(comment.sentiment_api1_ol);
-				tempListItem
-	        		.find('.comment_sentiment_api1_en span')
-		        	.html(comment.sentiment_api1_en);
-				tempListItem
-	        		.find('.comment_sentiment_api2_ol span')
-		        	.html(comment.sentiment_api2_ol);
-				tempListItem
-	        		.find('.comment_sentiment_api2_en span')
-		        	.html(comment.sentiment_api2_en);
-				tempListItem
-	        		.find('.comment_sentiment_api3 span')
-		        	.html(comment.sentiment_api3);
-				tempListItem
-	        		.find('.comment_sentiment_api4 span')
-		        	.html(comment.sentiment_api4);
-				tempListItem
-	        		.find('.comment-real-sentiment span')
-		        	.html(comment.real_sentiment);
-				tempListItem
-	        		.find('.comment_sentiment_api1_ol').show();
+			    tempListItem
+	        		.find('.comment_' + data.sentimentLabels.realSentiment + ' span')
+		        	.html(comment[data.sentimentLabels.realSentiment]);
+				data.sentimentLabels.sentimentAPIs.forEach(function(api) {
+				    tempListItem
+	        		.find('.comment_' + api + ' span')
+		        	.html(comment[api]);
+				});
 	        return tempListItem;
 		}
 	};
@@ -138,12 +123,14 @@ $( function(){
 		        success: function(response){
 					var commentNb = Object.keys(response).length;
 					util.$commentNumber.html(commentNb + (commentNb == 1 ? ' comment' : ' comments'));
-					util.currentAPI = data.defaultAPI;
+					data.currentAPI = data.sentimentLabels.defaultAPI;
 					util.clearCommentList();
 					util.populateCommentList(response);
+					util.showParticularAPIsentiment(data.currentAPI);
+
            		},
 		        error: function(requestObject, error, errorThrown) {
-		            console.log( "Error in comment_list_module::Util::loadContent: " + errorThrown);
+		            console.log( "Error in comment_list_module::requestPost: " + errorThrown);
 		        }
 		    });
         };
@@ -157,9 +144,9 @@ $( function(){
 
 	 var bindApiDropdownClickListener = function() {
             $('#api-dropdown-choices').on('click', 'li', function() {
-				var requestedApi = $(this).data('api').split('sentiment_')[1];
+				var requestedApi = $(this).data('api');
                 util.showParticularAPIsentiment(requestedApi );
-				util.currentAPI = requestedApi ;
+				data.currentAPI = requestedApi ;
             });
         };
 
@@ -172,15 +159,21 @@ $( function(){
 	 };
 
 	// initial setup
-	(function(){
+	var init = function(sentimentLabels){
+		data.sentimentLabels = sentimentLabels;
 		bindPostListClickListener();
 		bindToggleCommentsListener();
 		bindApiDropdownClickListener();
 		data.currentPost = util.getDefaultPostId();
 		requestPost(util.parseUrl());
-		util.showParticularAPIsentiment(util.currentAPI);
-	})();
-	 
-})();
+		return this;
+	};
+	 return{
+		init: function (sentimentLabels) {
+      		if ( !instance ) {
+        	instance = init(sentimentLabels);
+      	}
+    }
+  };
 
-});
+})();
