@@ -54,15 +54,15 @@
 		$commentItemTemplate  : $('.comment-list-item').clone(),
 		urlParser: urlParser() || null,
 
-		getDefaultPostId: function() {
-                return parseInt(this.$postListContainer.find('li:first-child').data('post-id'));
-		},
-		sanitizePostRequest: function(requestedPost) {
-			requestedPost = isNaN(requestedPost) ?
-				this.getDefaultPostId() : parseInt(requestedPost);
+        getDefaultPostId: function () {
+            return parseInt($('#post-id span').text());
+        },
+        sanitizePostRequest: function (requestedPost) {
+            requestedPost = isNaN(requestedPost) ?
+                this.getDefaultPostId() : parseInt(requestedPost);
                 this.urlParser.updateUrlParam(data.urlParam, requestedPost);
-                return requestedPost;
-		},
+            return requestedPost;
+        },
 		parseUrl: function() {
 			var requestedPost = this.urlParser.getUrlParamByName(data.urlParam) || data.currentPost;
 			return this.sanitizePostRequest(requestedPost);
@@ -84,96 +84,109 @@
 		appendCommentItem: function($commentItem){
 			this.$commentListContainer.append($commentItem);
 		},
-		createListItem: function(comment){
-			var tempListItem = this.$commentItemTemplate.clone();
-				tempListItem.attr('data-comment-id', comment.id);
-	        	tempListItem
-	        		.find('.header-text')
-		        	.html(comment.id);
-				tempListItem
-	        		.find('a.comment-api-link')
-		        	.attr('href', comment.detail_link.split('.json')[0]);
-	        	tempListItem
-	        		.find('#comment-content-ol span')
-		        	.html(comment.content);
-				tempListItem
-	        		.find('#comment-content-translated')
-		        	.html(comment.english_translation);
-			    tempListItem
-	        		.find('.comment_' + data.sentimentLabels.realSentiment + ' span')
-		        	.html(comment[data.sentimentLabels.realSentiment]);
-				data.sentimentLabels.sentimentAPIs.forEach(function(api) {
-				    tempListItem
-	        		.find('.comment_' + api + ' span')
-		        	.html(comment[api]);
-				});
-	        return tempListItem;
-		}
-	};
-	 
-	 var requestPost = function(requestedPost) {
-            if (data.currentPost === requestedPost) return;
-            data.currentPost = requestedPost;
-		 	$.ajax({
-		        url: data.url + requestedPost + '.json/',
-		        data: data,
-		        method: 'GET',
-		        dataType: 'json',
-        		contentType: 'application/json; charset=utf-8',
-		        success: function(response){
-					var commentNb = Object.keys(response).length;
-					util.$commentNumber.html(commentNb + (commentNb == 1 ? ' comment' : ' comments'));
-					data.currentAPI = data.sentimentLabels.defaultAPI;
-					util.clearCommentList();
-					util.populateCommentList(response);
-					util.showParticularAPIsentiment(data.currentAPI);
+        createListItem: function (comment) {
+            var tempListItem = this.$commentItemTemplate.clone();
+            tempListItem.attr('data-comment-id', comment.id);
+            tempListItem
+                .find('.header-text')
+                .html(comment.id);
+            tempListItem
+                .find('a.comment-api-link')
+                .attr('href', comment.detail_link.split('.json')[0]);
+            tempListItem
+                .find('#comment-content-ol span')
+                .html(comment.content);
+            tempListItem
+                .find('#comment-content-translated')
+                .html(comment.english_translation);
+            tempListItem
+                .find('tr.comment_' + data.sentimentLabels.realSentiment + ' span')
+                .html(comment[data.sentimentLabels.realSentiment]);
+            var $dummySentimentEle = tempListItem
+                .find('.comment_' + data.sentimentLabels.realSentiment)
+                .first()
+                .clone()
+                .removeClass('comment_' + data.sentimentLabels.realSentiment);
+            var $table = tempListItem.find('.comment-full-sentiment tbody');
 
-           		},
-		        error: function(requestObject, error, errorThrown) {
-		            console.log( "Error in comment_list_module::requestPost: " + errorThrown);
-		        }
-		    });
-        };
-
-	 var bindPostListClickListener = function() {
-            util.$postListContainer.on('click', 'a', function() {
-                var requestedPost = util.sanitizePostRequest($(this).data('post-id'));
-                requestPost(requestedPost);
+            data.sentimentLabels.sentimentAPIs.forEach(function (api) {
+                var $sentimentEle = $dummySentimentEle
+                    .clone()
+                    .addClass('comment_' + api);
+                $sentimentEle
+                    .find('.sentiment-api-label')
+                    .html(api.split('sentiment_')[1].replace(/_/g, ' ').toUpperCase());
+                $sentimentEle
+                    .find('.sentiment-api-value')
+                    .html(comment[api]);
+                $table.append($sentimentEle);
             });
-        };
+            return tempListItem;
+        }
+    };
 
-	 var bindApiDropdownClickListener = function() {
-            $('#api-dropdown-choices').on('click', 'li', function() {
-				var requestedApi = $(this).data('api');
-                util.showParticularAPIsentiment(requestedApi );
-				data.currentAPI = requestedApi ;
-            });
-        };
+     var requestPost = function (requestedPost) {
+         if (data.currentPost === requestedPost) return;
+         data.currentPost = requestedPost;
+         $.ajax({
+             url: data.url + requestedPost + '.json/',
+             data: data,
+             method: 'GET',
+             dataType: 'json',
+             contentType: 'application/json; charset=utf-8',
+             success: function (response) {
+                 var commentNb = Object.keys(response).length;
+                 util.$commentNumber.html(commentNb + (commentNb == 1 ? ' comment' : ' comments'));
+                 data.currentAPI = data.sentimentLabels.defaultAPI;
+                 util.clearCommentList();
+                 util.populateCommentList(response);
+                 util.showParticularAPIsentiment(data.currentAPI);
+             },
+             error: function (requestObject, error, errorThrown) {
+                 console.error("Error in comment_list_module::requestPost: " + errorThrown);
+             }
+         });
+     };
 
-	 var bindToggleCommentsListener = function(){
-		 var $toggleArrow =$('#toggle-comments-button i');
-		$('#toggle-comments-button').click(function(){
-			util.$commentListContainer.slideToggle(150, 'linear');
-			$toggleArrow.toggleClass('rotate-up, rotate-down');
-		});
-	 };
+     var bindPostListClickListener = function () {
+         util.$postListContainer.on('click', 'a', function () {
+             var requestedPost = util.sanitizePostRequest($(this).data('post-id'));
+             requestPost(requestedPost);
+         });
+     };
 
-	// initial setup
-	var init = function(sentimentLabels){
-		data.sentimentLabels = sentimentLabels;
-		bindPostListClickListener();
-		bindToggleCommentsListener();
-		bindApiDropdownClickListener();
-		data.currentPost = util.getDefaultPostId();
-		requestPost(util.parseUrl());
-		return this;
-	};
-	 return{
-		init: function (sentimentLabels) {
-      		if ( !instance ) {
-        	instance = init(sentimentLabels);
-      	}
-    }
-  };
+     var bindApiDropdownClickListener = function () {
+         $('#api-dropdown-choices').on('click', 'li', function () {
+             var requestedApi = $(this).data('api');
+             util.showParticularAPIsentiment(requestedApi);
+             data.currentAPI = requestedApi;
+         });
+     };
 
+     var bindToggleCommentsListener = function () {
+         var $toggleArrow = $('#toggle-comments-button i');
+         $('#toggle-comments-button').click(function () {
+             util.$commentListContainer.slideToggle(150, 'linear');
+             $toggleArrow.toggleClass('rotate-up, rotate-down');
+         });
+     };
+
+     var init = function (sentimentLabels) {
+         data.sentimentLabels = sentimentLabels;
+         data.currentPost = util.getDefaultPostId();
+
+         bindPostListClickListener();
+         bindToggleCommentsListener();
+         bindApiDropdownClickListener();
+         requestPost(util.parseUrl());
+         return this;
+     };
+
+     return {
+         init: function (sentimentLabels) {
+             if (!instance) {
+                 instance = init(sentimentLabels);
+             }
+         }
+     };
 })();

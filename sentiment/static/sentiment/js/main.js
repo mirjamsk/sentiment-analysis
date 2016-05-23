@@ -49,7 +49,5 @@ require(['jquery', 'post-list-module', 'post-detail-module', 'comment-list-modul
             defaultAPI: 'sentiment_api1_ol'
         };
         CommentListModule.init(sentimentLabels);
-        console.log('loaded');
-
-    })
+    });
 });
