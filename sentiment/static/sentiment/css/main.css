@@ -99,6 +99,10 @@
     margin: 0 !important;
 }
 
+.comment-APIs .activator {
+    cursor: pointer;
+}
+
 .comment-APIs {
     margin-top: 10px;
 }
@@ -140,6 +144,7 @@ table.comment-full-sentiment td:first-child {
 /* Sentiment api stats
    ================================== */
 
+#post-sentiment-tabs > div,
 #post-sentiment-stats ul.tabs {
     display: none;
 }

@@ -6,6 +6,9 @@ var SentimentStatsModule = (function() {
         postSentimentTabs: [],
         $currentApiChoice: $('#current-api-choice '),
         $sentimentApiTabs: $('#post-sentiment-stats ul.tabs'),
+        prettify: function(api){
+            return api.split('sentiment_')[1].replace('_', ' ').toUpperCase();
+        }
     };
 
     var redrawSentimentStats = function(response) {
@@ -30,7 +33,29 @@ var SentimentStatsModule = (function() {
         });
     };
 
+    var populateDropdownAndTabs = function (sentimentLabels) {
+        var $tabLinks = $('#post-sentiment-tab-links');
+        var $dropdown = $('#api-dropdown-choices');
+        var $tabs = $('#post-sentiment-tabs');
+
+        sentimentLabels.sentimentAPIs.forEach(function (api) {
+            $dropdown.append($('<li>')          // e.g. <li data-api="sentiment_api4"> <a>API 4</a> </li>
+                .attr('data-api', api)
+                .append($('<a>').html(util.prettify(api))));
+            
+            $tabLinks.append($('<li>')          // e.g <li class="tab col s2"><a href="#sentiment_api4">API 4</a></li>
+                .addClass('tab col s2')
+                .append($('<a>').attr('href', '#' + api).html(util.prettify(api))));
+           
+            $tabs.append($('<div>')             // e.g  <div id="sentiment_api1_ol" class="col s12"></div>
+                .addClass('col s12')
+                .attr('id', api));
+        });
+        $tabLinks.tabs('select_tab', sentimentLabels.defaultAPI);
+    };
+
     var init = function (sentimentLabels) {
+        populateDropdownAndTabs(sentimentLabels);
         bindApiDropdownClickListener();
         util.postRealSentimentPieChart = new SentimentPieChart({'total': 0}, 'post-real-sentiment-chart');
 
@@ -51,12 +76,12 @@ var SentimentStatsModule = (function() {
     };
 
     return {
+        redrawSentimentStats: redrawSentimentStats,
         init: function(sentimentLabels) {
             if (!instance) {
                 instance = init(sentimentLabels);
             }
-        },
-        redrawSentimentStats: redrawSentimentStats
+        }
     };
 
 })();

@@ -64,7 +64,6 @@ var PostDetailModule = (function() {
         util.$postDetails.find('#post-comment-nb').text(total_comments).fadeIn('slow');
         util.$postDetails.find('#post-link').attr('href', response.link);
         util.$postDetails.find('#post-api-link').attr('href', response.detail_link.replace('.json', '/'));
-
     };
 
     var requestPost = function(requestedPost) {
@@ -84,7 +83,6 @@ var PostDetailModule = (function() {
         util.SentimentStatsModule = SentimentStatsModule;
         bindPostListClickListener();
         requestPost(requestedPost);
-
     };
 
     return {
