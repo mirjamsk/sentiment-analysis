@@ -49,6 +49,9 @@
     margin-bottom: 3rem;
 }
 
+#post-social-stats i:first-of-type {
+    padding: 0 0.2rem 0 0rem;
+}
 #post-social-stats i {
     padding: 0 0.2rem 0 1rem;
 }
@@ -82,14 +85,14 @@
     transform: rotateX(0deg);
 }
 
-#comment-content-ol {
+.comment-content-ol {
     font-size: 0.9rem;
     margin-left: 1rem;
     padding-left: 0.5rem;
     border-left: 1px solid #e4e4e4;
 }
 
-#comment-content-ol div {
+.comment-content-ol div {
     font-weight: 500;
 }
 
@@ -132,7 +135,7 @@
 
 .spam i {
     padding-right: 0.5rem;
-    vertical-align: middle;
+    vertical-align: bottom;
 }
 
 table.comment-full-sentiment {
