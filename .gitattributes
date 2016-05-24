@@ -1,1 +1,2 @@
-data_dumps/*.sql filter=lfs diff=lfs merge=lfs -text
+
+data_dumps/post_sentiment_sqldump.sql filter=lfs diff=lfs merge=lfs -text
