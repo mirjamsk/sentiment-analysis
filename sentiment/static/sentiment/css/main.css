@@ -130,6 +130,11 @@
     display: none;
 }
 
+.spam i {
+    padding-right: 0.5rem;
+    vertical-align: middle;
+}
+
 table.comment-full-sentiment {
     margin: 0 5%;
     max-width: 80%;

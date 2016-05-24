@@ -10,14 +10,17 @@
                 </p>
                 <div class="divider"></div>
                 <div class="section comment-content">
-                    <div id="comment-content-translated"></div>
-                    <div id="comment-content-ol" class="grey-text text-darken-2"><span></span>
+                    <div class="comment-content-translated"></div>
+                    <div class="comment-content-ol" class="grey-text text-darken-2"><span></span>
                         <div>Original comment</div>
                     </div>
                 </div>
                 <div class="divider"></div>
 
-                <div class=" comment-APIs">
+                <div class="spam section hide">
+                    <p><i class="material-icons bottom red-text">do_not_disturb</i> spam type: <span class="spam-type"></span></p>
+                </div>
+                <div class="comment-APIs hide">
                     {% include 'sentiment/comment-sentiment-table.html' %}
                     <span class="activator grey-text text-darken-4"><i class="material-icons right">add</i> </span>
                 </div>
