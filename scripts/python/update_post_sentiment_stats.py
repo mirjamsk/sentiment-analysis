@@ -139,7 +139,7 @@ def count_comment_sentiment_labels(post_id, api_column, db):
         "im_commento AS c JOIN   \
         im_commento_sentiment AS s ON c.id = s.idcommento",
         where=
-        "c.idpost = %d" % post_id)
+        "c.idpost = {0} AND s.spam like '%is_spam%false%'".format(post_id))
 
     sentiment_stats['sentiment_stats']['total'] = int(results[0][0])  # maybe remove total? inconsistency issues?
     if sentiment_stats['sentiment_stats']['total'] > 0:
