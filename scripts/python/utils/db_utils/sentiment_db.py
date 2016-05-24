@@ -30,7 +30,7 @@ class CommentSentimentDbConnection(Database):
             user=user,
             passwd=passwd)
         self.table = "im_commento_sentiment"
-        self.select = "id, idcommento, english_translation, real_sentiment"
+        self.select = "id, idcommento, english_translation, real_sentiment, spam"
 
     def fetch_all(self, where=""):
         return super(CommentSentimentDbConnection, self).fetch_all(
@@ -45,8 +45,8 @@ class CommentSentimentDbConnection(Database):
             from_clause=self.table,
             where="idcommento='%d'" % id)
 
-    def update(self, comment_id="", sentiment_api_column="", sentiment=""):
+    def update(self, comment_id="", column="", value=""):
         return super(CommentSentimentDbConnection, self).update(
             table=self.table,
-            set={sentiment_api_column: sentiment},
+            set={column: value},
             where="idcommento = %d" % comment_id)

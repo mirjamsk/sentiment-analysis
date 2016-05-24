@@ -48,8 +48,8 @@ def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
             print ("Predicted sentiment: %s" % api.get_sentiment())
             db_sentiment.update(
                 comment_id=comment_id,
-                sentiment=api.get_sentiment(),
-                sentiment_api_column=api.sentiment_api_column)
+                value=api.get_sentiment(),
+                column=api.sentiment_api_column)
         else:
             print ("API request was NOT successful: returned %d status code" % api.get_status_code())
             break

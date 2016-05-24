@@ -44,8 +44,8 @@ def update_real_sentiment_batch(id_selection="", db_name="sentiment_db"):
 
         db_sentiment.update(
             comment_id=comment_id,
-            sentiment=SENTIMENT_LABELS[real_sentiment],
-            sentiment_api_column='real_sentiment')
+            value=SENTIMENT_LABELS[real_sentiment],
+            column='real_sentiment')
 
         print ("Updated real_sentiment: %s" % SENTIMENT_LABELS[real_sentiment])
 
