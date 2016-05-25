@@ -30,6 +30,7 @@
 
 .post-list-item a > i {
     font-size: 1.1rem;
+    padding-left: 0.3rem;
 }
 
 /* Post details
@@ -52,6 +53,7 @@
 #post-social-stats i:first-of-type {
     padding: 0 0.2rem 0 0rem;
 }
+
 #post-social-stats i {
     padding: 0 0.2rem 0 1rem;
 }

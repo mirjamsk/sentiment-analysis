@@ -1,9 +1,9 @@
 /*
+ materialize Pagination v0.2.2
+ http://mirjamsk.github.io/materialize-pagination/
 
-jQuery Plugin for Materialize.css pagination component
-
-Sample usage:
-    $('#pagination').materializePagination({ 
+ Sample usage:
+    $('#pagination').materializePagination({
         align: 'left',
         lastPage:  10,
         firstPage:  1,
@@ -12,8 +12,7 @@ Sample usage:
         onClickCallback: function(requestedPage){
             console.log('Requested page is '+ requestedPage)
         }
-    }); 
-    
+    });
 */
 ;(function($, window, document, undefined) {
 
@@ -262,7 +261,7 @@ Sample usage:
             Ellipsis: function() {
                 var $ellipsis = $('<li>');
                     $ellipsis.text('...');
-                    $ellipsis.addClass('hide');
+                    $ellipsis.addClass('hide disabled');
                 return {
                     $elem: $ellipsis,
                     isHidden:   true,

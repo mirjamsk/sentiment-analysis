@@ -2087,7 +2087,7 @@ ul {
 .z-depth-1, nav, .card-panel, .card, .toast, .btn, .btn-large, .btn-floating, .dropdown-content, .collapsible, .side-nav {
   box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.1), 0 0px 10px 0 rgba(0, 0, 0, 0.1); }
 
-.z-depth-1-half, .btn:hover, .btn-large:hover, .btn-floating:hover {
+.z-depth-1-half, .pagination li.active:hover, .pagination li:not(.disabled):hover, .btn:hover, .btn-large:hover, .btn-floating:hover {
   box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15); }
 
 .z-depth-2 {
@@ -2154,6 +2154,9 @@ video.responsive-video {
   .pagination li.active a {
     color: #fff; }
   .pagination li.active {
+    background-color: #fff;
+    box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.16), 0 0px 3px 0 rgba(0, 0, 0, 0.2); }
+  .pagination li.active:hover, .pagination li:not(.disabled):hover {
     background-color: #bcaaa4; }
   .pagination li.disabled a {
     cursor: default;
@@ -3603,7 +3606,7 @@ small {
 
 .btn-floating {
   display: inline-block;
-  color: #fff;
+  color: #616161;
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -3611,7 +3614,7 @@ small {
   height: 37px;
   line-height: 37px;
   padding: 0;
-  background-color: #bcaaa4;
+  background-color: #fff;
   border-radius: 50%;
   transition: .3s;
   cursor: pointer;
@@ -3620,7 +3623,7 @@ small {
     width: inherit;
     display: inline-block;
     text-align: center;
-    color: #fff;
+    color: #616161;
     font-size: 1.6rem;
     line-height: 37px; }
   .btn-floating:hover {
