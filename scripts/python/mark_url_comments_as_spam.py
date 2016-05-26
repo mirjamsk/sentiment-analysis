@@ -1,21 +1,16 @@
 import json
-import operator
-from copy import deepcopy
 from utils.db_utils.sentiment_db import CommentSentimentDbConnection
 from utils.print_utils.helpers import print_horizontal_rule
 from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 
-URL_QUERY = '(\
-english_translation REGEXP "(https?:[[:space:]]*\/\/|www\.)[\.A-Za-z0-9\-]+\.[a-zA-Z]{2,4}" OR \
-english_translation REGEXP "[\.]{1}[A-Za-z0-9\-]+[\.]{1}[a-zA-Z]{2,4}[\.]?([[:space:]]|[[.slash.]]|$)" \
-OR ( \
-english_translation NOT REGEXP "[[.commercial-at.]]{1}" AND \
-english_translation REGEXP "[[:alnum:]]+[\.]{1}(com|net|org|gov)([[:space:]]|[[.slash.]]|$)" \
-))'
-
-SPAM = {
-    'is_spam': True,
-    'type': 'url'
+URL_QUERY = {
+    'url': '(\
+        english_translation REGEXP "(https?:[[:space:]]*\/\/|www\.)[\.A-Za-z0-9\-]+\.[a-zA-Z]{2,4}" OR \
+        english_translation REGEXP "[\.]{1}[A-Za-z0-9\-]+[\.]{1}[a-zA-Z]{2,4}[\.]?([[:space:]]|[[.slash.]]|$)" \
+        OR ( english_translation NOT REGEXP "[[.commercial-at.]]{1}" AND \
+        english_translation REGEXP "[[:alnum:]]+[\.]{1}(com|net|org|gov)([[:space:]]|[[.slash.]]|$)" \
+        ))',
+    'blank': '(english_translation is null or english_translation="")'
 }
 
 
@@ -26,12 +21,24 @@ def main():
          contain a url as spam \
          and updates the database')
 
+    parser.add_argument_with_choices(
+        '-type',
+        required=True,
+        choices=URL_QUERY.keys(),
+        help='Choose from the listed spam type options')
+
     parser.parse_args()
+    spam_json = {
+        'is_spam': True,
+        'type': parser.args.type
+    }
     mark_url_comments_spam(
+        spam_json=spam_json,
+        url_query=URL_QUERY[parser.args.type],
         id_selection=parser.id_selection)
 
 
-def mark_url_comments_spam(id_selection='*', db_name="sentiment_db"):
+def mark_url_comments_spam(id_selection='*', spam_json={}, url_query='', db_name="sentiment_db"):
     """
     Open one database connections:
         - to find the comment_sentiment records containing a url
@@ -43,18 +50,21 @@ def mark_url_comments_spam(id_selection='*', db_name="sentiment_db"):
     id_selection = id_selection.replace('id', 'idcommento')
     where_clause = '' if id_selection == '' else id_selection + ' AND '
     results = db.fetch_all(
-        where=where_clause + URL_QUERY)
+        where=where_clause + url_query)
 
     if len(results) != 0:
-        print('Found %d comments containing url' % len(results))
-        mark_comments_as_spam(db=db, rows=results)
+        print('Found %d %s comments' % (len(results), spam_json.get('type', '')))
+        mark_comments_as_spam(
+            db=db,
+            rows=results,
+            spam_json=spam_json)
     else:
         print ("No comments match the required conditions")
 
     db.close()
 
 
-def mark_comments_as_spam(rows, db):
+def mark_comments_as_spam(spam_json, rows, db):
     for row in rows:
         print_horizontal_rule()
         comment_id = row[1]
@@ -62,11 +72,11 @@ def mark_comments_as_spam(rows, db):
 
         print ("Comment id: %s" % comment_id)
         print ("Translation: %s" % english_translation)
-        print (json.dumps(SPAM))
+        print (json.dumps(spam_json))
 
         db.update(
             column='spam',
-            value=json.dumps(SPAM),
+            value=json.dumps(spam_json),
             comment_id=comment_id)
 
         print_horizontal_rule()
