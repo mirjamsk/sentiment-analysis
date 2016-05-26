@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: May 24, 2016 at 12:53 PM
+-- Generation Time: May 26, 2016 at 12:26 PM
 -- Server version: 5.5.42
 -- PHP Version: 5.6.10
 
@@ -164,7 +164,7 @@ REPLACE INTO `im_commento_sentiment` VALUES(137, 'neutral', 'positive', 13, 'pos
 REPLACE INTO `im_commento_sentiment` VALUES(138, 'neutral', 'positive', 11, 'negative', 'positive', 'positive', 'Luv!', 'en', 'neutral', 'negative', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(139, 'neutral', 'positive', 12, 'neutral', 'neutral', 'positive', 'Top dmaisssss', 'en', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(140, 'positive', 'positive', 10, 'positive', 'positive', 'positive', 'Lovely, lovely, lovely!', 'en', 'positive', 'positive', '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(141, 'neutral', 'neutral', 9, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
+REPLACE INTO `im_commento_sentiment` VALUES(141, 'neutral', 'neutral', 9, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
 REPLACE INTO `im_commento_sentiment` VALUES(142, 'neutral', 'positive', 8, 'neutral', 'neutral', 'positive', '❤️🙏', 'en', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(143, 'neutral', 'positive', 6, 'neutral', 'positive', 'positive', 'Beautiful!', 'it', 'positive', 'positive', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(144, 'neutral', 'positive', 7, 'neutral', 'positive', 'positive', 'Beautiful!', 'it', 'positive', 'positive', '{"type": "", "is_spam": false}');
@@ -5291,7 +5291,7 @@ REPLACE INTO `im_commento_sentiment` VALUES(5264, 'neutral', NULL, 5181, 'neutra
 REPLACE INTO `im_commento_sentiment` VALUES(5265, 'neutral', NULL, 5182, 'neutral', 'negative', 'neutral', '!!!! Jusy Oll', 'cy', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5266, 'neutral', NULL, 5183, 'neutral', 'positive', 'neutral', 'purple Fontanella', 'it', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5267, 'neutral', NULL, 5184, 'neutral', 'neutral', 'positive', 'Nadia!', 'en', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5268, 'neutral', NULL, 5185, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
+REPLACE INTO `im_commento_sentiment` VALUES(5268, 'neutral', NULL, 5185, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
 REPLACE INTO `im_commento_sentiment` VALUES(5269, 'positive', NULL, 5186, 'positive', 'positive', 'positive', 'But it was not Cheap & Chic? (Style\nthis has been my great enthusiasm). Beautiful object of desire Disposable!', 'it', 'positive', 'positive', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5270, 'neutral', NULL, 5187, 'neutral', 'negative', 'negative', 'What kind of message sends a similar bag! I collection I have not seen it yet, but if this is the concept I know that it is better not to see her!', 'it', 'positive', 'positive', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5271, 'positive', NULL, 5188, 'negative', 'negative', 'negative', 'This is not original, it''s just bad taste with the ambition of provocation.', 'it', 'negative', 'negative', '{"type": "", "is_spam": false}');
@@ -5803,7 +5803,7 @@ REPLACE INTO `im_commento_sentiment` VALUES(5776, 'neutral', NULL, 5693, 'negati
 REPLACE INTO `im_commento_sentiment` VALUES(5777, 'neutral', NULL, 5694, 'neutral', 'negative', 'positive', 'Antonella Mele😍😍😍', 'it', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5778, 'neutral', NULL, 5695, 'neutral', 'negative', 'positive', 'Federica Colombi', 'it', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5779, 'neutral', NULL, 5696, 'neutral', 'negative', 'positive', 'Francesca Faralli Here 😍', 'co', 'neutral', 'negative', '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5780, 'neutral', NULL, 5697, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
+REPLACE INTO `im_commento_sentiment` VALUES(5780, 'neutral', NULL, 5697, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
 REPLACE INTO `im_commento_sentiment` VALUES(5781, 'neutral', NULL, 5698, 'neutral', 'negative', 'negative', 'Samuela Bide per thousand scratch bianca 😍😍', 'ro', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5782, 'neutral', NULL, 5699, 'neutral', 'neutral', 'neutral', 'All !!!!!!', 'it', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5783, 'neutral', NULL, 5700, 'neutral', 'positive', 'positive', 'always so beautiful ..', 'it', 'positive', 'positive', '{"type": "", "is_spam": false}');
@@ -5904,7 +5904,7 @@ REPLACE INTO `im_commento_sentiment` VALUES(5877, 'neutral', NULL, 5794, 'neutra
 REPLACE INTO `im_commento_sentiment` VALUES(5878, 'neutral', NULL, 5795, 'neutral', 'negative', 'positive', 'Ramize Djumsiti ....', 'sq', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5879, 'neutral', NULL, 5796, 'neutral', 'positive', 'neutral', 'I was serving ago when she lived in Florence, and Raspini Franco.', 'it', 'positive', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5880, 'positive', NULL, 5797, 'neutral', 'positive', 'positive', 'Fanny Giraudeau Lucille Marie Lerat Alexandre Guyomard Hervet it reminds you sth?', 'fr', 'positive', 'positive', '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5881, 'neutral', NULL, 5798, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
+REPLACE INTO `im_commento_sentiment` VALUES(5881, 'neutral', NULL, 5798, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
 REPLACE INTO `im_commento_sentiment` VALUES(5882, 'neutral', NULL, 5799, 'neutral', 'neutral', 'positive', 'Ralitza Popova za tozi magazin ti razpravqh vuv Florencia :)', 'bg', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5883, 'neutral', NULL, 5800, 'neutral', 'positive', 'positive', 'Beautiful!', 'it', 'positive', 'positive', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5884, 'positive', NULL, 5801, 'positive', 'positive', 'positive', 'Love it!!!!', 'en', 'positive', 'positive', '{"type": "", "is_spam": false}');
@@ -5915,17 +5915,17 @@ REPLACE INTO `im_commento_sentiment` VALUES(5888, 'neutral', NULL, 5805, 'neutra
 REPLACE INTO `im_commento_sentiment` VALUES(5889, 'neutral', NULL, 5806, 'neutral', 'neutral', 'neutral', '😍😍😍😍😍', 'en', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5890, 'neutral', NULL, 5807, 'neutral', 'neutral', 'neutral', '🔝🔝🔝🔝🔝', 'en', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5891, 'neutral', NULL, 5808, 'neutral', 'negative', 'positive', 'Gabriella Scopelliti', 'it', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5892, 'neutral', NULL, 5809, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5893, 'neutral', NULL, 5810, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5894, 'neutral', NULL, 5811, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5895, 'neutral', NULL, 5812, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5896, 'neutral', NULL, 5813, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5897, 'neutral', NULL, 5814, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5898, 'neutral', NULL, 5815, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5899, 'neutral', NULL, 5816, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5900, 'neutral', NULL, 5817, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5901, 'neutral', NULL, 5818, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5902, 'neutral', NULL, 5819, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
+REPLACE INTO `im_commento_sentiment` VALUES(5892, 'neutral', NULL, 5809, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
+REPLACE INTO `im_commento_sentiment` VALUES(5893, 'neutral', NULL, 5810, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
+REPLACE INTO `im_commento_sentiment` VALUES(5894, 'neutral', NULL, 5811, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
+REPLACE INTO `im_commento_sentiment` VALUES(5895, 'neutral', NULL, 5812, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
+REPLACE INTO `im_commento_sentiment` VALUES(5896, 'neutral', NULL, 5813, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
+REPLACE INTO `im_commento_sentiment` VALUES(5897, 'neutral', NULL, 5814, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
+REPLACE INTO `im_commento_sentiment` VALUES(5898, 'neutral', NULL, 5815, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
+REPLACE INTO `im_commento_sentiment` VALUES(5899, 'neutral', NULL, 5816, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
+REPLACE INTO `im_commento_sentiment` VALUES(5900, 'neutral', NULL, 5817, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
+REPLACE INTO `im_commento_sentiment` VALUES(5901, 'neutral', NULL, 5818, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
+REPLACE INTO `im_commento_sentiment` VALUES(5902, 'neutral', NULL, 5819, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
 REPLACE INTO `im_commento_sentiment` VALUES(5903, 'positive', NULL, 5820, 'positive', 'positive', 'positive', 'I LOVE YOUR COLLECTIONS .', 'en', 'positive', 'positive', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5904, 'positive', NULL, 5821, 'positive', 'positive', 'positive', 'I LOVE YOUR COLLCTION .', 'en', 'positive', 'positive', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5905, 'positive', NULL, 5822, 'positive', 'positive', 'positive', 'I LOVE YOUR COLLCTION .', 'en', 'positive', 'positive', '{"type": "", "is_spam": false}');
@@ -6009,11 +6009,11 @@ REPLACE INTO `im_commento_sentiment` VALUES(5982, 'neutral', NULL, 5899, 'neutra
 REPLACE INTO `im_commento_sentiment` VALUES(5983, 'neutral', NULL, 5900, 'neutral', 'neutral', 'positive', 'Federica Porzio', 'it', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5984, 'neutral', NULL, 5901, 'neutral', 'neutral', 'positive', 'Tati Signorelli', 'it', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5985, 'positive', NULL, 5902, 'neutral', 'negative', 'positive', 'Sabrina Beta', 'it', 'positive', 'neutral', '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5986, 'neutral', NULL, 5903, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
+REPLACE INTO `im_commento_sentiment` VALUES(5986, 'neutral', NULL, 5903, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
 REPLACE INTO `im_commento_sentiment` VALUES(5987, 'neutral', NULL, 5904, 'neutral', 'positive', 'positive', 'salamat😊', 'tl', 'positive', 'positive', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5988, 'neutral', NULL, 5905, 'neutral', 'neutral', 'neutral', '😍😍😍😍', 'en', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5989, 'neutral', NULL, 5906, 'neutral', 'neutral', 'positive', '<3', 'en', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
-REPLACE INTO `im_commento_sentiment` VALUES(5990, 'neutral', NULL, 5907, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "", "is_spam": false}');
+REPLACE INTO `im_commento_sentiment` VALUES(5990, 'neutral', NULL, 5907, NULL, NULL, NULL, '', 'en', NULL, NULL, '{"type": "blank", "is_spam": true}');
 REPLACE INTO `im_commento_sentiment` VALUES(5991, 'positive', NULL, 5908, 'positive', 'positive', 'positive', 'very nice!', 'en', 'positive', 'positive', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5992, 'neutral', NULL, 5909, 'neutral', 'neutral', 'positive', '<3', 'en', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
 REPLACE INTO `im_commento_sentiment` VALUES(5993, 'neutral', NULL, 5910, 'neutral', 'positive', 'positive', 'what price', 'it', 'neutral', 'neutral', '{"type": "", "is_spam": false}');
