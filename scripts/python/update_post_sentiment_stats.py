@@ -5,8 +5,8 @@ from utils.db_utils.base_db import Database
 from utils.print_utils.helpers import print_horizontal_rule
 from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 
-
 SENTIMENT_DEFAULT_STATS = {
+    'total_comments': 0,
     'sentiment_label': '',
     'sentiment_stats': {
         'total': 0
@@ -80,6 +80,7 @@ def update_post_sentiment_stats(sentiment_api_columns=(), id_selection='', db_na
             db_update=db_update,
             sentiment_api_columns=sentiment_api_columns)
 
+
     # set default post sentient
     set_default_post_sentiment(
         subquery=subquery,
@@ -130,22 +131,24 @@ def determine_and_update_post_sentiment(rows, db_select, db_update, sentiment_ap
 def count_comment_sentiment_labels(post_id, api_column, db):
     sentiment_stats = deepcopy(SENTIMENT_DEFAULT_STATS)
     results = db.fetch_all(
-        select=
-        "COUNT(s.{0}) AS total, \
-        SUM(CASE WHEN s.{0} = 'neutral' THEN 1 ELSE 0 END) AS neutral, \
-        SUM(CASE WHEN s.{0} = 'negative' THEN 1 ELSE 0 END) AS negative,\
-        SUM(CASE WHEN s.{0} = 'positive'  THEN 1 ELSE 0 END) AS positive ".format(api_column),
+        select=api_column,
         from_clause=
         "im_commento AS c JOIN   \
         im_commento_sentiment AS s ON c.id = s.idcommento",
         where=
         "c.idpost = {0} AND s.spam like '%is_spam%false%'".format(post_id))
+    for row in results:
+        comment_sentiment = row[0]
+        if comment_sentiment is None or comment_sentiment == '':
+            continue
+        comment_sentiment = json.loads(comment_sentiment)
 
-    sentiment_stats['sentiment_stats']['total'] = int(results[0][0])  # maybe remove total? inconsistency issues?
-    if sentiment_stats['sentiment_stats']['total'] > 0:
-        sentiment_stats['sentiment_stats']['neutral'] = int(results[0][1])
-        sentiment_stats['sentiment_stats']['negative'] = int(results[0][2])
-        sentiment_stats['sentiment_stats']['positive'] = int(results[0][3])
+        stats = sentiment_stats['sentiment_stats']
+        for sentiment in ['neutral', 'positive', 'negative']:
+            stats[sentiment] = stats.get(sentiment, 0.0) + float(comment_sentiment[sentiment])
+            stats['total'] += float(comment_sentiment[sentiment])
+
+        sentiment_stats['total_comments'] += 1
         sentiment_stats['sentiment_label'] = get_most_frequent_label(deepcopy(sentiment_stats['sentiment_stats']))
 
     return sentiment_stats
