@@ -32,9 +32,10 @@ class CommentSentimentDbConnection(Database):
         self.table = "im_commento_sentiment"
         self.select = "id, idcommento, english_translation, real_sentiment, spam"
 
-    def fetch_all(self, where=""):
+    def fetch_all(self, select="", where=""):
+        select = select if select != "" else self.select
         return super(CommentSentimentDbConnection, self).fetch_all(
-            select=self.select,
+            select=select,
             from_clause=self.table,
             where=where,
             order_by="idcommento")

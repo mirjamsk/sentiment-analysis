@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from rest_framework import  pagination
+from rest_framework import pagination
 from .models import Post, Comment
-from .utils import SENTIMENT_LABELS
 
 
 class CustomPaginationSerializer(pagination.PageNumberPagination):
@@ -12,7 +11,7 @@ class CustomPaginationSerializer(pagination.PageNumberPagination):
 
 class PostSerializer(serializers.ModelSerializer):
     detail_link = serializers.HyperlinkedIdentityField(view_name='post-detail')
-    real_sentiment = serializers.ChoiceField(source='post_sentiment.real_sentiment', choices=SENTIMENT_LABELS)
+    real_sentiment = serializers.JSONField(source='post_sentiment.real_sentiment')
     sentiment_api1_ol = serializers.JSONField(source='post_sentiment.sentiment_api1', read_only=True)
     sentiment_api1_en = serializers.JSONField(source='post_sentiment.sentiment_api1_en', read_only=True)
     sentiment_api2_ol = serializers.JSONField(source='post_sentiment.sentiment_api2', read_only=True)
@@ -59,19 +58,19 @@ class PostSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     detail_link = serializers.HyperlinkedIdentityField(view_name='comment-detail')
-    language = serializers.CharField(source='comment_sentiment.language', read_only=True)
     english_translation = serializers.CharField(source='comment_sentiment.english_translation', read_only=True)
+    language = serializers.CharField(source='comment_sentiment.language', read_only=True)
     spam = serializers.JSONField(source='comment_sentiment.spam', read_only=True)
 
-    real_sentiment = serializers.ChoiceField(source='comment_sentiment.real_sentiment', choices=SENTIMENT_LABELS)
+    real_sentiment = serializers.JSONField(source='comment_sentiment.real_sentiment')
 
-    sentiment_api1_ol = serializers.CharField(source='comment_sentiment.sentiment_api1', read_only=True)
-    sentiment_api2_ol = serializers.CharField(source='comment_sentiment.sentiment_api2', read_only=True)
-    sentiment_api1_en = serializers.CharField(source='comment_sentiment.sentiment_api1_en', read_only=True)
-    sentiment_api2_en = serializers.CharField(source='comment_sentiment.sentiment_api2_en', read_only=True)
+    sentiment_api1_ol = serializers.JSONField(source='comment_sentiment.sentiment_api1', read_only=True)
+    sentiment_api2_ol = serializers.JSONField(source='comment_sentiment.sentiment_api2', read_only=True)
+    sentiment_api1_en = serializers.JSONField(source='comment_sentiment.sentiment_api1_en', read_only=True)
+    sentiment_api2_en = serializers.JSONField(source='comment_sentiment.sentiment_api2_en', read_only=True)
 
-    sentiment_api3 = serializers.CharField(source='comment_sentiment.sentiment_api3', read_only=True)
-    sentiment_api4 = serializers.CharField(source='comment_sentiment.sentiment_api4', read_only=True)
+    sentiment_api3 = serializers.JSONField(source='comment_sentiment.sentiment_api3', read_only=True)
+    sentiment_api4 = serializers.JSONField(source='comment_sentiment.sentiment_api4', read_only=True)
 
     class Meta:
         model = Comment

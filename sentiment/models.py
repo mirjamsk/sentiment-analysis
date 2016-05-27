@@ -11,7 +11,6 @@ from __future__ import unicode_literals
 import json
 from django.db import models
 from jsonfield import JSONField
-from .utils import SENTIMENT_LABELS
 
 
 class AuthGroup(models.Model):
@@ -330,18 +329,17 @@ class CommentSentiment(models.Model):
     id = models.AutoField(primary_key=True)
     idcomment = models.OneToOneField('Comment', db_column='idcommento', related_name='comment_sentiment')
 
+    spam = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
     language = models.CharField(max_length=45, blank=True)
     english_translation = models.TextField(blank=True)
 
-    spam = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
-
-    real_sentiment = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
-    sentiment_api1 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
-    sentiment_api2 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
-    sentiment_api3 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
-    sentiment_api4 = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
-    sentiment_api1_en = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
-    sentiment_api2_en = models.CharField(choices=SENTIMENT_LABELS, max_length=8, blank=True, null=True)
+    real_sentiment = JSONField(blank=True, null=True)
+    sentiment_api1 = JSONField()
+    sentiment_api2 = JSONField()
+    sentiment_api3 = JSONField()
+    sentiment_api4 = JSONField()
+    sentiment_api1_en = JSONField()
+    sentiment_api2_en = JSONField()
 
     class Meta:
         managed = True
