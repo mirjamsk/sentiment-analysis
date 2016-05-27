@@ -113,7 +113,8 @@
 }
 
 .comment-APIs .activator i {
-    margin-top: -20px;
+    margin-top: -15px;
+    margin-right: -3px;
 }
 
 .comment-APIs tr {
@@ -141,7 +142,7 @@
 }
 
 table.comment-full-sentiment {
-    margin: 0 5%;
+    margin: 3% 5% 0 5%;
     max-width: 80%;
     font-size: 0.95rem;
 }

@@ -107,8 +107,16 @@ var CommentListModule = (function () {
                     .html(comment.spam.type);
             } else {
                 tempListItem
-                    .find('tr.comment_' + data.sentimentLabels.realSentiment + ' span')
-                    .html(comment[data.sentimentLabels.realSentiment]);
+                    .find('tr.comment_' + data.sentimentLabels.realSentiment + ' span');
+                tempListItem
+                    .find('.sentiment-api-positive-value')
+                    .html(comment[data.sentimentLabels.realSentiment].positive);
+                tempListItem
+                    .find('.sentiment-api-neutral-value')
+                    .html(comment[data.sentimentLabels.realSentiment].neutral);
+                tempListItem
+                    .find('.sentiment-api-negative-value')
+                    .html(comment[data.sentimentLabels.realSentiment].negative);
                 var $dummySentimentEle = tempListItem
                     .find('.comment_' + data.sentimentLabels.realSentiment)
                     .first()
@@ -124,8 +132,14 @@ var CommentListModule = (function () {
                         .find('.sentiment-api-label')
                         .html(api.split('sentiment_')[1].replace(/_/g, ' ').toUpperCase());
                     $sentimentEle
-                        .find('.sentiment-api-value')
-                        .html(comment[api]);
+                        .find('.sentiment-api-positive-value')
+                        .html(comment[api].positive);
+                    $sentimentEle
+                        .find('.sentiment-api-neutral-value')
+                        .html(comment[api].neutral);
+                    $sentimentEle
+                        .find('.sentiment-api-negative-value')
+                        .html(comment[api].negative);
                     $table.append($sentimentEle);
                 });
                 tempListItem
