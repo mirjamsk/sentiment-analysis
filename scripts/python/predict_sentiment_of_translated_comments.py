@@ -1,3 +1,4 @@
+import json
 from utils.print_utils.helpers import print_horizontal_rule
 from utils.db_utils.base_db import Database
 from utils.db_utils.sentiment_db import CommentSentimentDbConnection
@@ -45,11 +46,13 @@ def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
         api.post()
 
         if api.is_request_successful():
-            print ("Predicted sentiment: %s" % api.get_sentiment())
+            api.update_sentiment_stats()
+            print ("Predicted sentiment: %s" % json.dumps(api.get_sentiment_stats(), indent=2))
+
             db_sentiment.update(
                 comment_id=comment_id,
-                value=api.get_sentiment(),
-                column=api.sentiment_api_column)
+                column=api.sentiment_api_column,
+                value=json.dumps(api.get_sentiment_stats()))
         else:
             print ("API request was NOT successful: returned %d status code" % api.get_status_code())
             break

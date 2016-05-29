@@ -78,18 +78,19 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'id',
             'language',
+            'idpost',
+            'detail_link',
             'content',
             'english_translation',
+            'spam',
             'real_sentiment',
             'sentiment_api1_ol',
             'sentiment_api1_en',
             'sentiment_api2_ol',
             'sentiment_api2_en',
             'sentiment_api3',
-            'sentiment_api4',
-            'spam',
-            'idpost',
-            'detail_link')
+            'sentiment_api4'
+        )
         read_only_fields = ('id', 'detail_link', 'idpost', 'content')
 
     def update(self, instance, validated_data):

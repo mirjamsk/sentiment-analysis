@@ -1,3 +1,4 @@
+import json
 from utils.print_utils.helpers import print_horizontal_rule
 from utils.api_utils.sentiment_api import TextProcessingAPI, ViveknAPI
 from utils.db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbConnection
@@ -26,16 +27,20 @@ def run_sentiment_api_batch(api=None,id_selection="", db_name="sentiment_db"):
 
         print ("Comment_id: %s" % comment_id)
         print ("Content: %s" % content)
+        if content is None or content == '':
+            print("Skipping empty comment...")
+            continue
 
         api.set_data(content)
         api.post()
 
         if api.is_request_successful():
-            print ("Predicted sentiment: %s" % api.get_sentiment())
+            api.update_sentiment_stats()
+            print ("Predicted sentiment: %s" % json.dumps(api.get_sentiment_stats(), indent=2))
             db_sentiment.update(
                 comment_id=comment_id,
-                value=api.get_sentiment(),
-                column=api.sentiment_api_column)
+                column=api.sentiment_api_column,
+                value=json.dumps(api.get_sentiment_stats()))
         else:
             print("API request was NOT successful: returned %d status code" % api.get_status_code())
             break
@@ -66,7 +71,7 @@ def main():
 
     run_sentiment_api_batch(
         id_selection=parser.id_selection,
-        api=API_choices.get(parser.args.api)())
+        api=API_choices.get(parser.args.api)(lang='ol'))
 
 
 if __name__ == '__main__':
