@@ -79,3 +79,6 @@ temp_sqldumps/
 
 # sass files
 *.css.map
+
+# local python scripts
+convert_comment_real_sentiment.py

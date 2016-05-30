@@ -80,7 +80,6 @@ def update_post_sentiment_stats(sentiment_api_columns=(), id_selection='', db_na
             db_update=db_update,
             sentiment_api_columns=sentiment_api_columns)
 
-
     # set default post sentient
     set_default_post_sentiment(
         subquery=subquery,
@@ -142,11 +141,19 @@ def count_comment_sentiment_labels(post_id, api_column, db):
         if comment_sentiment is None or comment_sentiment == '':
             continue
         comment_sentiment = json.loads(comment_sentiment)
+        #print(comment_sentiment)
 
         stats = sentiment_stats['sentiment_stats']
-        for sentiment in ['neutral', 'positive', 'negative']:
-            stats[sentiment] = stats.get(sentiment, 0.0) + float(comment_sentiment[sentiment])
-            stats['total'] += float(comment_sentiment[sentiment])
+
+        # adds up all sentiment probabilities
+        # for sentiment in ['neutral', 'positive', 'negative']:
+        #    stats[sentiment] = stats.get(sentiment, 0.0) + float(comment_sentiment[sentiment])
+        #    stats['total'] += float(comment_sentiment[sentiment])
+
+        # adds up only the labeled sentiment
+        sentiment = comment_sentiment['sentiment_label']
+        stats[sentiment] = stats.get(sentiment, 0) + 1
+        stats['total'] += 1
 
         sentiment_stats['total_comments'] += 1
         sentiment_stats['sentiment_label'] = get_most_frequent_label(deepcopy(sentiment_stats['sentiment_stats']))
