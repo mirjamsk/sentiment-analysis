@@ -344,3 +344,14 @@ class CommentSentiment(models.Model):
     class Meta:
         managed = True
         db_table = 'im_commento_sentiment'
+
+
+class SentimentApiStats(models.Model):
+    id = models.AutoField(primary_key=True)
+    api_id = models.CharField(max_length=45, blank=False, unique=True)
+    accuracy = models.FloatField(default=-1)
+    accuracy_with_spam = models.FloatField(default=-1)
+
+    class Meta:
+        managed = True
+        db_table = 'im_sentiment_api_stats'

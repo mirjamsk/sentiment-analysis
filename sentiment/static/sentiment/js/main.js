@@ -70,4 +70,8 @@ require(['jquery', 'url-parser', 'post-list-module', 'post-detail-module', 'comm
             CommentListModule.init(requestedPost, sentimentLabels);
         });
     }
+
+    $(document).ready(function () {
+        $(".button-collapse").sideNav();
+    })
 });

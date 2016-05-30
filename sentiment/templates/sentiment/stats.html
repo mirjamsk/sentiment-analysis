@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'sentiment/css/materialize.css' %}">
+<script src="{% static 'sentiment/js/libs/jquery-2.2.3.min.js' %}"></script>
+<script src="{% static 'sentiment/js/libs/materialize.min.js' %}"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+{% include 'sentiment/navbar.html' %}
+
+<div class="container">
+    <div class="section">
+        <b>Important!</b>
+        <p>This statistic is only for cca 2000 comments (ones with determined real sentiment) including the spam comments (i.e not cleaned data)</p>
+    </div>
+    <table class="highlight bordered responsive-table">
+        <thead>
+        <tr>
+            <th data-field="ap-id">API id</th>
+            <th data-field="name">Accuracy</th>
+            <th data-field="name">Accuracy with spam</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for api in stats %}
+            <tr>
+                <td>{{ api.api_id }}</td>
+                <td>{{ api.accuracy }}</td>
+                <td>{{ api.accuracy_with_spam }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+<script src="{% static 'sentiment/js/stats.js' %}"></script>
+
+
+
+
+
