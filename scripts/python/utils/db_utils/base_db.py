@@ -44,10 +44,10 @@ class Database(object):
     def update(self, table="", set={}, where=""):
         set_query = ''
         for column, value in set.items():
-            set_query += "%s='%s'," % (column, value)
+            set_query += "`%s` = '%s'," % (column, value)
 
         set_query = set_query[:-1]  # remove the trailing comma (,)
-        sql = "UPDATE %s SET %s WHERE %s" % (table, set_query, where)
+        sql = "UPDATE `%s` SET %s WHERE %s" % (table, set_query, where)
         try:
             self.cursor.execute(sql)
             self.connection.commit()

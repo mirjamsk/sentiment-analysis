@@ -27,7 +27,8 @@ class SentimentApiStatsDbConnection(Database):
             where="api_id='%d'" % api_id)
 
     def update(self, api_id="", column="", value=""):
+        print('Updating %s row' % api_id)
         return super(SentimentApiStatsDbConnection, self).update(
             table=self.table,
             set={column: value},
-            where="api_id = '%s'" % api_id)
+            where="`api_id` = '%s'" % api_id)

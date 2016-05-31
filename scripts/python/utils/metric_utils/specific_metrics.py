@@ -38,8 +38,8 @@ class RecallMetric(BaseMetric):
 
         BaseMetric.__init__(
             self,
-            db_column='accuracy',
-            db_column_with_spam='accuracy_with_spam')
+            db_column='recall',
+            db_column_with_spam='recall_with_spam')
 
     def calculate_stats(self):
         for sentiment in self.recall.keys():
@@ -68,8 +68,8 @@ class PrecisionMetric(BaseMetric):
         }
         BaseMetric.__init__(
             self,
-            db_column='accuracy',
-            db_column_with_spam='accuracy_with_spam')
+            db_column='precision',
+            db_column_with_spam='precision_with_spam')
 
     def calculate_stats(self):
         for sentiment in self.precision.keys():

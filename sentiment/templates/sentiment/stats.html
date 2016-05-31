@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load metric_filters %}
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'sentiment/css/materialize.css' %}">
 <script src="{% static 'sentiment/js/libs/jquery-2.2.3.min.js' %}"></script>
@@ -19,6 +20,10 @@
             <th data-field="ap-id">API id</th>
             <th data-field="name">Accuracy</th>
             <th data-field="name">Accuracy with spam</th>
+            <th data-field="name">Recall</th>
+            <th data-field="name">Recall with spam</th>
+            <th data-field="name">Precision</th>
+            <th data-field="name">Precision with spam</th>
         </tr>
         </thead>
 
@@ -28,6 +33,10 @@
                 <td>{{ api.api_id }}</td>
                 <td>{{ api.accuracy }}</td>
                 <td>{{ api.accuracy_with_spam }}</td>
+                <td class="collection">{{ api.recall | collection_itemize | safe}}</td>
+                <td class="collection">{{ api.recall_with_spam | collection_itemize | safe}}</td>
+                <td class="collection">{{ api.precision_without_neutral | collection_itemize | safe }}</td>
+                <td class="collection">{{ api.precision_without_neutral_with_spam | collection_itemize | safe}}</td>
             </tr>
         {% endfor %}
 

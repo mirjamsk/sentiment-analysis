@@ -347,10 +347,22 @@ class CommentSentiment(models.Model):
 
 
 class SentimentApiStats(models.Model):
+    default_stats = {
+        'neutral': -1,
+        'positive': -1,
+        'negative': -1
+    }
     id = models.AutoField(primary_key=True)
     api_id = models.CharField(max_length=45, blank=False, unique=True)
+
     accuracy = models.FloatField(default=-1)
     accuracy_with_spam = models.FloatField(default=-1)
+
+    recall = JSONField(default=json.dumps(default_stats))
+    recall_with_spam = JSONField(default=json.dumps(default_stats))
+
+    precision_without_neutral = JSONField(default=json.dumps(default_stats))
+    precision_without_neutral_with_spam = JSONField(default=json.dumps(default_stats))
 
     class Meta:
         managed = True
