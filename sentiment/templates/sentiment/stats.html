@@ -1,10 +1,12 @@
 {% load staticfiles %}
 {% load metric_filters %}
+
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'sentiment/css/materialize.css' %}">
+<link rel="stylesheet" href="{% static 'sentiment/css/stats.css' %}">
+
 <script src="{% static 'sentiment/js/libs/jquery-2.2.3.min.js' %}"></script>
 <script src="{% static 'sentiment/js/libs/materialize.min.js' %}"></script>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 {% include 'sentiment/navbar.html' %}
@@ -12,37 +14,25 @@
 <div class="container">
     <div class="section">
         <b>Important!</b>
-        <p>This statistic is only for cca 2000 comments (ones with determined real sentiment) including the spam comments (i.e not cleaned data)</p>
+        <p>This statistic is only for cca 2000 comments (ones with determined real sentiment) including the spam
+            comments (i.e not cleaned data)</p>
+        <p>Sentiment 3&4 are without neutral tags</p>
     </div>
-    <table class="highlight bordered responsive-table">
-        <thead>
-        <tr>
-            <th data-field="ap-id">API id</th>
-            <th data-field="name">Accuracy</th>
-            <th data-field="name">Accuracy with spam</th>
-            <th data-field="name">Recall</th>
-            <th data-field="name">Recall with spam</th>
-            <th data-field="name">Precision</th>
-            <th data-field="name">Precision with spam</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for api in stats %}
-            <tr>
-                <td>{{ api.api_id }}</td>
-                <td>{{ api.accuracy }}</td>
-                <td>{{ api.accuracy_with_spam }}</td>
-                <td class="collection">{{ api.recall | collection_itemize | safe}}</td>
-                <td class="collection">{{ api.recall_with_spam | collection_itemize | safe}}</td>
-                <td class="collection">{{ api.precision_without_neutral | collection_itemize | safe }}</td>
-                <td class="collection">{{ api.precision_without_neutral_with_spam | collection_itemize | safe}}</td>
-            </tr>
-        {% endfor %}
-
-        </tbody>
-    </table>
+    <div class="row">
+        <ul id="api-stats-list" class="collapsible popout col s12 m10 l7" data-collapsible="expandable">
+            {% for api in stats %}
+                <li>
+                    <div class="collapsible-header grey-text text-darken-3"><i
+                            class="material-icons ">list</i>{{ api.api_id | prettify_api_id }}</div>
+                    <div class="collapsible-body">
+                        {% include 'sentiment/api-evaluation-table.html' %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
+
 <script src="{% static 'sentiment/js/stats.js' %}"></script>
 
 

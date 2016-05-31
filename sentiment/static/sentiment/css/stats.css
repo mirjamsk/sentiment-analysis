@@ -1,0 +1,16 @@
+
+#api-stats-list .collapsible-body {
+    padding: 1rem 2rem;
+}
+
+#api-stats-list tr > td:nth-child(1) {
+    font-weight: 500;
+}
+
+#api-stats-list tr:nth-child(1) > th:nth-child(2),
+#api-stats-list tr:nth-child(1) > th:nth-child(3),
+#api-stats-list tr:nth-child(1) > td:nth-child(2),
+#api-stats-list tr:nth-child(1) > td:nth-child(3) {
+    padding-left: 1.7rem;
+}
+

@@ -1,0 +1,31 @@
+{% load metric_filters %}
+
+<table class="highlight bordered">
+    <thead>
+    <tr>
+        <th data-field="name">Metric</th>
+        <th data-field="name">Value</th>
+        <th data-field="name">Value with spam</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td>Accuracy</td>
+        <td>{{ api.accuracy }}</td>
+        <td>{{ api.accuracy_with_spam }}</td>
+    </tr>
+
+    <tr>
+        <td>Recall</td>
+        <td class="collection">{{ api.recall | collection_itemize | safe }}</td>
+        <td class="collection">{{ api.recall_with_spam | collection_itemize | safe }}</td>
+    </tr>
+    <tr>
+        <td>Precision</td>
+        <td class="collection">{{ api.precision| collection_itemize | safe }}</td>
+        <td class="collection">{{ api.precision_with_spam | collection_itemize | safe }}</td>
+    </tr>
+
+    </tbody>
+</table>

@@ -361,8 +361,8 @@ class SentimentApiStats(models.Model):
     recall = JSONField(default=json.dumps(default_stats))
     recall_with_spam = JSONField(default=json.dumps(default_stats))
 
-    precision_without_neutral = JSONField(default=json.dumps(default_stats))
-    precision_without_neutral_with_spam = JSONField(default=json.dumps(default_stats))
+    precision = JSONField(default=json.dumps(default_stats))
+    precision_with_spam = JSONField(default=json.dumps(default_stats))
 
     class Meta:
         managed = True
