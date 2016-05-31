@@ -16,7 +16,27 @@
         <b>Important!</b>
         <p>This statistic is only for cca 2000 comments (ones with determined real sentiment) including the spam
             comments (i.e not cleaned data)</p>
-        <p>Sentiment 3&4 are without neutral tags</p>
+        <div class="section">
+            <div><b>Accuracy</b></div>
+            <div>(#correctly predicted)/(#total comments)</div>
+        </div>
+        <div class="section">
+            <div><b>Recall</b></div>
+            <div>For each class: TP/(TP+FN)</div>
+            <div>Tells us what proportion of {positive,negative, neutral} comments were actually predicted as
+                {positive,negative, neutral}. In other words, out of all the {positive,negative, neutral} examples, what
+                fraction did the classifier pick up?
+            </div>
+        </div>
+        <div class="section">
+            <div><b>Precision</b></div>
+            <div>For each class: TP/(TP+FP)</div>
+            <div>Tells us what proportion of labels that were predicted as {positive,negative, neutral} actually are
+                {positive,negative, neutral}. In other words, out of all the examples the classifier labeled as
+                {positive,negative, neutral}, what fraction were correct?
+            </div>
+        </div>
+
     </div>
     <div class="row">
         <ul id="api-stats-list" class="collapsible popout col s12 m10 l7" data-collapsible="expandable">
