@@ -106,25 +106,28 @@ var CommentListModule = (function () {
                     .find('.spam-type')
                     .html(comment.spam.type);
             } else {
+                var realSentiment = data.sentimentLabels.realSentiment;
+                var realSentimentStats = comment[realSentiment]['sentiment_stats'];
                 tempListItem
-                    .find('tr.comment_' + data.sentimentLabels.realSentiment + ' span');
+                    .find('tr.comment_' + realSentiment + ' span');
                 tempListItem
                     .find('.sentiment-api-positive-value')
-                    .html(comment[data.sentimentLabels.realSentiment].positive);
+                    .html(realSentimentStats.positive);
                 tempListItem
                     .find('.sentiment-api-neutral-value')
-                    .html(comment[data.sentimentLabels.realSentiment].neutral);
+                    .html(realSentimentStats.neutral);
                 tempListItem
                     .find('.sentiment-api-negative-value')
-                    .html(comment[data.sentimentLabels.realSentiment].negative);
+                    .html(realSentimentStats.negative);
                 var $dummySentimentEle = tempListItem
-                    .find('.comment_' + data.sentimentLabels.realSentiment)
+                    .find('.comment_' + realSentiment)
                     .first()
                     .clone()
-                    .removeClass('comment_' + data.sentimentLabels.realSentiment);
+                    .removeClass('comment_' + realSentiment);
                 var $table = tempListItem.find('.comment-full-sentiment tbody');
 
                 data.sentimentLabels.sentimentAPIs.forEach(function (api) {
+                    var apiSentimentStats = comment[api]['sentiment_stats'];
                     var $sentimentEle = $dummySentimentEle
                         .clone()
                         .addClass('comment_' + api);
@@ -133,13 +136,13 @@ var CommentListModule = (function () {
                         .html(api.split('sentiment_')[1].replace(/_/g, ' ').toUpperCase());
                     $sentimentEle
                         .find('.sentiment-api-positive-value')
-                        .html(comment[api].positive);
+                        .html(apiSentimentStats.positive);
                     $sentimentEle
                         .find('.sentiment-api-neutral-value')
-                        .html(comment[api].neutral);
+                        .html(apiSentimentStats.neutral);
                     $sentimentEle
                         .find('.sentiment-api-negative-value')
-                        .html(comment[api].negative);
+                        .html(apiSentimentStats.negative);
                     $table.append($sentimentEle);
                 });
                 tempListItem
