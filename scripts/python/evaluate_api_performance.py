@@ -79,7 +79,6 @@ def calculate_accuracy(metric=None, consider_spam=False, sentiment_api_columns=N
             comment_id = row[0]
             real_sentiment = json.loads(row[1])
             api_sentiment = json.loads(row[2])
-
             metric.update_stats(
                 real_sentiment=real_sentiment,
                 predicted_sentiment=api_sentiment)
@@ -87,6 +86,7 @@ def calculate_accuracy(metric=None, consider_spam=False, sentiment_api_columns=N
             #print_each_step(metric, comment_id, sentiment_api_column, api_sentiment, real_sentiment)
             #print_horizontal_rule()
 
+        print_real_sentiment_distribution(metric)
         metric.calculate_stats()
         metric.print_stats()
         print_horizontal_rule()
@@ -104,6 +104,22 @@ def print_each_step( metric, comment_id, sentiment_api_column, api_sentiment, re
     print ("Comment id: %d" % comment_id)
     print ("%s: %s vs %s" % (sentiment_api_column, real_sentiment['sentiment_label'], api_sentiment['sentiment_label']))
     metric.print_stats()
+
+
+def print_real_sentiment_distribution(metric):
+    distribution = {
+        'positive': 0,
+        'negative': 0,
+        'neutral': 0
+    }
+    for sentiment in distribution.keys():
+        distribution[sentiment] = metric.TP[sentiment] + metric.FN[sentiment]
+        distribution[sentiment] /= float(metric.total_sentiment_predictions)
+        distribution[sentiment] = 100 * round(distribution[sentiment], 4)
+        distribution[sentiment] = str(distribution[sentiment])+'%'
+
+    print('Real sentiment distribution %s' % json.dumps(distribution, indent=2))
+
 
 if __name__ == '__main__':
     main()
