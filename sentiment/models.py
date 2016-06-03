@@ -350,9 +350,12 @@ class CommentSentiment(models.Model):
 class CommentSpam(models.Model):
     id = models.AutoField(primary_key=True)
     idcomment = models.OneToOneField('Comment', db_column='idcommento', related_name='comment_spam')
+
+    spam_api1_bare = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
     spam_api1_with_blog = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
     spam_api1_with_comment_author = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
-    spam_api1_bare = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
+    spam_api1_with_comment_author_and_blog = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
+
     spam_api1_en = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
 
     class Meta:

@@ -46,3 +46,6 @@ class IdSelectionArgumentParser(object):
             help=help,
             choices=choices,
             required=required)
+
+    def add_mutually_exclusive_group(self, required=True):
+        return self.parser.add_mutually_exclusive_group(required=required)

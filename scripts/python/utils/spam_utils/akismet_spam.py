@@ -1,20 +1,31 @@
-from base_api import BaseAPI
 from akismet import Akismet
 
 
-class AkismetSpamAPI(BaseAPI):
+class AkismetSpam(object):
     def __init__(self):
-        self.ApiKey = 'ade34decf355'
-        self.api = Akismet(self.ApiKey, 'sentiment-analysis.ml')
-        BaseAPI.__init__(
-            self,
-            # url='https://'+self.ApiKey+'akismet.com/1.1/comment-check',
-        )
+        self.data = {
+            'blog': 'sentiment-analysis6',
+            'user_ip': '127.0.0.1',
+            'comment_type': 'comment',
+            'comment_author': 0,
+            'user_agent': 'sentiment-analysis6/0.6.0'
+        }
+        self.db_column_en = 'spam_api1_en'
+        self.db_column = 'spam_api1_with_comment_author_and_blog'
+        # self.api_key = 'ade34decf355'
+        self.api_key = 'c7f3ea2b654d'
 
-    def spam_check(self, content, post_url):
-        data = {}
-        data['user_ip'] = "127.0.0.1"
-        data['user_agent'] = "Sentiment-analysis"
-        data['blog'] = post_url
-        data['comment_type'] = 'comment'
-        return self.api.comment_check(content, data=data, build_data=False, DEBUG=False)
+        self.api = Akismet(self.api_key, 'sentiment-analysis6.ml')
+        print ('Using AkismetSpamAPI')
+
+    def is_spam(self, comment_author, content, post_id):
+        self.data['comment_author'] = comment_author
+        self.data['blog'] = post_id
+        try:
+            is_spam = self.api.comment_check(content, data=self.data)
+        except UnicodeEncodeError:
+            is_spam = self.api.comment_check(content.encode('utf-8'), data=self.data)
+        return is_spam
+
+
+
