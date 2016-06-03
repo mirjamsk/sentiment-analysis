@@ -332,6 +332,7 @@ class CommentSentiment(models.Model):
     spam = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
     language = models.CharField(max_length=45, blank=True)
     english_translation = models.TextField(blank=True)
+    is_mention = models.NullBooleanField(null=True)
 
     real_sentiment = JSONField(blank=True, null=True)
     sentiment_api1 = JSONField()
@@ -344,6 +345,19 @@ class CommentSentiment(models.Model):
     class Meta:
         managed = True
         db_table = 'im_commento_sentiment'
+
+
+class CommentSpam(models.Model):
+    id = models.AutoField(primary_key=True)
+    idcomment = models.OneToOneField('Comment', db_column='idcommento', related_name='comment_spam')
+    spam_api1_with_blog = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
+    spam_api1_with_comment_author = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
+    spam_api1_bare = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
+    spam_api1_en = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
+
+    class Meta:
+        managed = True
+        db_table = 'im_commento_spam'
 
 
 class SentimentApiStats(models.Model):
@@ -367,3 +381,5 @@ class SentimentApiStats(models.Model):
     class Meta:
         managed = True
         db_table = 'im_sentiment_api_stats'
+
+

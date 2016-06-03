@@ -6,8 +6,11 @@ from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentP
 
 
 def detect_lang_and_translate_content(id_selection="", db_name="sentiment_db"):
-    # Open database connections
-    # we need two: one for fetch records and another for update records)
+    """
+    Open two database connections:
+        - one to fetch comment records
+        - another to update comment language records
+    """
     db_comment = CommentDbConnection(db=db_name)
     db_comment.connect()
 

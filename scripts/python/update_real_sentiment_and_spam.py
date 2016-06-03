@@ -1,10 +1,10 @@
 import json
 import operator
 from copy import deepcopy
-from utils.print_utils.helpers import print_horizontal_rule
 from utils.api_utils.sentiment_default_stats import SENTIMENT_DEFAULT_STATS
 from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 from utils.db_utils.sentiment_db import CommentDbConnection, CommentSentimentDbConnection
+from utils.print_utils.helpers import print_horizontal_rule, print_sparse_horizontal_rule
 
 
 def main():
@@ -39,11 +39,17 @@ def update_real_sentiment_batch(id_selection="", db_name="sentiment_db"):
         print ("Content: %s" % content)
         print ("English translation: %s" % english_translation)
 
+        print_sparse_horizontal_rule()
+        determine_and_store_is_mention(
+            db=db_sentiment,
+            comment_id=comment_id)
+
+        print_sparse_horizontal_rule()
         spam = determine_and_store_spam(
             db=db_sentiment,
             comment_id=comment_id)
-        print_horizontal_rule()
 
+        print_sparse_horizontal_rule()
         if spam['is_spam']:
             store_default_real_sentiment(
                 db=db_sentiment,
@@ -59,6 +65,24 @@ def update_real_sentiment_batch(id_selection="", db_name="sentiment_db"):
     db_comment.close()
 
 
+def determine_and_store_is_mention(comment_id, db):
+    is_mention = get_is_mention()
+    db.update(
+        comment_id=comment_id,
+        value=is_mention,
+        column='is_mention')
+    print ("Updated mention: %s" % ('True' if is_mention else 'False'))
+
+
+def get_is_mention():
+    is_mention = raw_input('Is this comment ONLY a mention? (y/n): ')
+    while is_mention.lower() not in ('y', 'n'):
+        print("Input needs to be either 'y' or 'n'")
+        is_mention = raw_input('Is this comment ONLY a mention? (y/n): ')
+    is_mention = 1 if is_mention.lower() == 'y' else 0
+    return is_mention
+
+
 def determine_and_store_spam(comment_id, db):
     spam = get_is_spam()
     db.update(
@@ -71,14 +95,14 @@ def determine_and_store_spam(comment_id, db):
 
 def get_is_spam():
     spam_json = {'is_spam': True, 'type': ''}
-    is_spam = raw_input('Is this comment spam? (y/n):')
+    is_spam = raw_input('Is this comment spam? (y/n): ')
     while is_spam.lower() not in ('y', 'n'):
         print("Input needs to be either 'y' or 'n'")
-        is_spam = raw_input('Is this comment spam? (y/n):')
+        is_spam = raw_input('Is this comment spam? (y/n): ')
 
     spam_json['is_spam'] = True if is_spam.lower() == 'y' else False
     if spam_json['is_spam']:
-        spam_json['type'] = raw_input('Enter type? (e.g. url, blank, email, chain, other...):')
+        spam_json['type'] = raw_input('Enter type? (e.g. url, blank, email, chain, other...): ')
 
     return spam_json
 
@@ -168,7 +192,7 @@ def get_sentiment_probabilities(real_sentiment):
         while True:
             try:
                 probability = round(float(raw_input(sentiment + ': ')), 4)
-                if probability < 0 or probability >1:
+                if probability < 0 or probability > 1:
                     raise ValueError
             except ValueError:
                 print("The input should be positive decimal number in the range [0,1]")
