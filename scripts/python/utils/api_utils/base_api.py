@@ -1,4 +1,5 @@
 from requests import get, post
+import json
 
 
 class BaseAPI(object):
@@ -11,8 +12,9 @@ class BaseAPI(object):
     def get(self):
         self.response = get(url=self.url, data=self.data, params=self.params)
 
-    def post(self):
-        self.response = post(url=self.url, data=self.data, params=self.params)
+    def post(self, dump_data_as_json=False):
+        data = json.dumps(self.data) if dump_data_as_json else self.data
+        self.response = post(url=self.url, data=data, params=self.params)
 
     def is_request_successful(self):
         return self.response.status_code == 200

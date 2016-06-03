@@ -358,6 +358,9 @@ class CommentSpam(models.Model):
 
     spam_api1_en = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
 
+    spam_api2 = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
+    spam_api2_en = JSONField(default=json.dumps({'is_spam': False, 'type': ''}))
+
     class Meta:
         managed = True
         db_table = 'im_commento_spam'

@@ -1,7 +1,8 @@
 from akismet import Akismet
+from base_spam import BaseSpam
 
 
-class AkismetSpam(object):
+class AkismetSpam(BaseSpam):
     def __init__(self):
         self.data = {
             'blog': 'sentiment-analysis6',
@@ -18,7 +19,7 @@ class AkismetSpam(object):
         self.api = Akismet(self.api_key, 'sentiment-analysis6.ml')
         print ('Using AkismetSpamAPI')
 
-    def is_spam(self, comment_author, content, post_id):
+    def is_spam(self, content, comment_author, post_id):
         self.data['comment_author'] = comment_author
         self.data['blog'] = post_id
         try:
@@ -27,5 +28,5 @@ class AkismetSpam(object):
             is_spam = self.api.comment_check(content.encode('utf-8'), data=self.data)
         return is_spam
 
-
-
+    def get_db_column(self, use_en):
+        return self.db_column_en if use_en else self.db_column

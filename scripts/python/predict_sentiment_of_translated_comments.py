@@ -6,6 +6,32 @@ from utils.api_utils.sentiment_api import TextProcessingAPI, ViveknAPI, IndicoAP
 from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 
 
+def main():
+    API_choices = {
+        ViveknAPI.__name__: ViveknAPI,
+        IndicoAPI.__name__: IndicoAPI,
+        IndicoHqAPI.__name__: IndicoHqAPI,
+        TextProcessingAPI.__name__: TextProcessingAPI}
+
+    parser = IdSelectionArgumentParser(
+        description=
+        'Makes api calls to determine \
+        the sentiment of a comment and \
+        store the results in a database')
+
+    parser.add_argument_with_choices(
+        '-api',
+        required=True,
+        choices=API_choices.keys(),
+        help='Choose from the listed api options')
+
+    parser.parse_args()
+
+    run_sentiment_api_batch(
+        api=API_choices.get(parser.args.api)(),
+        id_selection=parser.id_selection)
+
+
 def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
     """
     Open two database connections:
@@ -60,32 +86,6 @@ def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
     print_horizontal_rule()
     db.close()
     db_sentiment.close()
-
-
-def main():
-    API_choices = {
-        ViveknAPI.__name__: ViveknAPI,
-        IndicoAPI.__name__: IndicoAPI,
-        IndicoHqAPI.__name__: IndicoHqAPI,
-        TextProcessingAPI.__name__: TextProcessingAPI}
-
-    parser = IdSelectionArgumentParser(
-        description=
-        'Makes api calls to determine \
-        the sentiment of a comment and \
-        store the results in a database')
-
-    parser.add_argument_with_choices(
-        '-api',
-        required=True,
-        choices=API_choices.keys(),
-        help='Choose from the listed api options')
-
-    parser.parse_args()
-
-    run_sentiment_api_batch(
-        api=API_choices.get(parser.args.api)(),
-        id_selection=parser.id_selection)
 
 
 if __name__ == '__main__':

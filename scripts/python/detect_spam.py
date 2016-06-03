@@ -1,12 +1,17 @@
 import json
 from copy import deepcopy
 from utils.spam_utils.akismet_spam import AkismetSpam
+from utils.spam_utils.blog_spam import BlogSpam
 from utils.print_utils.helpers import print_horizontal_rule
 from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
 from utils.db_utils.sentiment_db import CommentSpamDbConnection, CommentSentimentDbConnection, CommentDbConnection
 
 
 def main():
+    API_choices = {
+        AkismetSpam.__name__: AkismetSpam,
+        BlogSpam.__name__: BlogSpam}
+
     parser = IdSelectionArgumentParser(
         description =
         'Uses Akismet lib to determine whether \
@@ -14,14 +19,24 @@ def main():
          in original language are spam or not, & \
          it stores the results in the database')
 
+    parser.add_argument_with_choices(
+        '-api',
+        required=True,
+        choices=API_choices.keys(),
+        help='Choose from the listed api options')
+
     spam = parser.add_mutually_exclusive_group(required=True)
     spam.add_argument('--en', dest='use_en', action='store_true')
     spam.add_argument('--ol', dest='use_en', action='store_false')
+
     parser.parse_args()
-    detect_spam(id_selection=parser.id_selection, use_en=parser.args.use_en)
+    detect_spam(
+        use_en=parser.args.use_en,
+        id_selection=parser.id_selection,
+        api=API_choices.get(parser.args.api)())
 
 
-def detect_spam(id_selection="", use_en="", db_name="sentiment_db"):
+def detect_spam(api=None, id_selection="", use_en="", db_name="sentiment_db"):
     """
     Open three database connections:
         - one to fetch comment records
@@ -37,7 +52,6 @@ def detect_spam(id_selection="", use_en="", db_name="sentiment_db"):
     db_sentiment = CommentSentimentDbConnection(db=db_name)
     db_sentiment.connect()
 
-    api = AkismetSpam()
     results = db_comment.fetch_all(where=id_selection)
 
     spam_json = {
@@ -70,7 +84,7 @@ def detect_spam(id_selection="", use_en="", db_name="sentiment_db"):
 
         db_spam.update(
             comment_id=comment_id,
-            column=api.db_column_en if use_en else api.db_column,
+            column=api.get_db_column(use_en),
             value=json.dumps(spam))
 
     print_horizontal_rule()
