@@ -36,8 +36,8 @@ def update_real_sentiment_batch(id_selection="", db_name="sentiment_db"):
         real_sentiment = comment_sentiment_row[3]
 
         print ("Comment_id: %s" % comment_id)
-        print ("Content: %s" % content)
-        print ("English translation: %s" % english_translation)
+        print ("Content: %s" % content.encode('utf-8'))
+        print ("English translation: %s" % english_translation.encode('utf-8'))
 
         print_sparse_horizontal_rule()
         determine_and_store_is_mention(
