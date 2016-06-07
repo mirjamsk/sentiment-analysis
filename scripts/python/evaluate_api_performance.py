@@ -1,12 +1,13 @@
 import json
 import argparse
 from utils.print_utils.helpers import print_horizontal_rule
-from utils.db_utils.sentiment_db import CommentSentimentDbConnection
 from utils.db_utils.sentiment_api_stats_db import SentimentApiStatsDbConnection
 from utils.metric_utils.specific_metrics import AccuracyMetric, RecallMetric, PrecisionMetric
+from utils.db_utils.sentiment_db import CommentSentimentDbConnection, CommentEmojiSentimentDbConnection
 
 
 def main():
+
     sentiment_api_columns = (
         'sentiment_api1',
         'sentiment_api1_en',
@@ -42,17 +43,22 @@ def main():
     spam.add_argument('--spam', dest='spam', action='store_true')
     spam.add_argument('--no-spam', dest='spam', action='store_false')
 
+    emoji = parser.add_mutually_exclusive_group(required=True)
+    emoji.add_argument('--emoji', dest='emoji', action='store_true')
+    emoji.add_argument('--no-emoji', dest='emoji', action='store_false')
+
     args = parser.parse_args()
     if args.api is not None:
         sentiment_api_columns = (args.api,)
 
     calculate_accuracy(
+        emoji=args.emoji,
         metric=metric.get(args.metric)(),
         consider_spam=args.spam,
         sentiment_api_columns=sentiment_api_columns)
 
 
-def calculate_accuracy(metric=None, consider_spam=False, sentiment_api_columns=None, db_name="sentiment_db"):
+def calculate_accuracy(emoji='', metric=None, consider_spam=False, sentiment_api_columns=None, db_name="sentiment_db"):
     """
     Open two database connections:
         - one to fetch comment sentiment
@@ -60,6 +66,8 @@ def calculate_accuracy(metric=None, consider_spam=False, sentiment_api_columns=N
     """
     db = CommentSentimentDbConnection(db=db_name)
     db.connect()
+    db_emoji = CommentEmojiSentimentDbConnection(db=db_name)
+    db_emoji.connect()
     db_update = SentimentApiStatsDbConnection(db=db_name)
     db_update.connect()
     for sentiment_api_column in sentiment_api_columns:
@@ -79,11 +87,16 @@ def calculate_accuracy(metric=None, consider_spam=False, sentiment_api_columns=N
             comment_id = row[0]
             real_sentiment = json.loads(row[1])
             api_sentiment = json.loads(row[2])
+            if emoji:
+                api_sentiment = json.loads(db_emoji.fetch_sentiment_by_comment_id(
+                    comment_id=comment_id,
+                    sentiment=sentiment_api_column)[0][0])
+
             metric.update_stats(
                 real_sentiment=real_sentiment,
                 predicted_sentiment=api_sentiment)
 
-            #print_each_step(metric, comment_id, sentiment_api_column, api_sentiment, real_sentiment)
+            #print_each_step(metric, comment_id, sentiment_api_column + '_emoji' if emoji else '', api_sentiment, real_sentiment)
             #print_horizontal_rule()
 
         print_real_sentiment_distribution(metric)
@@ -94,7 +107,7 @@ def calculate_accuracy(metric=None, consider_spam=False, sentiment_api_columns=N
         db_update.update(
             column=metric.db_column if not consider_spam else metric.db_column_with_spam,
             value=metric.get_db_safe_stats(),
-            api_id=sentiment_api_column)
+            api_id=sentiment_api_column + '_emoji' if emoji else '')
 
     db.close()
     db_update.close()

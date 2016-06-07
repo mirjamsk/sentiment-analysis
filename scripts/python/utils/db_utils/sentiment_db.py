@@ -77,3 +77,9 @@ class CommentEmojiSentimentDbConnection(CommentSentimentDbConnection):
             passwd=passwd)
         self.table = "im_commento_sentiment_emoji"
         self.select = "id, idcommento"
+
+    def fetch_sentiment_by_comment_id(self, sentiment="", comment_id=""):
+        return super(CommentSentimentDbConnection, self).fetch_all(
+            select=sentiment,
+            from_clause=self.table,
+            where="idcommento='%d'" % comment_id)
