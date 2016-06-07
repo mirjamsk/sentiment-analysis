@@ -64,3 +64,16 @@ class CommentSpamDbConnection(CommentSentimentDbConnection):
             passwd=passwd)
         self.table = "im_commento_spam"
         self.select = "id, idcommento, spam_api1"
+
+
+class CommentEmojiSentimentDbConnection(CommentSentimentDbConnection):
+    def __init__(self, host="localhost", port=3306, user="sentiment_admin", passwd="sentiment1234", db="sentiment_db"):
+        CommentSentimentDbConnection.__init__(
+            self,
+            db=db,
+            host=host,
+            port=port,
+            user=user,
+            passwd=passwd)
+        self.table = "im_commento_sentiment_emoji"
+        self.select = "id, idcommento"

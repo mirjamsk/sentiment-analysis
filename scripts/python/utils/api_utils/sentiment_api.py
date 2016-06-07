@@ -1,5 +1,6 @@
-from abc import ABCMeta as _ABCMeta, abstractmethod
+import operator
 from copy import deepcopy
+from abc import ABCMeta as _ABCMeta, abstractmethod
 from base_api import BaseAPI
 from .sentiment_default_stats import SENTIMENT_DEFAULT_STATS
 
@@ -32,6 +33,15 @@ class _SentimentAPI(BaseAPI):
     @abstractmethod
     def update_sentiment_stats(self):
         pass
+
+    @abstractmethod
+    def update_emoji_sentiment_stats(self, emoji_stats=[]):
+        pass
+
+    @staticmethod
+    def get_most_frequent_label(stats):
+        stats.pop('total', None)
+        return max(stats.items(), key=operator.itemgetter(1))[0]
 
 
 class ViveknAPI(_SentimentAPI):
@@ -66,6 +76,18 @@ class ViveknAPI(_SentimentAPI):
 
         self.sentiment_stats['sentiment_label'] = sentiment
         self.sentiment_stats['sentiment_stats'][sentiment] = confidence
+
+    def update_emoji_sentiment_stats(self, emoji_stats=[]):
+        sentiment_stats = self.sentiment_stats['sentiment_stats']
+        for emoji in emoji_stats:
+            for label in self.SENTIMENT_LABELS.values():
+                sentiment_stats[label] += emoji[label]
+
+        norm = sum(sentiment_stats.values())
+        for label in self.SENTIMENT_LABELS.values():
+            sentiment_stats[label] = round(sentiment_stats[label]/norm, 3)
+
+        self.sentiment_stats['sentiment_label'] = self.get_most_frequent_label(deepcopy(sentiment_stats))
 
     def __str__(self):
         return 'Vivek API: ' + self.url
@@ -106,6 +128,18 @@ class TextProcessingAPI(_SentimentAPI):
         self.sentiment_stats['sentiment_stats']['negative'] = round(float(self.response.json()['probability']['neg']), 3)
         self.sentiment_stats['sentiment_stats']['neutral'] = round(float(self.response.json()['probability']['neutral']), 3)
 
+    def update_emoji_sentiment_stats(self, emoji_stats=[]):
+        sentiment_stats = self.sentiment_stats['sentiment_stats']
+        for emoji in emoji_stats:
+            for label in self.SENTIMENT_LABELS.values():
+                sentiment_stats[label] += emoji[label]
+
+        norm = sum(sentiment_stats.values())
+        for label in self.SENTIMENT_LABELS.values():
+            sentiment_stats[label] = round(sentiment_stats[label] / norm, 3)
+
+        self.sentiment_stats['sentiment_label'] = self.get_most_frequent_label(deepcopy(sentiment_stats))
+
     def __str__(self):
         return 'Text-processing API: ' + self.url
 
@@ -137,6 +171,16 @@ class _IndicoAPI(_SentimentAPI):
             return 'positive'
         else:
             return 'negative'
+
+    def update_emoji_sentiment_stats(self, emoji_stats=[]):
+        sentiment_stats = self.sentiment_stats['sentiment_stats']
+        for emoji in emoji_stats:
+            sentiment_stats['positive'] += emoji['sentiment_score']
+            sentiment_stats['positive'] = min(sentiment_stats['positive'], 1.0)
+            sentiment_stats['positive'] = max(sentiment_stats['positive'], 0)
+        sentiment_stats['negative'] = 1.0 - sentiment_stats['positive']
+
+        self.sentiment_stats['sentiment_label'] = self.get_most_frequent_label(deepcopy(sentiment_stats))
 
     def __str__(self):
         return 'Indico API: ' + self.url
