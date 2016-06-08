@@ -1,11 +1,41 @@
 import json
 from base_metric import BaseMetric
+from abc import ABCMeta as _ABCMeta, abstractmethod
 
 
-class AccuracyMetric(BaseMetric):
+class _SpecificMetric(BaseMetric):
+    __metaclass__ = _ABCMeta
 
     def __init__(self):
         BaseMetric.__init__(self)
+        self.db_column = ''
+        self.db_column_with_spam = ''
+
+    def get_db_column(self, consider_spam):
+        return self.db_column if not consider_spam else self.db_column_with_spam
+
+    @abstractmethod
+    def get_stats(self):
+        pass
+
+    @abstractmethod
+    def get_db_safe_stats(self):
+        pass
+
+    @abstractmethod
+    def print_stats(self):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def metric_name(cls):
+        pass
+
+
+class AccuracyMetric(_SpecificMetric):
+
+    def __init__(self):
+        _SpecificMetric.__init__(self)
         self.accuracy = 0
         self.db_column = 'accuracy'
         self.db_column_with_spam = 'accuracy_with_spam'
@@ -28,10 +58,10 @@ class AccuracyMetric(BaseMetric):
         return "accuracy"
 
 
-class RecallMetric(BaseMetric):
+class RecallMetric(_SpecificMetric):
 
     def __init__(self):
-        BaseMetric.__init__(self)
+        _SpecificMetric.__init__(self)
         self.recall = {
             'positive': 0,
             'negative': 0,
@@ -60,10 +90,10 @@ class RecallMetric(BaseMetric):
         return "recall"
 
 
-class PrecisionMetric(BaseMetric):
+class PrecisionMetric(_SpecificMetric):
 
     def __init__(self):
-        BaseMetric.__init__(self)
+        _SpecificMetric.__init__(self)
 
         self.precision = {
             'positive': 0,

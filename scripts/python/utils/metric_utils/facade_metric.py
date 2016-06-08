@@ -1,7 +1,6 @@
 from base_metric import BaseMetric
 from specific_metrics import AccuracyMetric, RecallMetric, PrecisionMetric
 
-
 class Metric(object):
     def __init__(self, metrics):
         self.base_metric = BaseMetric()
@@ -47,4 +46,4 @@ class Metric(object):
         self.base_metric.print_real_sentiment_distribution()
 
     def get_db_column(self, metric_name, consider_spam):
-        return self.metric[metric_name].db_column if not consider_spam else self.metric[metric_name].db_column_with_spam
+        return self.metric[metric_name].get_db_column(consider_spam)
