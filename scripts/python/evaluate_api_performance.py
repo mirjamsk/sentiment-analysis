@@ -1,13 +1,13 @@
 import json
 import argparse
-from utils.print_utils.helpers import print_horizontal_rule
-from utils.db_utils.sentiment_api_stats_db import SentimentApiStatsDbConnection
+from utils.metric_utils.facade_metric import Metric
 from utils.metric_utils.specific_metrics import AccuracyMetric, RecallMetric, PrecisionMetric
+from utils.db_utils.sentiment_api_stats_db import SentimentApiStatsDbConnection
+from utils.print_utils.helpers import print_horizontal_rule, print_sparse_horizontal_rule
 from utils.db_utils.sentiment_db import CommentSentimentDbConnection, CommentEmojiSentimentDbConnection
 
 
 def main():
-
     sentiment_api_columns = (
         'sentiment_api1',
         'sentiment_api1_en',
@@ -16,11 +16,11 @@ def main():
         'sentiment_api3',
         'sentiment_api4'
     )
-    metric = {
-        'precision': PrecisionMetric,
-        'accuracy': AccuracyMetric,
-        'recall': RecallMetric
-    }
+    metrics = (
+        PrecisionMetric.metric_name(),
+        AccuracyMetric.metric_name(),
+        RecallMetric.metric_name(),
+    )
     parser = argparse.ArgumentParser(
         description=
         'Evaluates API\'s performance \
@@ -35,30 +35,39 @@ def main():
 
     parser.add_argument(
         '--metric',
-        required=True,
-        choices=metric.keys(),
+        required=False,
+        choices=metrics,
         help='Choose from the listed metric options')
 
-    spam = parser.add_mutually_exclusive_group(required=True)
+    spam = parser.add_mutually_exclusive_group(required=False)
     spam.add_argument('--spam', dest='spam', action='store_true')
     spam.add_argument('--no-spam', dest='spam', action='store_false')
 
-    emoji = parser.add_mutually_exclusive_group(required=True)
+    emoji = parser.add_mutually_exclusive_group(required=False)
     emoji.add_argument('--emoji', dest='emoji', action='store_true')
     emoji.add_argument('--no-emoji', dest='emoji', action='store_false')
+
+    parser.set_defaults(spam=None)
+    parser.set_defaults(emoji=None)
 
     args = parser.parse_args()
     if args.api is not None:
         sentiment_api_columns = (args.api,)
 
+    spam = (args.spam,) if args.spam is not None else (True, False,)
+    emoji = (args.emoji,) if args.emoji is not None else (True, False,)
+
+    if args.metric is not None:
+        metrics = (args.metric,)
+
     calculate_accuracy(
-        emoji=args.emoji,
-        metric=metric.get(args.metric)(),
-        consider_spam=args.spam,
+        spam=spam,
+        emoji=emoji,
+        metrics=metrics,
         sentiment_api_columns=sentiment_api_columns)
 
 
-def calculate_accuracy(emoji='', metric=None, consider_spam=False, sentiment_api_columns=None, db_name="sentiment_db"):
+def calculate_accuracy(emoji='', metrics=None, spam=None, sentiment_api_columns=None, db_name="sentiment_db"):
     """
     Open two database connections:
         - one to fetch comment sentiment
@@ -66,72 +75,72 @@ def calculate_accuracy(emoji='', metric=None, consider_spam=False, sentiment_api
     """
     db = CommentSentimentDbConnection(db=db_name)
     db.connect()
+
     db_emoji = CommentEmojiSentimentDbConnection(db=db_name)
     db_emoji.connect()
+
     db_update = SentimentApiStatsDbConnection(db=db_name)
     db_update.connect()
+
     for sentiment_api_column in sentiment_api_columns:
-        metric.clear_stats()
-        print_horizontal_rule()
-        print_horizontal_rule()
-        print("Calculations for api: %s " % sentiment_api_column)
+        for consider_spam in spam:
+            for consider_emoji in emoji:
+                update_single_performance(db, db_emoji, db_update, consider_spam, consider_emoji, metrics, sentiment_api_column)
 
-        where_clause = '(real_sentiment is not null OR real_sentiment != "") AND %s !="{}" ' % sentiment_api_column
-        where_clause = where_clause if consider_spam else where_clause + ' AND spam REGEXP "false"'
-
-        results = db.fetch_all(
-            select='idcommento, real_sentiment, %s' % sentiment_api_column,
-            where=where_clause)
-
-        for row in results:
-            comment_id = row[0]
-            real_sentiment = json.loads(row[1])
-            api_sentiment = json.loads(row[2])
-            if emoji:
-                api_sentiment = json.loads(db_emoji.fetch_sentiment_by_comment_id(
-                    comment_id=comment_id,
-                    sentiment=sentiment_api_column)[0][0])
-
-            metric.update_stats(
-                real_sentiment=real_sentiment,
-                predicted_sentiment=api_sentiment)
-
-            #print_each_step(metric, comment_id, sentiment_api_column + '_emoji' if emoji else '', api_sentiment, real_sentiment)
-            #print_horizontal_rule()
-
-        print_real_sentiment_distribution(metric)
-        metric.calculate_stats()
-        metric.print_stats()
-        print_horizontal_rule()
-
-        db_update.update(
-            column=metric.db_column if not consider_spam else metric.db_column_with_spam,
-            value=metric.get_db_safe_stats(),
-            api_id=sentiment_api_column + '_emoji' if emoji else '')
-
-    db.close()
+    print_horizontal_rule()
     db_update.close()
+    db_emoji.close()
+    db.close()
 
 
-def print_each_step( metric, comment_id, sentiment_api_column, api_sentiment, real_sentiment):
+def update_single_performance(db, db_emoji, db_update, consider_spam, consider_emoji, metrics, sentiment_api_column):
+    print_horizontal_rule()
+    print_horizontal_rule()
+
+    print("Calculations for api: %s %s spam" % (
+        sentiment_api_column + ('_emoji' if consider_emoji else ''),
+        'with' if consider_spam else 'without'))
+
+    where_clause = '(real_sentiment is not null OR real_sentiment != "") AND %s !="{}" ' % sentiment_api_column
+    where_clause = where_clause if consider_spam else where_clause + ' AND spam REGEXP "false"'
+
+    metric = Metric(metrics)
+    results = db.fetch_all(
+        select='idcommento, real_sentiment, %s' % sentiment_api_column,
+        where=where_clause)
+
+    for row in results:
+        comment_id = row[0]
+        real_sentiment = json.loads(row[1])
+        api_sentiment = json.loads(row[2])
+        if consider_emoji:
+            api_sentiment = json.loads(db_emoji.fetch_sentiment_by_comment_id(
+                comment_id=comment_id,
+                sentiment=sentiment_api_column)[0][0])
+
+        metric.update_stats(
+            real_sentiment=real_sentiment,
+            predicted_sentiment=api_sentiment)
+
+        # print_each_step(metric, comment_id, sentiment_api_column + '_emoji' if emoji else '', api_sentiment, real_sentiment)
+        # print_horizontal_rule()
+
+    metric.print_real_sentiment_distribution()
+    metric.calculate_stats()
+    metric.print_stats()
+
+    for metric_name in metrics:
+        print_sparse_horizontal_rule()
+        db_update.update(
+            column=metric.get_db_column(metric_name, consider_spam),
+            value=metric.get_db_safe_stats(metric_name),
+            api_id=sentiment_api_column + ('_emoji' if consider_emoji else ''))
+
+
+def print_each_step(metric, comment_id, sentiment_api_column, api_sentiment, real_sentiment):
     print ("Comment id: %d" % comment_id)
     print ("%s: %s vs %s" % (sentiment_api_column, real_sentiment['sentiment_label'], api_sentiment['sentiment_label']))
     metric.print_stats()
-
-
-def print_real_sentiment_distribution(metric):
-    distribution = {
-        'positive': 0,
-        'negative': 0,
-        'neutral': 0
-    }
-    for sentiment in distribution.keys():
-        distribution[sentiment] = metric.TP[sentiment] + metric.FN[sentiment]
-        distribution[sentiment] /= float(metric.total_sentiment_predictions)
-        distribution[sentiment] = 100 * round(distribution[sentiment], 4)
-        distribution[sentiment] = str(distribution[sentiment])+'%'
-
-    print('Real sentiment distribution %s' % json.dumps(distribution, indent=2))
 
 
 if __name__ == '__main__':

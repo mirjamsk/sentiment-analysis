@@ -51,8 +51,10 @@ class Database(object):
         try:
             self.cursor.execute(sql)
             self.connection.commit()
-            print("Updating table %s, column %s ..." % (table, ', '.join(set.keys())))
-            print("%d row%s affected" % (self.cursor.rowcount, 's' if self.cursor.rowcount != 1 else ''))
+            print("Updating table %s" % table)
+            print("Setting %s " % set_query)
+            print("Where %s " % where)
+            print("...%d row%s affected" % (self.cursor.rowcount, 's' if self.cursor.rowcount != 1 else ''))
         except MySQLdb.Error as e:
             print ("Error in updating db: %s" % e)
 

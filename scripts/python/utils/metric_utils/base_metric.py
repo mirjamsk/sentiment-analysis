@@ -1,4 +1,4 @@
-from abc import ABCMeta as _ABCMeta, abstractmethod
+import json
 from copy import deepcopy
 
 _default_stats = {
@@ -9,7 +9,6 @@ _default_stats = {
 
 
 class BaseMetric(object):
-    __metaclass__ = _ABCMeta
     """
     Corresponding labels map to statistic terms:
      - TP: True Positives ( correctly predicted labels)
@@ -17,13 +16,10 @@ class BaseMetric(object):
      - FP: False Positive ( # of times it predicted the label when it shouldn't have )
 
     """
-    def __init__(self, db_column, db_column_with_spam):
+    def __init__(self):
         self.TP = deepcopy(_default_stats)
         self.FP = deepcopy(_default_stats)
         self.FN = deepcopy(_default_stats)
-
-        self.db_column = db_column
-        self.db_column_with_spam = db_column_with_spam
 
         self.total_sentiment_predictions = 0
         self.correct_sentiment_predictions = 0
@@ -44,15 +40,12 @@ class BaseMetric(object):
         self.total_sentiment_predictions = 0
         self.correct_sentiment_predictions = 0
 
-    @abstractmethod
     def calculate_stats(self):
         pass
 
-    @abstractmethod
     def get_stats(self):
         pass
 
-    @abstractmethod
     def get_db_safe_stats(self):
         pass
 
@@ -61,3 +54,13 @@ class BaseMetric(object):
         print("False negatives: %s " % self.FN)
         print("False positives: %s " % self.FP)
         print("Total sentiment predictions: %d " % self.total_sentiment_predictions)
+
+    def print_real_sentiment_distribution(self):
+        distribution = deepcopy(_default_stats)
+        for sentiment in distribution.keys():
+            distribution[sentiment] = self.TP[sentiment] + self.FN[sentiment]
+            distribution[sentiment] /= float(self.total_sentiment_predictions)
+            distribution[sentiment] = 100 * round(distribution[sentiment], 4)
+            distribution[sentiment] = str(distribution[sentiment]) + '%'
+
+        print('Real sentiment distribution %s' % json.dumps(distribution, indent=2))
