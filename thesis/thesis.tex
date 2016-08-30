@@ -1,0 +1,136 @@
+\documentclass[11pt,english,openright]{book}
+\usepackage[a4paper]{geometry}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{epsfig}
+\usepackage{indentfirst}
+\usepackage[normalem]{ulem}
+\usepackage[table]{xcolor}
+\usepackage{algpseudocode}
+% DELETE ME BELOW
+\usepackage{blindtext}
+% DELETE ME ABOVE
+
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+% spacing
+\onehalfspacing
+
+% geometry
+\geometry{verbose,tmargin=3cm,bmargin=3.5cm,lmargin=4cm,rmargin=3cm, nomarginpar}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% pdf properties
+\hypersetup{pdftitle={Working title}, pdfauthor={Milica Jovanović, Mirjam Škarica}}
+
+% set page page count from the first chaprer's page
+\fancypagestyle{plain}{
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot{\begin{flushright}\thepage\end{flushright}}
+}
+
+% prettify headers for the thesis
+\fancyhead{}
+\fancyhead[LE]{\slshape \nouppercase \leftmark}
+\fancyhead[RO]{\slshape \nouppercase \rightmark}
+\fancyfoot{\begin{flushright}\thepage\end{flushright}}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+\@ifundefined{showcaptionsetup}{}{
+\PassOptionsToPackage{caption=false}{subfig}}
+
+% centered column for tabularx
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+% header for tabularx
+\newcommand*{\thead}[1]{\multicolumn{1}{c}{\bfseries #1}}
+
+% persnalized commands
+\newcommand{\quoted}[1]{``#1''}
+\newcommand{\Csh}{C\includegraphics{hash-symbol}}
+\makeatother
+
+\begin{document}
+% --- FRONTPAGE ---
+\frontmatter
+\pagestyle{empty}\pagenumbering{alph}
+\newgeometry{margin=3cm}\input{00-frontpage/frontpage.tex}\restoregeometry
+
+\cleardoublepage{}
+
+\begin{flushright}
+\emph{\input{dedication.tex}}\cleardoublepage{}
+\par\end{flushright}
+
+% --- CHAPTER SUMMARY ---
+\chapter*{Summary}
+\thispagestyle{empty}\input{Summary.tex}\cleardoublepage{}
+
+% --- CHAPTER ABSTRACT ---
+\chapter*{Abstract}
+\thispagestyle{empty}\input{abstract.tex}\cleardoublepage{}
+
+\setcounter{page}{1}\pagenumbering{roman}
+
+\pagestyle{fancy}
+
+% --- CHAPTER TABLE OF CONTENTS ---
+\tableofcontents{}
+
+% --- CHAPTERS LIST OF FIGURES ---
+\listoffigures
+% --- UNCOMMENT TABLES AND ALGORITHMS CHAPTER ----
+%\listoftables
+%\listof{algorithm}{List of algorithms}
+
+% reset page count & number style
+\cleardoublepage{}\mainmatter
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+
+
+% --- CHAPTER INTRODUCTION ---
+\chapter{Introduction\label{ch:introduction}}
+\input{01-introduction/introduction.tex}
+
+% --- CHAPTER STATE OF THE ART ---
+\chapter{State of the art\label{ch:state-of-the-art}}
+\input{02-state-of-the-art/state-of-the-art.tex}
+
+% --- CHAPTER SENTIMENT ANALYSIS WORKFLOW ---
+\chapter{Sentiment analysis workflow\label{ch:sentiment-analysis-workflow}}
+\input{03-sentiment-analysis-workflow/sentiment-analysis-workflow.tex}
+
+% --- CHAPTER FRAMEWORK ---
+\chapter{Framework\label{ch:framework}}
+\input{04-framework/framework.tex}
+
+% --- CHAPTER RESULTS ---
+\chapter{Results\label{ch:results}}
+\input{05-results/results.tex}
+
+% --- CHAPTER CONCUSION ---
+\chapter{Conclusion\label{ch:conclusion}}
+\input{06-conclusion/conclusion.tex}
+
+% --- CHAPTER FUTURE WORK ---
+\chapter{Future work\label{ch:future-work}}
+\input{07-future-work/future-work.tex}
+
+
+% --- CHAPTER BIBLIOGRAPHY ---
+\bibliographystyle{ieeetr}
+\bibliography{bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
+
+
+\end{document}
