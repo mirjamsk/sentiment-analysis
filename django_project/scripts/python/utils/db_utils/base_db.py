@@ -54,9 +54,29 @@ class Database(object):
             print("Updating table %s" % table)
             print("Setting %s " % set_query)
             print("Where %s " % where)
-            print("...%d row%s affected" % (self.cursor.rowcount, 's' if self.cursor.rowcount != 1 else ''))
+            print("... %d row%s affected" % (self.cursor.rowcount, 's' if self.cursor.rowcount != 1 else ''))
         except MySQLdb.Error as e:
             print ("Error in updating db: %s" % e)
+
+    def insert(self, table="", column_value={}):
+        columns = ''
+        values = ''
+        for column, value in column_value.items():
+            columns += "`%s`," % column
+            values += "%s," % value
+
+        columns = columns[:-1] # remove the trailing comma (,)
+        values = values[:-1]   # remove the trailing comma (,)
+        sql = "INSERT INTO `%s`.`%s` (%s) VALUES (%s)" % (self.db, table, columns, values)
+        try:
+            self.cursor.execute("SET @@sql_mode:=''")
+            self.cursor.execute(sql)
+            self.connection.commit()
+            print("Inserting into table %s" % table)
+            print("Setting (%s) to values (%s)" % (columns, values))
+            print("... %d row%s affected" % (self.cursor.rowcount, 's' if self.cursor.rowcount != 1 else ''))
+        except MySQLdb.Error as e:
+            print ("Error inserting in db: %s" % e)
 
     def close(self):
         self.cursor.close()
