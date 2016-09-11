@@ -23,16 +23,27 @@ def main():
         '-api',
         required=True,
         choices=API_choices.keys(),
-        help='Choose from the listed api options')
+        help='choose from the listed api options')
+
+    parser.add_boolean_argument(
+        '--original-language',
+        action='store_true',
+        default=False,
+        help='get comment sentiment in original language')
 
     parser.parse_args()
 
+    if parser.args.original_language and parser.args.api not in (ViveknAPI.__name__, TextProcessingAPI.__name__):
+        raise ValueError(parser.args.api + ' does not support original language sentiment analysis')
+
+    api = API_choices.get(parser.args.api)('ol') if parser.args.original_language else API_choices.get(parser.args.api)()
     run_sentiment_api_batch(
-        api=API_choices.get(parser.args.api)(),
-        id_selection=parser.id_selection)
+        api=api,
+        id_selection=parser.id_selection,
+        original_language=parser.args.original_language)
 
 
-def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
+def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db", original_language=False):
     """
     Open two database connections:
         - one to fetch comment records
@@ -68,7 +79,7 @@ def run_sentiment_api_batch(api=None, id_selection="", db_name="sentiment_db"):
         print ("Content: %s" % content)
         print ("Translation: %s" % english_translation)
 
-        api.set_data(english_translation)
+        api.set_data(content if original_language else english_translation)
         api.post()
 
         if api.is_request_successful():

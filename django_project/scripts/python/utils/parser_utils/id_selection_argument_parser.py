@@ -41,6 +41,14 @@ class IdSelectionArgumentParser(object):
             type=type,
             required=required)
 
+    def add_boolean_argument(self, arg_name, action, default, help):
+        self.parser.add_argument(
+            arg_name,
+            help=help,
+            action=action,
+            default=default
+        )
+
     def add_argument_with_choices(self, arg_name, choices, required, help):
         self.parser.add_argument(
             arg_name,
