@@ -3,10 +3,11 @@
 """
 
 
-def build_id_selection_condition(id_equals='', id_greater_than='', id_less_than=''):
+def build_id_selection_condition(id_equals=[], id_greater_than='', id_less_than=''):
     where_clause = ''
     if id_equals is not None:
-        where_clause = 'id=%d' % id_equals
+        id_equals = '(' + ', '.join([str(id) for id in id_equals]) + ')'
+        where_clause = 'id in %s' % id_equals
     else:
         if id_less_than is not None:
             where_clause = 'id < %d' % id_less_than

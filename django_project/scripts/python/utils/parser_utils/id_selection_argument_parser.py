@@ -11,8 +11,9 @@ class IdSelectionArgumentParser(object):
         self.parser.add_argument(
             '-ideq',
             type=int,
+            nargs='+',
             required=False,
-            help='run for a specific record by specifying its id')
+            help='run for records by specifying their ids')
 
         self.parser.add_argument(
             '-idlt',
