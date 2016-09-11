@@ -152,8 +152,10 @@ class _IndicoAPI(_SentimentAPI):
     """
     def __init__(self, url, ApiKey, sentiment_api_column):
         _SentimentAPI.__init__(self,
-            url=url + ApiKey,
-            data={'language': 'english', 'data': ''},
+            url=url,
+            data={'data': '',
+                  'api_key': ApiKey,
+                  'language': 'english'},
             sentiment_api_column=sentiment_api_column)
 
     def set_data(self, text):
@@ -190,8 +192,8 @@ class IndicoAPI(_IndicoAPI):
     def __init__(self):
         _IndicoAPI.__init__(
             self,
-            url='http://apiv2.indico.io/sentiment?key=',
-            ApiKey='fc1f6326eadb01b3f71b41295336516a',
+            url='https://apiv2.indico.io/sentiment',
+            ApiKey='68d30e7fceb1724de129631e54c965d6',
             sentiment_api_column='sentiment_api3')
 
 
@@ -199,6 +201,6 @@ class IndicoHqAPI(_IndicoAPI):
     def __init__(self):
         _IndicoAPI.__init__(
             self,
-            url='https://apiv2.indico.io/sentimenthq?key=',
-            ApiKey='9b0d19c33f87ff807dfe344378d9a73d',
+            url='https://apiv2.indico.io/sentimenthq',
+            ApiKey='68d30e7fceb1724de129631e54c965d6',
             sentiment_api_column='sentiment_api4')
