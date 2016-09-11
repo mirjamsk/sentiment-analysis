@@ -34,9 +34,13 @@ def main():
     parser.parse_args()
 
     if parser.args.original_language and parser.args.api not in (ViveknAPI.__name__, TextProcessingAPI.__name__):
-        raise ValueError(parser.args.api + ' does not support original language sentiment analysis')
+        print(parser.args.api + ' does not support original language sentiment analysis')
+        return
+    elif parser.args.original_language:
+        api = API_choices.get(parser.args.api)(parser.args.original_language)
+    else:
+        api = API_choices.get(parser.args.api)()
 
-    api = API_choices.get(parser.args.api)('ol') if parser.args.original_language else API_choices.get(parser.args.api)()
     run_sentiment_api_batch(
         api=api,
         id_selection=parser.id_selection,

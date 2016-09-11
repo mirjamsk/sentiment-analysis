@@ -53,7 +53,7 @@ class ViveknAPI(_SentimentAPI):
         }
     }
     """
-    def __init__(self, lang='en'):
+    def __init__(self, original_language=False):
         self.SENTIMENT_LABELS = {
             'Positive': 'positive',
             'Negative': 'negative',
@@ -63,7 +63,7 @@ class ViveknAPI(_SentimentAPI):
             self,
             url='http://sentiment.vivekn.com/api/text/',
             data={'txt': ''},
-            sentiment_api_column='sentiment_api1_en' if lang == 'en' else 'sentiment_api1')
+            sentiment_api_column='sentiment_api1' if original_language else 'sentiment_api1_en')
 
     def set_data(self, text):
         self.data['txt'] = text
@@ -104,7 +104,7 @@ class TextProcessingAPI(_SentimentAPI):
         }
     }
     """
-    def __init__(self, lang='en'):
+    def __init__(self, original_language=False):
         self.SENTIMENT_LABELS = {
           'pos': 'positive',
           'neg': 'negative',
@@ -114,7 +114,7 @@ class TextProcessingAPI(_SentimentAPI):
             self,
             url='http://text-processing.com/api/sentiment/',
             data={'text': ''},
-            sentiment_api_column='sentiment_api2_en' if lang == 'en' else 'sentiment_api2')
+            sentiment_api_column='sentiment_api2' if original_language else 'sentiment_api2_en')
 
     def set_data(self, text):
         self.data['text'] = text
