@@ -1,10 +1,9 @@
-import re
 import json
 from utils.print_utils.helpers import print_horizontal_rule
-from utils.db_utils.sentiment_db import CommentSentimentDbConnection, CommentEmojiSentimentDbConnection
+from utils.db_utils.sentiment_db import CommentSentimentDbConnection
 from utils.api_utils.sentiment_api import TextProcessingAPI, ViveknAPI, IndicoAPI, IndicoHqAPI
 from utils.parser_utils.id_selection_argument_parser import IdSelectionArgumentParser
-from utils.db_utils.base_db import Database
+from utils.emoji_utils.emoji_stats import EmojiStats
 
 
 def main():
@@ -37,17 +36,10 @@ def update_sentiment_emoji_stats(api=None, id_selection="", db_name="sentiment_d
         - another to fetch emoji stats
         - another to update comment_sentiment_emoji records
     """
-    db = Database(db=db_name)
-    db.connect()
 
-    emoji_stats = get_emoji_stats(db=db)
-    emoji_regex = get_emoji_regex(emoji_stats)
-
+    emoji_stats = EmojiStats()
     db_sentiment = CommentSentimentDbConnection(db=db_name)
     db_sentiment.connect()
-
-    db_emoji_sentiment = CommentEmojiSentimentDbConnection(db=db_name)
-    db_emoji_sentiment.connect()
 
     print ('\nUsing %s ' % api)
     id_selection = id_selection.replace('id', 'idcommento')
@@ -59,80 +51,32 @@ def update_sentiment_emoji_stats(api=None, id_selection="", db_name="sentiment_d
     for row in results:
         print_horizontal_rule()
         comment_id = row[0]
-        api.sentiment_stats = json.loads(row[1])
         english_translation = row[2]
-
         print ("Comment_id: %s" % comment_id)
         print ("Translation: %s" % english_translation)
-        print ("Current sentiment: %s" % json.dumps(api.get_sentiment_stats(), indent=2))
 
-        emojis = emoji_regex.findall(english_translation)
-        if len(emojis):
-            comment_emoji_stats = get_comment_emoji_stats(emoji_stats, emojis)
+        try:
+            api.sentiment_stats = json.loads(row[1])
+            print ("Current sentiment: %s" % json.dumps(api.get_sentiment_stats(), indent=2))
+        except ValueError:
+            print ("ValueError: Not a Json Object: %s" % row[1])
+            continue
+
+        if emoji_stats.contains_emoji(english_translation):
+            comment_emoji_stats = emoji_stats.get_comment_emoji_stats(english_translation)
             api.update_emoji_sentiment_stats(comment_emoji_stats)
-            print('Found emojis: %s' % (' '.join(emojis)))
             print ("Updated sentiment: %s" % json.dumps(api.get_sentiment_stats(), indent=2))
 
-        db_emoji_sentiment.update(
+
+        emoji_stats.update_db(
             comment_id=comment_id,
             column=api.sentiment_api_column,
             value=json.dumps(api.get_sentiment_stats()))
 
-
     print_horizontal_rule()
-    db.close()
     db_sentiment.close()
+    emoji_stats.close_db_connection()
 
-
-def get_emoji_stats(db):
-    """
-    emoji_stats = {
-        ':)': {
-            'neutral': 0.3,
-            'positive': 0.3,
-            'negative': 0.6,
-            'sentiment_score': -0.2
-        }
-    }
-    """
-    emoji_stats = {}
-    results = db.fetch_all(
-        select="`char`,`neutral`,`positive`, `negative`,`sentiment_score`",
-        from_clause="im_emoji_stats")
-
-    for row in results:
-        emoji = row[0]
-        emoji_stats[emoji] = {
-            'neutral': row[1],
-            'positive': row[2],
-            'negative': row[3],
-            'sentiment_score': row[4]}
-    return emoji_stats
-
-
-def sanitize_emojis(emojis):
-    return emojis\
-            .replace('(', '\(')\
-            .replace(')', '\)')\
-            .replace(':', '\:')\
-            .replace('*', '\*')\
-            .replace('-', '\-')\
-            .replace('_', '\_')\
-            .replace('.', '\.')
-
-
-def get_emoji_regex(emoji_stats):
-    emoji_regex = sanitize_emojis('|'.join(emoji_stats.keys()))
-    emoji_regex = u'(' + emoji_regex + ')'
-
-    return re.compile(emoji_regex)
-
-
-def get_comment_emoji_stats(emoji_stats, comment_emojis):
-    comment_emoji_stats = []
-    for emoji in comment_emojis:
-        comment_emoji_stats.append(emoji_stats[emoji])
-    return comment_emoji_stats
 
 if __name__ == '__main__':
     main()
