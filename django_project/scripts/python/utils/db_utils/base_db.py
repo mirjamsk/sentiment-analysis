@@ -1,4 +1,18 @@
 import MySQLdb
+from sqlalchemy import create_engine
+from sqlalchemy.pool import SingletonThreadPool
+
+
+class Pool(object):
+    engine = None
+    connection = None
+
+    @staticmethod
+    def get_connection(host="localhost", port=3306, user="sentiment_admin", passwd="sentiment1234", db="sentiment_db", charset='utf8mb4', use_unicode=True):
+        if Pool.engine is None:
+            Pool.engine = create_engine('mysql+mysqldb://%s:%s@%s:%d/%s?charset=%s&use_unicode=%d' % (user, passwd, host, port, db, charset, use_unicode), poolclass=SingletonThreadPool)
+        Pool.connection = Pool.engine.raw_connection()
+        return Pool.connection
 
 
 class Database(object):
@@ -16,7 +30,7 @@ class Database(object):
         if self.connection is not None:
             print ("Connection already exists")
         try:
-            self.connection = MySQLdb.connect(
+            self.connection = Pool.get_connection(
                 db=self.db,
                 host=self.host,
                 port=self.port,
@@ -26,7 +40,7 @@ class Database(object):
                 use_unicode=True
             )
             self.cursor = self.connection.cursor()
-            print ("Database connection open")
+            print ("Using database connection %s" % str(self.cursor))
         except MySQLdb.Error as e:
             print ("Error in connecting to db: %s" % e)
 
@@ -81,4 +95,4 @@ class Database(object):
     def close(self):
         self.cursor.close()
         self.connection.close()
-        print ("Database connection closed")
+        print ("Closing database connection %s" % str(self.cursor))
