@@ -12,18 +12,18 @@ SENTIMENT_DEFAULT_STATS = {
         'total': 0
     }
 }
-
+SENTIMENT_API_COLUMNS = (
+    'real_sentiment',
+    'sentiment_api1',
+    'sentiment_api1_en',
+    'sentiment_api2',
+    'sentiment_api2_en',
+    'sentiment_api3',
+    'sentiment_api4'
+)
 
 def main():
-    sentiment_api_columns = (
-        'real_sentiment',
-        'sentiment_api1',
-        'sentiment_api1_en',
-        'sentiment_api2',
-        'sentiment_api2_en',
-        'sentiment_api3',
-        'sentiment_api4'
-    )
+
     parser = IdSelectionArgumentParser(
         description=
         'Calculates posts\' sentiment \
@@ -33,7 +33,7 @@ def main():
     parser.add_argument_with_choices(
         '-api_column',
         required=False,
-        choices=sentiment_api_columns,
+        choices=SENTIMENT_API_COLUMNS,
         help=
         'Choose from the listed api column \
         options. If argument not specified, \
@@ -42,24 +42,23 @@ def main():
     parser.parse_args()
     if parser.args.api_column is not None:
         sentiment_api_columns = (parser.args.api_column,)
+    else:
+        sentiment_api_columns = SENTIMENT_API_COLUMNS
 
     update_post_sentiment_stats(
         id_selection=parser.id_selection,
         sentiment_api_columns=sentiment_api_columns)
 
 
-def update_post_sentiment_stats(sentiment_api_columns=(), id_selection='', db_name="sentiment_db"):
+def update_post_sentiment_stats(sentiment_api_columns=SENTIMENT_API_COLUMNS, id_selection='', db_name="sentiment_db"):
     """
-    Open one database connections:
-        - one to fetch post records and calculate sentiment stats
-        - one to update post_sentiment records
+    Open one database connection:
+        - to fetch post records and calculate sentiment stats
+        - to update post_sentiment records
     """
 
     db = Database(db=db_name)
     db.connect()
-
-    db_update = Database(db=db_name)
-    db_update.connect()
 
     # there is ~200k posts, but only ~300 have comments
     # run the algorithm only for the posts with comments
@@ -76,42 +75,40 @@ def update_post_sentiment_stats(sentiment_api_columns=(), id_selection='', db_na
     if len(results) != 0:
         determine_and_update_post_sentiment(
             rows=results,
-            db_select=db,
-            db_update=db_update,
+            db=db,
             sentiment_api_columns=sentiment_api_columns)
 
     # set default post sentient
     set_default_post_sentiment(
         subquery=subquery,
-        db_update=db_update,
+        db=db,
         where_clause=where_clause,
         sentiment_api_columns=sentiment_api_columns)
 
     db.close()
-    db_update.close()
 
 
-def set_default_post_sentiment(subquery, where_clause, db_update, sentiment_api_columns):
+def set_default_post_sentiment(subquery, where_clause, db, sentiment_api_columns):
     print_horizontal_rule()
     print('Setting columns %s of commentless posts to default to JSON:' % '\n '.join(sentiment_api_columns))
     print(json.dumps(SENTIMENT_DEFAULT_STATS, indent=2))
 
     set_clause = {api_column: json.dumps(SENTIMENT_DEFAULT_STATS) for api_column in sentiment_api_columns}
-    db_update.update(
+    db.update(
         table='im_post_sentiment',
         set=set_clause,
         where=where_clause.replace('id', 'idpost') + 'idpost not in ' + subquery)
     print_horizontal_rule()
 
 
-def determine_and_update_post_sentiment(rows, db_select, db_update, sentiment_api_columns):
+def determine_and_update_post_sentiment(rows, db, sentiment_api_columns):
     for row in rows:
         print_horizontal_rule()
         post_id = row[0]
 
         for api_column in sentiment_api_columns:
             sentiment_stats = count_comment_sentiment_labels(
-                db=db_select,
+                db=db,
                 post_id=post_id,
                 api_column=api_column)
 
@@ -119,7 +116,7 @@ def determine_and_update_post_sentiment(rows, db_select, db_update, sentiment_ap
             print ("Api column: %s" % api_column)
             print (json.dumps(sentiment_stats, indent=2))
 
-            db_update.update(
+            db.update(
                 table='im_post_sentiment',
                 set={api_column: json.dumps(sentiment_stats)},
                 where='idpost=%d' % post_id)
@@ -135,10 +132,10 @@ def count_comment_sentiment_labels(post_id, api_column, db):
         "im_commento AS c JOIN   \
         im_commento_sentiment AS s ON c.id = s.idcommento",
         where=
-        "c.idpost = {0} AND s.spam like '%is_spam%false%'".format(post_id))
+        "c.idpost = {0} AND (s.spam like '%is_spam%false%' or s.spam like '{1}')".format(post_id, '{}'))
     for row in results:
         comment_sentiment = row[0]
-        if comment_sentiment is None or comment_sentiment == '':
+        if comment_sentiment is None or comment_sentiment == '' or  comment_sentiment == '{}':
             continue
         comment_sentiment = json.loads(comment_sentiment)
         #print(comment_sentiment)

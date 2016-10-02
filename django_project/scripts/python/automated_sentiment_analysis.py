@@ -1,4 +1,5 @@
 import sys
+import json
 import time
 import codecs
 from utils.db_utils.base_db import Database
@@ -8,6 +9,7 @@ from mark_if_comment_has_emoji import mark_if_comment_has_emojis
 from utils.db_utils.helpers import build_id_selection_condition
 from utils.api_utils.sentiment_api import TextProcessingAPI, ViveknAPI, IndicoAPI, IndicoHqAPI
 from update_sentiment_prediction_with_emojis import update_sentiment_emoji_stats
+from update_post_sentiment_stats import update_post_sentiment_stats, SENTIMENT_DEFAULT_STATS
 
 STDOUT = sys.stdout
 
@@ -46,9 +48,21 @@ def main():
         message='Inserting a record in im_commento_sentiment...')
 
     for id in comment_ids:
-        db.insert(table='im_commento_sentiment', column_value={'idcommento': id})
-        db.insert(table='im_commento_sentiment_emoji', column_value={'idcommento': id})
-    db.close()
+        try:
+            db.insert(
+                table='im_commento_sentiment',
+                column_value={'idcommento': id, 'real_sentiment': "'{}'", 'is_mention': 'null'})
+            db.update(
+                table='im_commento_sentiment',
+                set={'spam': json.dumps({'is_spam': False})},
+                where='idcommento = %s' % id)
+            db.insert(
+                table='im_commento_sentiment_emoji',
+                column_value={'idcommento': id})
+        except Exception as e:
+            log(message="Error when inserting row for commento_id=%s : %s" % (id, e))
+            db.close()
+            return
 
     log(indent=6,
         message='Translating the comments with Google API...')
@@ -105,6 +119,18 @@ def main():
             api=api(),
             db_name=db_name,
             id_selection=id_selection)
+
+    results = db.fetch_all(
+        select='DISTINCT(idpost)',
+        from_clause='im_commento',
+        where='id IN (%s)' % ','.join(comment_ids),
+        order_by='id')
+    db.close()
+
+    post_ids = [str(row[0]) for row in results]
+    log('Updating sentiment stats for posts with id: %s' % post_ids)
+    update_post_sentiment_stats(
+        id_selection=build_id_selection_condition(id_equals=post_ids))
 
     #invoke update post sentiment!!!!
     # evaluating accuracy should be done on real_sentiment input
