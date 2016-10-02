@@ -76,6 +76,7 @@ class CommentEmojiSentimentDbConnection(CommentSentimentDbConnection):
             user=user,
             passwd=passwd)
         self.table = "im_commento_sentiment_emoji"
+        self.table_stats = "im_emoji_stats"
         self.select = "id, idcommento"
 
     def fetch_sentiment_by_comment_id(self, sentiment="", comment_id=""):
@@ -83,3 +84,8 @@ class CommentEmojiSentimentDbConnection(CommentSentimentDbConnection):
             select=sentiment,
             from_clause=self.table,
             where="idcommento='%d'" % comment_id)
+
+    def get_emoji_stats(self):
+        return super(CommentSentimentDbConnection, self).fetch_all(
+            select="`char`,`neutral`,`positive`, `negative`,`sentiment_score`",
+            from_clause=self.table_stats)
