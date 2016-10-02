@@ -91,6 +91,7 @@ class Database(object):
             print("... %d row%s affected" % (self.cursor.rowcount, 's' if self.cursor.rowcount != 1 else ''))
         except MySQLdb.Error as e:
             print ("Error inserting in db: %s" % e)
+            raise Exception(e)
 
     def close(self):
         self.cursor.close()
