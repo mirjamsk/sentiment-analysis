@@ -43,7 +43,13 @@ var CommentListModule = (function () {
         url: '/api/comments/by/',
         urlParam: 'post-id',
         currentAPI: '',
-        sentimentLabels: []
+        sentimentLabels: [],
+        dummySentimentEle: {
+            sentiment_stats: {
+                positive:'',
+                negative:'',
+                neutral:''
+        }}
     };
 
     var util = {
@@ -107,7 +113,7 @@ var CommentListModule = (function () {
                     .html(comment.spam.type);
             } else {
                 var realSentiment = data.sentimentLabels.realSentiment;
-                var realSentimentStats = comment[realSentiment]['sentiment_stats'];
+                var realSentimentStats = comment[realSentiment]['sentiment_stats'] || data.dummySentimentEle;
                 tempListItem
                     .find('tr.comment_' + realSentiment + ' span');
                 tempListItem
@@ -127,7 +133,7 @@ var CommentListModule = (function () {
                 var $table = tempListItem.find('.comment-full-sentiment tbody');
 
                 data.sentimentLabels.sentimentAPIs.forEach(function (api) {
-                    var apiSentimentStats = comment[api]['sentiment_stats'];
+                    var apiSentimentStats = comment[api]['sentiment_stats'] || data.dummySentimentEle;
                     var $sentimentEle = $dummySentimentEle
                         .clone()
                         .addClass('comment_' + api);
