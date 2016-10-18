@@ -1,0 +1,51 @@
+\usesmartdiagramlibrary{additions}
+
+\tikzset{
+every shadow/.style={
+fill=none,
+shadow xshift=0pt,
+shadow yshift=0pt}
+}
+\begin{figure}[ht]
+	\vspace{3cm}
+	\hspace{-5cm}
+	\centering
+	\smartdiagramset{
+		text width=2.05cm,
+		font=\scriptsize,
+		uniform arrow color=true,
+		uniform color list=white for 6 items,
+		circular final arrow disabled=true, 
+		circular distance=4cm,
+		module shape=circle,
+		border color=black,
+		arrow tip=to,
+		arrow color=black,
+		arrow line width=1pt,
+		additions={
+			additional item font=\scriptsize,
+			additional arrow line width=1pt,
+			additional arrow color=black,
+			additional item border color=black,
+			additional item offset=1cm,
+		}
+	}
+	\smartdiagramadd[circular diagram]{
+		Find new comments,
+		Translate comments,
+		Assess if they contain emojis, 
+		Predict sentiment,
+		Adjust prediction to account for emojis, 
+		Aggregate sentiment for posts
+	}{ 
+		above of module1/Start,
+		right of module6/End
+	}
+	\smartdiagramconnect{to-}{module1/additional-module1}
+	\smartdiagramconnect{-to}{module6/additional-module2}
+	\vspace{1cm}
+
+  \caption{Sentiment prediction workflow}
+
+\label{fig:prediction-workflow}
+\end{figure}

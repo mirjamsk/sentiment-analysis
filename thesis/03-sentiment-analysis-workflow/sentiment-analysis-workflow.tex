@@ -1,52 +1,72 @@
-\usesmartdiagramlibrary{additions}
 
-\tikzset{
-every shadow/.style={
-fill=none,
-shadow xshift=0pt,
-shadow yshift=0pt}
+
+The workflow  consists of two distinct parts: prediction and evaluation portion  blabla
+how to evaluate? human input! 
+...
+
+...
+
+...
+
+...
+
+See Figure \ref{fig:analysis-workflow}
+
+\input{03-sentiment-analysis-workflow/diagrams/sentiment-analysis-workflow.tex}
+
+
+% --- SECTION PREDICTON WORKFLOW ---
+\section{Prediction workflow\label{sec:sentiment-prediction-workflow}}
+
+Figure \ref{fig:prediction-workflow} shows the main concepts that build up the workflow of our sentiment analysis. 
+Since the term \textit{workflow} can be a bit ambiguous, let us clarify exactly what we mean by it. In our case it is simply a python script named named \textit{automated\_sentiment\_analysis.py} that can be run manually, or scheduled to run on a server at desired times/intervals. 
+Sections that follow will explain each step in more detail and will also provide motivation for some, perhaps not so obvious, choices.
+
+\input{03-sentiment-analysis-workflow/diagrams/sentiment-prediction-workflow.tex}
+
+\subsection*{Find new comments\label{sec:find-new-comments}}
+
+This section is probably the most straight forward. Once run, the script scans the database looking for comments that don't have a sentiment record and inserts one. 
+The inserted rows' sentiment columns default to a json shown in Listing \ref{lst:default-sentiment-json}. The reason for this particular choice of json and for using the json format in the first place is discussed at length in Section \ref{sec:design}.
+
+\begin{lstlisting}[
+style=json,
+captionpos=b,
+xleftmargin=.3\textwidth,
+caption={Default sentiment json},
+label={lst:default-sentiment-json}]
+{
+  "sentiment_label": "",
+  "sentiment_stats": {
+      "positive": 0,
+      "negative": 0
+      "neutral" : 0
+  }
 }
-\begin{figure}[ht]
-	\vspace{2cm}
-    \centering
-    \smartdiagramset{
-    	font=\scriptsize,
-        circular final arrow disabled=true, 
-        circular distance=4cm,
-		arrow tip=to,
-		module shape=circle,
-		border color=white,
-		arrow line width=2pt,
-		uniform color list=gray!30 for 7 items,
-		text width=2cm,
-        additions={
-        	additional item font=\scriptsize,
-            additional arrow tip=stealth,
-            additional arrow line width=2pt,
-            additional arrow color=gray!30!white,
-            additional item bottom color=gray!30!white,
-			additional item offset=1cm,
-        }
-    }
-    \smartdiagramadd[circular diagram]{
-		Find unanalyzed  comments,
-        Insert new sentiment records in db,
-        Translate comments,
+\end{lstlisting}
+% --- SECTION TRANSLATE COMMENTS ---
+\subsection*{Translate comments \label{sec:translate-comments}}
+        Translate comments,{}
         Mark comments containing emojis, 
         Predict sentiment,
 		Account for emojis, 
         Calculate aggregate sentiment for posts
-    }{
-		above of module1/Start,
-		right of module7/End, 
-		below left of module5/Text Processing API,
-		below  of module5/Vivekn API,
-		below right of module5/Indico API
-	}
-    \smartdiagramconnect{to-}{module1/additional-module1}
-\smartdiagramconnect{-to}{module7/additional-module2}
-\smartdiagramconnect{-to}{module5/additional-module3}
-\smartdiagramconnect{-to}{module5/additional-module4}
-\smartdiagramconnect{-to}{module5/additional-module5}
+by new we mean un analyzed
 
-\end{figure}
+
+% --- SECTION EVALUATION WORKFLOW ---
+
+\section{Evaluation workflow\label{sec:sentiment-evaluation-workflow}}
+
+real sentiment input can be done either by hand orby the REST API GUI or the REST API curl calls
+
+...
+
+\input{03-sentiment-analysis-workflow/diagrams/sentiment-evaluation-workflow.tex}
+
+
+
+
+
+
+

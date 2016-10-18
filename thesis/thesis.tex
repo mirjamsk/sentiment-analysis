@@ -10,6 +10,7 @@
 \usepackage[table]{xcolor}
 \usepackage{algpseudocode}
 \usepackage{smartdiagram}
+\usepackage{listings}
 % DELETE ME BELOW
 \usepackage{blindtext}
 % DELETE ME ABOVE
@@ -50,15 +51,10 @@
 \@ifundefined{showcaptionsetup}{}{
 \PassOptionsToPackage{caption=false}{subfig}}
 
-% centered column for tabularx
-\newcolumntype{C}{>{\centering\arraybackslash}X}
-% header for tabularx
-\newcommand*{\thead}[1]{\multicolumn{1}{c}{\bfseries #1}}
 
-% persnalized commands
-\newcommand{\quoted}[1]{``#1''}
-\newcommand{\Csh}{C\includegraphics{hash-symbol}}
-\makeatother
+
+\input{command-definitions.tex}
+
 
 \begin{document}
 % --- FRONTPAGE ---
