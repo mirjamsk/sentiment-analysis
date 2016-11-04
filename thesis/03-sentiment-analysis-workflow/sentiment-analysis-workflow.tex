@@ -1,16 +1,19 @@
+This chapter describes the workflow used to analyze the sentiment of social media comments and their corresponding posts.
+In order to outline the workflow, a top down approach was taken where each subsequent section provides an ever more detailed insight into a particular step of the workflow.
+The big picture is shown in Figure \ref{fig:analysis-workflow} and consists of four parts:
+\begin{enumerate}
+  \item Obtaining data
+  \item Sentiment prediction using an API
+  \item Determining real sentiment of data
+  \item Evaluation of that API's performance
+\end{enumerate}
 
+First part is the simplest one and as such it doesn't merit a more detailed recounting other than mentioning that we were provided with a small sample dataset which, most relevantly, contained about 6000 comments.
 
-The workflow  consists of two distinct parts: prediction and evaluation portion  blabla
-how to evaluate? human input! 
-...
+In the sections that follow, each of the three remaining parts are broken down into conceptual steps describing the methodology used whilst not cluttering it with too many implementation details.
+Additionally, it is interesting to note that the first and third steps are done only once.
+This means that, for each new API, the workflow for sentiment analysis effectively consists of only steps 2 and 4, namely sentiment prediction and performance evaluation.
 
-...
-
-...
-
-...
-
-See Figure \ref{fig:analysis-workflow}
 
 \input{03-sentiment-analysis-workflow/diagrams/sentiment-analysis-workflow.tex}
 
@@ -25,8 +28,10 @@ Sections that follow will explain each step in more detail and will also provide
 \input{03-sentiment-analysis-workflow/diagrams/sentiment-prediction-workflow.tex}
 
 \subsection*{Find new comments\label{sec:find-new-comments}}
+This part  quite straight forward 
+ Once run, the script scans the database looking for comments that don't have a sentiment record and inserts one.  
 
-This section is probably the most straight forward. Once run, the script scans the database looking for comments that don't have a sentiment record and inserts one. 
+ for the sake of completeness
 The inserted rows' sentiment columns default to a json shown in Listing \ref{lst:default-sentiment-json}. The reason for this particular choice of json and for using the json format in the first place is discussed at length in Section \ref{sec:design}.
 
 \begin{lstlisting}[
@@ -51,22 +56,37 @@ label={lst:default-sentiment-json}]
         Predict sentiment,
 		Account for emojis, 
         Calculate aggregate sentiment for posts
-by new we mean un analyzed
+by new we mean unanalyzed
 
+...
+
+...
+
+...
+
+...
+
+
+% --- REAL SENTIMENT  WORKFLOW ---
+
+\section{Determining real sentiment workflow\label{sec:determining-real-sentiment-workflow}}
+How do we know our predictions are any good?
+real sentiment input can be done either by hand orby the REST API GUI or the REST API curl calls
+
+...
+
+
+\input{03-sentiment-analysis-workflow/diagrams/real-sentiment-workflow.tex}
 
 % --- SECTION EVALUATION WORKFLOW ---
 
 \section{Evaluation workflow\label{sec:sentiment-evaluation-workflow}}
 
-real sentiment input can be done either by hand orby the REST API GUI or the REST API curl calls
+
+performance evaluation of that particular API.
+how to evaluate? human input! 
 
 ...
 
 \input{03-sentiment-analysis-workflow/diagrams/sentiment-evaluation-workflow.tex}
-
-
-
-
-
-
 
