@@ -8,24 +8,26 @@ The big picture is shown in Figure \ref{fig:analysis-workflow} and consists of f
   \item Evaluation of that API's performance
 \end{enumerate}
 
-First part is the simplest one and as such it doesn't merit a more detailed recounting other than mentioning that we were provided with a small sample dataset which, most relevantly, contained about 6000 comments.
+First part is the simplest one and as such doesn't merit a more detailed recounting other than mentioning that we were provided with a small sample dataset which, most relevantly, contained about 6000 comments.
 
 In the sections that follow, each of the three remaining parts are broken down into conceptual steps describing the methodology used whilst not cluttering it with too many implementation details.
 Additionally, it is interesting to note that the first and third steps are done only once.
-This means that, for each new API, the workflow for sentiment analysis effectively consists of only steps 2 and 4, namely sentiment prediction and performance evaluation.
+This means that, for each new API we want to use, the workflow for sentiment analysis effectively consists of only steps 2 and 4, namely sentiment prediction and performance evaluation.
 
 
 \input{03-sentiment-analysis-workflow/diagrams/sentiment-analysis-workflow.tex}
 
 
 % --- SECTION PREDICTON WORKFLOW ---
-\section{Prediction workflow\label{sec:sentiment-prediction-workflow}}
+\section{Sentiment prediction workflow\label{sec:sentiment-prediction-workflow}}
+Let's assume we have access to an API for sentiment prediction. And by having access we mean being able to programmatically call the API with a text payload and have it return a prediction in some data format. The end goal is to analyze sentiment of all the comments in our sample dataset and aggregate the obtained data on a per post basis in order to infer whether it is was positively or negatively received, or even if it had no emotional impact whatsoever. And we want this to be done automatically, practically with a push of a proverbial button. By automatizing the process, it is easy to see how it can derive value for possible future ventures that extend far beyond our modest 6000 comment database.
+
+\input{03-sentiment-analysis-workflow/diagrams/sentiment-prediction-workflow.tex}
 
 Figure \ref{fig:prediction-workflow} shows the main concepts that build up the workflow of our sentiment analysis. 
 Since the term \textit{workflow} can be a bit ambiguous, let us clarify exactly what we mean by it. In our case it is simply a python script named named \textit{automated\_sentiment\_analysis.py} that can be run manually, or scheduled to run on a server at desired times/intervals. 
 Sections that follow will explain each step in more detail and will also provide motivation for some, perhaps not so obvious, choices.
 
-\input{03-sentiment-analysis-workflow/diagrams/sentiment-prediction-workflow.tex}
 
 \subsection*{Find new comments\label{sec:find-new-comments}}
 This part  quite straight forward 
@@ -60,20 +62,11 @@ by new we mean unanalyzed
 
 ...
 
-...
-
-...
-
-...
-
-
 % --- REAL SENTIMENT  WORKFLOW ---
 
 \section{Determining real sentiment workflow\label{sec:determining-real-sentiment-workflow}}
 How do we know our predictions are any good?
 real sentiment input can be done either by hand orby the REST API GUI or the REST API curl calls
-
-...
 
 
 \input{03-sentiment-analysis-workflow/diagrams/real-sentiment-workflow.tex}
@@ -86,7 +79,6 @@ real sentiment input can be done either by hand orby the REST API GUI or the RES
 performance evaluation of that particular API.
 how to evaluate? human input! 
 
-...
 
 \input{03-sentiment-analysis-workflow/diagrams/sentiment-evaluation-workflow.tex}
 
