@@ -29,12 +29,11 @@ Since the term \textit{workflow} can be a bit ambiguous, let us clarify exactly 
 Sections that follow will explain each step in more detail and will also provide motivation for some, perhaps not so obvious, choices.
 
 
+% --- SUBSECTION FIND NEW COMMENTS ---
 \subsection*{Find new comments\label{sec:find-new-comments}}
-This part  quite straight forward 
- Once run, the script scans the database looking for comments that don't have a sentiment record and inserts one.  
-
- for the sake of completeness
-The inserted rows' sentiment columns default to a json shown in Listing \ref{lst:default-sentiment-json}. The reason for this particular choice of json and for using the json format in the first place is discussed at length in Section \ref{sec:design}.
+This part is quite straight forward.
+Once run, the script scans the database looking for comments that don't have a sentiment record attached to it and inserts one.   
+The inserted rows' sentiment columns default to a json shown in Listing \ref{lst:default-sentiment-json}. The reason for this particular choice of json and for using the json format in the first place is discussed at length in Section \ref{sec:design}. Also, notice the use of the plural form- sentiment columns. This way we are able to store sentiment predictions from each API we planned on using in their own columns.
 
 \begin{lstlisting}[
 style=json,
@@ -51,18 +50,94 @@ label={lst:default-sentiment-json}]
   }
 }
 \end{lstlisting}
-% --- SECTION TRANSLATE COMMENTS ---
+
+
+% --- SUBSECTION TRANSLATE COMMENTS ---
 \subsection*{Translate comments \label{sec:translate-comments}}
-        Translate comments,{}
-        Mark comments containing emojis, 
-        Predict sentiment,
-		Account for emojis, 
-        Calculate aggregate sentiment for posts
-by new we mean unanalyzed
+To reiterate, our dataset consists of real comments to posts published by actual fashion brands. Since fashion truly is a global industry, the posted comments are in a myriad of different languages. In our case the number of different languages is somewhere north of 70. 
+This provided us with a challenge because most sentiment analysis related APIs handle (well) only content written in English. And the very few that offer support for other languages do so just for a handful of them. This is especially true for the open source variety of APIs that were used for the purposes of this thesis. 
 
-...
+Even thought the rationale for using comments' English translations seems to hold, we wanted numbers to back up our claims. In other words, we wanted to quantify just how much worse the APIs would perform if we fed them comments in their original language as opposed to English. So for two out of four APIs used, we analyzed both, the content in original language and the English language. The results are examined in Chapter \ref{ch:results}, but in short, they are in accordance to what we expected.
 
-% --- REAL SENTIMENT  WORKFLOW ---
+This brings us to another caveat. We've just coupled the quality of sentiment predictions with the quality of the translations. After all, the prediction can only be as good as the translation. Since we were trying to evaluate performance across multiple open source APIs,  we wanted the best translations possible to try to mitigate this problem. 
+Hence we opted for what we felt was the current industry standard, Google's Translate API\footnote{https://cloud.google.com/translate/v2/translating-text-with-rest}.
+It is worth noting that this is the only step we hadn't taken the open source option but used a free trial period instead to do a one-off translation of our entire dataset.
+
+% --- SUBSECTION PREDICT SENTIMENT ---
+\subsection*{Predict sentiment\label{sec:predict-sentiment}}
+For each unanalyzed comment a we call a specific API requesting a sentiment prediction of the comment's translated content\footnote{As mentioned in the previous section, there are two API's for which we requested sentiment predictions in both, their original language and the English translation}. 
+If no API is specified the script sequentially makes requests to all defined.
+Since each API's response is in a slightly different format, the response is parsed to adhere to the json definition shown in Listing \ref{lst:default-sentiment-json}. After which, the API's sentiment column for that particular comment is updated with the received (and parsed) values.
+
+% --- SUBSECTION ADJUST PREDICTION ---
+\subsection*{Adjust prediction to account for emojis\label{sec:adjust-prediction-to-account-for-emojis}}
+In this day and age everybody uses emojis and emoticons, and a lot of it. 
+To disambiguate the two terms, here are the definitions offered by the Oxford dictionary:
+
+\textbf{\emph{emoji}} 
+/ \textsci \textprimstress m\textschwa \textupsilon d\textyogh i /
+\begin{adjustwidth}{1cm}{}
+\emph{origin}
+(1990s) Japanese, from e=picture + moji=letter, character
+\end{adjustwidth}
+\begin{adjustwidth}{1cm}{}
+\emph{noun}
+A small digital image or icon used to express an idea or emotion
+\end{adjustwidth}
+
+\textbf{\emph{emoticon}}  
+/ \textsci \textprimstress m\textschwa \textupsilon t\textsci k\textturnscripta n /
+\begin{adjustwidth}{1cm}{}
+\emph{origin}
+(1990s) blend of words emotion + icon
+\end{adjustwidth}
+\begin{adjustwidth}{1cm}{}
+\emph{noun}
+A representation of a facial expression such as a smile or frown, formed 
+\begin{adjustwidth}{1cm}{}
+by various combinations of keyboard characters and used to convey the writer's feelings or intended tone
+\end{adjustwidth}\end{adjustwidth}
+To put it simpler, the difference is between symbols ❤ and \textless3. The former being an emoji and the latter being an emoticon. But we digress, the point was to emphasize the very emotional nature and motivation behind using these symbols in a text, comment or post. 
+Having an emoji or an emoticon mixed with text can drastically change our perception of the sentiment behind it. Take these three simple comments: 
+\begin{verbatim}
+                          I read that book
+                          I read that book <3
+                          I read that book ❤
+\end{verbatim}
+Unless we happen to know the person that wrote the the first comment, its content in plain text doesn't really codify enough information for us to make a judgment call weather or not this person liked or disliked that book. On the other hand, the other two comments are quite unambiguously positive. 
+That one little symbol made all the difference in how we perceive the text that preceded it. 
+Unfortunately, all APIs that we tested would ignore these descriptive symbols, so we decided to write up a very simple algorithm based on the \emph{Emoji Sentiment Ranking}\footnote{http://kt.ijs.si/data/Emoji\_sentiment\_ranking} which came to be as a part of the Sentiment of emojis study\cite{Kralj2015emojis}.  
+The algorithm will be described in more detail in Section \ref{sec:implementation}.
+But in short, the algorithm tweaks the sentiment of comments which contain emojis or emoticons. 
+Then it stores the recalculated result in a separate database table so it doesn't clobber the original data. 
+This allows us to both fine tune our algorithm and to compare the predictions that took the sentimental value of emojis into account to those that didn't.
+
+% --- SUBSECTION ADJUST PREDICTION ---
+\subsection*{Aggregate posts' sentiment \label{sec:aggregate-post-sentiment}}
+Finally, all that is left to do is to aggregate the sentiment data for each post. 
+It boils down to counting how many sentimentally negative, neutral or positive comments does a post have. 
+The results of this data aggregation are stored in a json format as shown in Listing \ref{lst:post-sentiment-json}. 
+Maybe the most interesting thing about Listing \ref{lst:post-sentiment-json} is the \emph{sentiment\_label} field. Just as a reminder, everything leading up and including this point was done automatically by running the \textit{automated\_sentiment\_analysis.py} script; and now we have an estimation of how the public had received a published post.
+Of course, this aggregation is done for each post and API separately. So, for example, according to one API a post might have been overall positively received, while data coming from another API might yield a different conclusion. So which one do we trust? Sections \ref{sec:determining-real-sentiment-workflow}  and  \ref{sec:sentiment-evaluation-workflow} explain how reliability of APIs was assessed. 
+
+\begin{lstlisting}[
+style=json,
+captionpos=b,
+xleftmargin=.225\textwidth,
+caption={Example of a post sentiment json},
+label={lst:post-sentiment-json}]
+{
+  "sentiment_label": "positive", 
+  "sentiment_stats": {
+    "positive": 38, 
+    "negative": 2,
+    "neutral": 9, 
+    "total": 49
+  } 
+}
+\end{lstlisting}
+
+% --- SECTION REAL SENTIMENT  WORKFLOW ---
 
 \section{Determining real sentiment workflow\label{sec:determining-real-sentiment-workflow}}
 How do we know our predictions are any good?
@@ -77,8 +152,10 @@ real sentiment input can be done either by hand orby the REST API GUI or the RES
 
 
 performance evaluation of that particular API.
+
 how to evaluate? human input! 
 
+Script that updates the results page  ( accuracy, recall)
 
 \input{03-sentiment-analysis-workflow/diagrams/sentiment-evaluation-workflow.tex}
 
