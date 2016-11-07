@@ -82,7 +82,7 @@ To disambiguate the two terms, here are the definitions offered by the Oxford di
 \end{adjustwidth}
 \begin{adjustwidth}{1cm}{}
 \emph{noun}
-A small digital image or icon used to express an idea or emotion
+a small digital image or icon used to express an idea or emotion
 \end{adjustwidth}
 
 \textbf{\emph{emoticon}}  
@@ -93,7 +93,7 @@ A small digital image or icon used to express an idea or emotion
 \end{adjustwidth}
 \begin{adjustwidth}{1cm}{}
 \emph{noun}
-A representation of a facial expression such as a smile or frown, formed 
+a representation of a facial expression such as a smile or frown, formed 
 \begin{adjustwidth}{1cm}{}
 by various combinations of keyboard characters and used to convey the writer's feelings or intended tone
 \end{adjustwidth}\end{adjustwidth}
@@ -114,10 +114,11 @@ This allows us to both fine tune our algorithm and to compare the predictions th
 
 % --- SUBSECTION ADJUST PREDICTION ---
 \subsection*{Aggregate posts' sentiment \label{sec:aggregate-post-sentiment}}
-Finally, all that is left to do is to aggregate the sentiment data for each post. 
+Just as a quick reminder, everything leading up and including this point was done automatically by running the \textit{automated\_sentiment\_analysis.py} script.
+Finally, all that is left for the script to do is to aggregate the sentiment data for each post. 
 It boils down to counting how many sentimentally negative, neutral or positive comments does a post have. 
 The results of this data aggregation are stored in a json format as shown in Listing \ref{lst:post-sentiment-json}. 
-Maybe the most interesting thing about Listing \ref{lst:post-sentiment-json} is the \emph{sentiment\_label} field. Just as a reminder, everything leading up and including this point was done automatically by running the \textit{automated\_sentiment\_analysis.py} script; and now we have an estimation of how the public had received a published post.
+Perhaps the most informative field in Listing \ref{lst:post-sentiment-json} is the \emph{sentiment\_label}. It is essentially one API's appraisal of how well (or badly) had the public received a published post.
 Of course, this aggregation is done for each post and API separately. So, for example, according to one API a post might have been overall positively received, while data coming from another API might yield a different conclusion. So which one do we trust? Sections \ref{sec:determining-real-sentiment-workflow}  and  \ref{sec:sentiment-evaluation-workflow} explain how reliability of APIs was assessed. 
 
 \begin{lstlisting}[
@@ -138,11 +139,15 @@ label={lst:post-sentiment-json}]
 \end{lstlisting}
 
 % --- SECTION REAL SENTIMENT  WORKFLOW ---
-
 \section{Determining real sentiment workflow\label{sec:determining-real-sentiment-workflow}}
-How do we know our predictions are any good?
-real sentiment input can be done either by hand orby the REST API GUI or the REST API curl calls
-
+In order to answer the question weather or not the obtained sentiment predictions are any good and to determine if one API outperforms all others- we need sentiment data that we hold true and we need it for each comment. That way we have a real (true) sentiment record to compare against.
+Since the only state of the art sentiment analyzing machines at our disposal were the two humans writing this thesis, we decided to read all the comments one by one and input our sentiment predictions by hand. 
+Thus, from this point on, when ever we refer to\textit{real sentiment} we mean our own judgment of the sentiment behind the comment.
+To make this manual process  a bit easier for ourselves, we've made it possible to input or modify sentiment for each comment in multiple ways. It can by done via the command line, e.g by doing a curl call to the framework's REST API or via its the graphical user interface. 
+But easiest and most efficient way is to run the \textit{update\_real\_sentiment.py} script. The script allows you to specify a range of comments which you want to analyze by supplying command line arguments.
+The script then sequentially fetches specified comments, prints out their id, content and English translation and asks for 3 pieces of information shown in Figure \ref{fig:real-sentiment-workflow}. It requests a sentiment prediction to be input, weather or not one assesses this comment to be spam and if there was a mention of another user in the comment in question. 
+We were interested to have the two last pieces of intelligence mainly out of curiosity to see how API's would have performed if the dataset was clean from there types of comments. 
+However, they could also be a good basis for future extensions of our work. 
 
 \input{03-sentiment-analysis-workflow/diagrams/real-sentiment-workflow.tex}
 
