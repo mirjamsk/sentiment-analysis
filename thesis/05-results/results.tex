@@ -1,0 +1,31 @@
+For the sake of completeness, below are the definitions used to calculate those 3 metrics.
+Accuracy is the simplest of all metrics as it is just the fraction of correctly classified comment sentiments.
+\[Accuracy = \frac{number\ of\ correct\ prediction}{total\ number \ of\ comments}\]
+
+Precision and recall, on the other hand, are a bit more complex to understand and are calculated separately for each sentiment label $ \in \{ positive, negative, neutral \}$. 
+They use concepts such as $True\ Positive$, $False\ Positive$  and $False\ Negative$.
+In the context of out framework, these concepts are calculated as:
+\begin{description}
+ \item[True Positive] 
+ correctly predicted labels
+correctly identified like pairs {real sentiment, predicted sentiment} 
+ {positive,positive}, {negative negative}
+ \begin{description}
+ \item[One] first item
+ \item[Two] second item
+ \item[Three] third item
+\end{description}
+
+ \item[False Positive]  
+ number of times it didn't predict the label when it should have
+ incorrectly identified {negative, neutral}
+ \item[False negative] 
+ umber of times it predicted the label when it shouldn't have 
+\end{description}
+
+Recall is the proportion of {positive, negative, neutral} comments were actually predicted as {positive, negative, neutral}. In other words, out of all the {positive, negative, neutral} examples, what fraction did the classifier pick up?
+\[Recall = \frac{TP}{TP + FN }\]
+
+
+Precision is the proportion of labels that were predicted as {positive,negative, neutral} actually are {positive,negative, neutral}. In other words, out of all the examples the classifier labeled as {positive,negative, neutral}, what fraction were correct?
+\[Precision = \frac{TP}{TP + FP }\]
