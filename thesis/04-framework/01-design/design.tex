@@ -1,7 +1,15 @@
-\begin{figure}[ht]
-	\includegraphics[width=1.2\textwidth]{04-framework/01-design/Images/DB_schema.png}
-	\caption[Test caption]{TTest caption \label{fig:test-caption}}
-\end{figure}
+The most prevalent web development paradigm in the recent years has to be designing software components as APIs. 
+The term API is short for Application Programming Interface and is essentially an interface to retrieve and manipulate data. But unlike a graphical user interface (from now on GUI) whose end users are people, API's users are other applications. 
+Having an single point of entry which abstracts and manages resources in a consistent manner provides lot of benefits in terms of maintainability, automation and future development.
 
-
-Why json when it violated the 1NN rule? already in mysql, will eventually support json, and easily movable to nosql db, or even elastic search. 
+That is why we took the API-first approach when structuring our sentiment analysis framework. 
+The idea was to build a RESTful API on top of the provided sample database and use it for multiple purposes, namely, a web app, API's GUI or any scripts and third party applications that might need to access database records. 
+However, during one development iteration the requirements somewhat changed.
+It became clear that the collection of scripts used for sentiment analysis (see Section \ref{sec:sentiment-prediction-workflow}) would provide more value if their data requests didn't go through an API but by making calls directly to the database. 
+Even though this decision might seem to counter all previously listed benefits, it was important to realize that our efforts weren't an independent endeavor but a possible extension of our university's existing framework for managing social media accounts. 
+Considering the redefined context in which we were developing, it made sense to design the collection of server-side scripts so they depend only on the specifics of the provided database schema.
+This way, should our attempts yield satisfactory results, the collection of scripts could easily be deployed and reused in the university's existing framework. 
+Our goals became were twofold, first designing an API-independent script bundle and second designing an API-dependent web application and its GUI. 
+The purpose of the two latter services was mainly to aid development and to have results presented in an intuitive manner.
+Finally, a high level design of the system is shown in Figure \ref{fig:framework-design}.
+\input{04-framework/01-design/diagrams/framework-design.tex}

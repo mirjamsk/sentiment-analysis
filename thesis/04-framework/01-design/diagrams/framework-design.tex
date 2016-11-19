@@ -1,0 +1,42 @@
+\usetikzlibrary{shapes.geometric, arrows, fit}
+\tikzstyle{rect-small} = [rectangle, thick, minimum width=3.2cm, minimum height=1cm, text centered, draw=black, align=center]
+\tikzstyle{rect-large} = [rectangle, thick, minimum width=3.2cm, minimum height=1.5cm, text centered, draw=black, align=center]
+\tikzstyle{db}         = [cylinder, thick, shape border rotate=90, draw,minimum height=1.5cm, minimum width=2cm, shape aspect=.25]
+\tikzstyle{cloud-api}  = [cloud, thick, draw,cloud puffs=10,cloud puff arc=120, aspect=2.5, align=center] 
+
+\tikzstyle{arrow}    = [thick,<->,>=stealth]
+\tikzstyle{arrow-to} = [thick,->,>=stealth]
+
+\begin{figure}[ht]
+  \centering
+\begin{tikzpicture}[node distance=2cm]
+\node (database) [db]  	{Database};
+
+\node (scripts)         [rect-large, above right of=database, xshift=2.2cm, yshift=0.5cm] {Sentiment\\Analysis Scripts};
+\node (google-cloud)    [cloud-api, right of=scripts, xshift=3cm, yshift=-1.4cm]          {Google\\Translate API};
+\node (sentiment-cloud) [cloud-api, above of=google-cloud, yshift=0.4cm]                  {Sentiment\\APIs};
+
+\node (business) [rect-small, below of=scripts,  yshift=-2cm] {Business Logic};
+\node (api)      [rect-small, below of=business, yshift=1cm]  {API};
+
+\node (apigui)   [rect-large, below of=api]                                    {RESTful\\API GUI};
+\node (web-app)  [rect-large, below left of=api, xshift=-2.2cm, yshift=-0.6cm] {Web\\Application};
+\node (3rd)      [rect-large, below right of=api, xshift=2.2cm, yshift=-0.6cm] {Third Party\\Applications};
+
+\node (web-server) [below of=3rd, xshift=1cm, yshift=0.5cm] { web server};
+\node [draw=black!100, dashed, fit={(business) (api) (apigui) (web-app) (3rd) (web-server)}, yshift=0.2cm, minimum width=11.5cm, minimum height=6cm] {};
+
+
+\draw [arrow]    (database) |- (business);
+\draw [arrow]    (database) |- (scripts);
+\draw            (business) -- (api);
+\draw [arrow]    (3rd)      |- (api);
+\draw [arrow]    (apigui)   -- (api);
+\draw [arrow-to] (web-app)  |- (api);
+\draw [arrow-to] (scripts)  -- (google-cloud);
+\draw [arrow-to] (scripts)  -- (sentiment-cloud);
+
+\end{tikzpicture}
+  \caption{Sentiment analysis framework}
+  \label{fig:framework-design}
+\end{figure}
