@@ -1,0 +1,34 @@
+\section{Connecting two mining approaches – Applying clustering in sentiment analysis}
+
+One of newer ideas in area of sentiment analysis is using clustering algorithms in order to obtain better sentiment analysis results. Let's start with explaining what is clustering. Clustering is a method of splitting datasets into subsets of similar items based on the content of the items. In our case this would be splitting different post sentences in the same "basket" depending on the content, which would result in groups of sentences talking about a similar product feature (product aspect). 
+Clustering is an unsupervised learning method, which means that items are split in separate groups only based on similarity value calculated by its features (in this case the content of the posts). Difference from classification method, where a model will be trained based on "past data", clustering method is based mostly on choosing an appropriate similarity measure. Other difference is that as output of classification your dataset is labeled with a class attribute, and in case of clustering, output is subsets of items. 
+
+Applying clustering based sentiment analysis, we might obtain high accuracy results. The process contains few steps: 
+\begin{enumerate}
+	\item Data gathering
+	\item Data cleaning
+	\item Computing the Term Frequency and Inverse Document Frequency
+	\item Applying K-means clustering algorithm
+	\item Sentiment Analysis Engine
+\end{enumerate}
+
+After the data is gathered, it would be ideally to find an automatic data cleaning method that will remove all the outliers from the dataset. When obtaining relatively noisy free data we should perform TF-IDF in order to determine "keywords" in the content that could possibly represent a feature of an analyzed product. TF stands for Term Frequency, represents how many times a term occurs in a document. IDF stands for Inverse Document Frequency, and represents how common is a term in all documents. 
+After determining the "keywords", we can have an idea of how many clusters we should expect in our dataset. This could be an input to the K-means algorithm, thus K-means chooses k random points as initial centroids and assigns all other points to the nearest centroid. Next step of the algorithm is re-centering the current centering. The process repeats until the next iteration produces same result as the previous iteration. Output of clustering method is set of clusters, where each cluster contains similar sentences. 
+
+Output of the clustering step represents an input to the sentiment analysis engine. Each cluster is inserted in the engine to determine sentiment of people on a particular feature of the product.
+Applied to our problem domain, the steps would go like so:
+On each comment related to post, we would do data preprocessing, removing noisy data from the comment. Afterwards determining keywords in the comment related to the post. For example comment describing customers experience after using the product, such as a customer commenting on the fabric, quality, and color of the blouse. As input in K-mean we would have three aspects of product, in our case k would be 3. K-means would group all comment sentences related to each of the product features (quality, fabric and color). Afterwards, we apply the sentiment analysis on each cluster and obtain a sentiment value. This way we could calculate the overall sentiment value joining the cluster sentiment values, thus obtaining higher accuracy results.
+
+Downsides of this approach:
+\begin{enumerate}
+	\item Applying method on large scale data
+	\item Eliminating noisy data from social media content should usually involve human interaction
+	\item Weaknesses of K-means method
+\end{enumerate}
+
+\section{Spam detection}
+
+As one of the future improvements could be finding a better method for spam detection in order to filter out noisy comments that could give us less accurate sentiment estimation.  How could we differ spam from comments that are related to a post? Spam is an unwanted content appearing in the stream of comments. By unwanted content we assume content not related to the post or any other comments of the post. For example, URLs leading to third party web pages used as advertisements or a person that is tagged without any other information about the post. It is in our favor to try to remove such content from the analysis set which could lead to better sentiment estimation. 
+
+We can look at spam detection as one of data preprocessing techniques. Currently we have used Akismet for spam detection; it is a web service for recognizing spam comments. To be able to estimate effectiveness of Akismet service, we have determined manually if a comment is a spam or not. Having a small comment dataset it was not time consuming to manually analyze the comments. After the analysis we have calculated the accuracy of chosen spam detection method. Unfortunately, the results have shown that on our dataset Akismet was not so effective.
+
