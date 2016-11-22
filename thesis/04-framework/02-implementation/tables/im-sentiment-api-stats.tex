@@ -1,0 +1,56 @@
+\newsavebox\sentimentstatsexample
+\newsavebox\apiid
+
+\begin{lrbox}{\apiid}
+\begin{lstlisting}[
+style=json,
+label={lst:api-id-json}]
+ sentiment_api1, 
+ sentiment_api1_en, 
+ sentiment_api1_emoji,
+ sentiment_api2 ...
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{lrbox}{\sentimentstatsexample}
+\begin{lstlisting}[
+style=json,
+label={lst:sentiment-api-stats-json}]
+{
+  "positive": 0.5965, 
+  "negative": 0.3946,
+  "neutral":  0.4578 
+}
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{table}[H]
+\centering
+\onehalfspacing
+
+\begin{tabularx}{0.95\textwidth}{ l || c | X }
+	\hline
+	\multicolumn{3}{l}{ \textbf{im\_sentiment\_api\_stats} } \\ \hline
+	\hline
+
+	\textbf{id} & INT & PRIMARY KEY \\ \hline 
+	api\_id & VARCHAR & String identifying API and comment content version used. For example: \newline \usebox\apiid
+	 \\ \hline  
+    accuracy & DOUBLE & Accuracy of the API excluding comments marked as spam \\ \hline  
+    accuracy\_with\_spam & DOUBLE & Accuracy of the API including comments marked as spam \\ \hline 
+    
+    precision & LONGTEXT & Precision per sentiment label of the API excluding comments marked as spam \\ \hline 
+	precision\_with\_spam & LONGTEXT & Precision per sentiment label of the API including comments marked as spam \\ \hline
+
+	recall & LONGTEXT & Recall per sentiment label of the API excluding comments marked as spam \\ \hline 
+	recall\_with\_spam & LONGTEXT & Recall per sentiment label of the API including comments marked as spam \newline
+	Example of recall and precision column values:\newline
+	\usebox\sentimentstatsexample  \\ \hline
+
+\end{tabularx}
+\caption{Overview of \inlinecode{im\_sentiment\_api\_stats} database table}
+\label{tab:im-sentiment-api-stats}
+
+\end{table}

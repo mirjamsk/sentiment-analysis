@@ -1,0 +1,62 @@
+\newsavebox\sentimentexample
+\newsavebox\spamexample
+
+\begin{lrbox}{\sentimentexample}
+\begin{lstlisting}[
+style=json,
+label={lst:default-sentiment-json-table}]
+{
+  "sentiment_label": "",
+  "sentiment_stats": {
+      "positive": 0,
+      "negative": 0
+      "neutral" : 0
+  }
+}
+\end{lstlisting}
+\end{lrbox}
+
+\begin{lrbox}{\spamexample}
+\begin{lstlisting}[
+style=json,
+label={lst:default-spam-json}]
+{
+  "type": "", 
+  "is_spam": false
+}
+\end{lstlisting}
+\end{lrbox}
+
+\begin{table}[H]
+\centering
+\onehalfspacing
+
+\begin{tabularx}{0.95\textwidth}{ m{35mm} || c | X }
+	\hline
+	\multicolumn{3}{l}{ \textbf{im\_commento\_sentiment / im\_commento\_sentiment\_emoji} } \\ \hline
+	\hline
+	\textbf{id} & INT & PRIMARY KEY \\ \hline  
+    idcommento & INT & FORGEIN KEY to im\_comment: \newline the field points to comment's id \\ \hline  
+    is\_mention & TINYINT & boolean variable that denotes if there was a mention of a user in the comment (e.q @Anna) \\ \hline  
+    english\_translation & LONGTEXT & Google Translate API's English translation of the content \\ \hline
+    language & VARCHAR & Google Translate API's prediction of content's  original language \\ \hline
+	real\_sentiment & LONGTEXT & manually determined sentiment\\ \hline
+	sentiment\_api1,
+	sentiment\_api1\_en, 
+	sentiment\_api2, 
+	sentiment\_api2\_en,
+	sentiment\_api3, 
+	sentiment\_api4 & LONGTEXT & 
+	\begin{tabular}[t]{ m{60mm}}
+		API's sentiment prediction of content in original (English) language. 
+		All \inlinecode{sentiment\_api} columns default to:\newline
+		\usebox\sentimentexample  
+  	\end{tabular}\\ \hline
+	spam & LONGTEXT & manually determined whether or not the content is spam\newline defaults to:\newline
+\usebox\spamexample  \\ \hline
+
+\end{tabularx}
+\caption{Overview of \inlinecode{im\_commento\_sentiment} and \newline \inlinecode{im\_commento\_sentiment\_emoji} database table}
+\label{tab:im-commento-sentiment}
+
+\end{table}

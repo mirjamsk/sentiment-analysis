@@ -1,0 +1,23 @@
+\begin{table}[H]
+\centering
+\onehalfspacing
+
+\begin{tabularx}{0.95\textwidth}{ l || c | X }
+	\hline
+	\multicolumn{3}{l}{ \textbf{im\_commento} } \\
+	\hline
+
+ 	\textbf{id} & INT & PRIMARY KEY \\  
+	idpost & INT & FORGEIN KEY to im\_post: \newline field links to the comment's post \\  
+	created\_on & INT & timestamp when the comment was created \\
+	content & TEXT & comment's content \\
+	from\_id & TEXT & commentator's id \\
+	originalIdCommento & TEXT & identifier used on its social media site \\
+ 
+	\hline
+\end{tabularx}
+
+\caption{Overview of \inlinecode{im\_commento} database table}
+\label{tab:im-commento}
+
+\end{table}

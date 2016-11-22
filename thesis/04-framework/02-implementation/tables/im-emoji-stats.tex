@@ -1,0 +1,26 @@
+\begin{table}[H]
+\centering
+\onehalfspacing
+
+\begin{tabularx}{0.95\textwidth}{ l || c | X }
+	\hline
+	\multicolumn{3}{l}{ \textbf{im\_emoji\_stats} } \\
+	\hline
+ 	\textbf{id} & INT & PRIMARY KEY \\  
+	char & VARCHAR &  emoji  characers \\ 
+	is\_determined\_by\_hand & TINYINT & boolean variable that denotes if emoji or emoticons were added by hand or used stats from the study \emph{Emoji Sentiment Ranking} \\ 
+	negative & FLOAT &  how negative is the emoji $\in [0,1]$ \\ 
+	neutral & FLOAT &  how neutral is the emoji $\in [0,1]$ \\ 
+	occurrences & INT & number of occurrences of the emoji in all comments in our dataset \\ 
+	positive & FLOAT & how positive is the emoji $\in [0,1]$ \\ 
+	sentiment\_score & FLOAT & overall sentiment score $\in [-1,1]$ \\ 
+	unicode & VARCHAR & unicode codepoint of the emoji \\ 
+	unicode\_block & VARCHAR & general category an emoji falls into \\ 
+	unicode\_name & VARCHAR & descriptive name of the emoji \\ 
+	\hline
+\end{tabularx}
+
+\caption{Overview of \inlinecode{im\_emoji\_stats} database table}
+\label{tab:im-emoji-stats}
+
+\end{table}

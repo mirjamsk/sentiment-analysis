@@ -1,0 +1,50 @@
+\newsavebox\postsentimentexample
+
+\begin{lrbox}{\postsentimentexample}
+\begin{lstlisting}[
+style=json,
+label={lst:default-post-sentiment-json}]
+{
+  "sentiment_stats": {
+    "positive": 9, 
+    "negative": 2,
+    "neutral": 38, 
+    "total": 49
+  }, 
+  "sentiment_label": "neutral"
+  "total_comments": 49,
+}
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{table}[H]
+\centering
+\onehalfspacing
+
+\begin{tabularx}{0.95\textwidth}{ m{35mm} || c | X }
+	\hline
+	\multicolumn{3}{l}{ \textbf{im\_post\_sentiment} } \\ \hline
+	\hline
+	\textbf{id} & INT & PRIMARY KEY \\ \hline  
+    idpost & INT & FORGEIN KEY to im\_post: \newline the field points to post's id \\ \hline  
+    real\_sentiment & LONGTEXT & aggregation over post's comments of: real sentiment data \\ \hline 
+	sentiment\_api1,
+	sentiment\_api1\_en, 
+	sentiment\_api2, 
+	sentiment\_api2\_en,
+	sentiment\_api3, 
+	sentiment\_api4 & LONGTEXT & 
+	\begin{tabular}[t]{ m{60mm}}
+		aggregation over post's comments of:
+		API's sentiment predictions in original (English) language.
+		All \inlinecode{sentiment\_api} columns default to:\newline
+		\usebox\postsentimentexample 
+  	\end{tabular}\\ \hline
+
+
+\end{tabularx}
+\caption{Overview of \inlinecode{im\_post\_sentiment} database table}
+\label{tab:im-post-sentiment}
+
+\end{table}

@@ -1,11 +1,119 @@
-\begin{figure}[ht]
-	\includegraphics[width=1.2\textwidth]{04-framework/01-design/Images/DB_schema.png}
-	\caption[Test caption]{TTest caption \label{fig:test-caption}}
-\end{figure}
+The break-down in Section \ref{sec:design} can be implemented in any number of ways. 
+This section focuses on the details of its implementation and is divided into three parts following the organization presented in Figure \ref{fig:framework-design}: database overview, sentiment analysis script collection and web server overview. Since choices made in either of those parts regarding structure and technology are mutually depended we'll define the technologies used in order to make the following sections more intelligible:
+\begin{description}
+\singlespacing
+ \item[DBMS:] MySQL 5.5.3+
+ \item[Web framework:] Django 1.9 
+ \item[Sentiment analysis scripts:] python 2.7.+
+\end{description}
 
+% --- SUBSECTION DATABASE ---
+\subsection*{Database overview\label{sec:database-overview}}
+All the data acquired or generated is stored in a single relational database called \inlinecode{sentiment\_db}. 
+The logical view of the database is shown in Figure \ref{fig:db-schema}. 
+In favor of clarity parts considered inconsequential to sentiment analysis processes are not disclosed. 
+Those include, but are not limited to: django sessions, brands etc.
+\input{04-framework/02-implementation/diagrams/db-schema.tex}
+
+As previously stated, we have extended and built our framework on top of a preexisting relational MySQL database schema which came with a set of specifications which were adopted and applied to \inlinecode{sentiment\_db}.
+Using a version of MySQL greater or equal to 5.5.3 was a hard constraint because in that release MySQL introduced support for \inlinecode{uft8mb4} encoding.  
+As opposed to \inlinecode{uft8}'s three bytes per character maximum, 
+\inlinecode{uft8mb4} uses a maximum of four bytes per character making it fully compatible with \inlinecode{uft8} and, most importantly, able to correctly encode and store emojis.
+It is worth mentioning that only two data tables that were a part of the original database were used and those are \inlinecode{im\_commento} and \inlinecode{im\_post}.
+
+For the sake of completeness, following tables contain details and field descriptions of used data tables. 
+
+\input{04-framework/02-implementation/tables/im-post.tex}
+\input{04-framework/02-implementation/tables/im-commento.tex}
+\newpage
+
+As mentioned, emojis play a big role in determining sentiment of a comment. 
+Since none of the APIs took them into account, we used sentiment scores from \emph{Emoji Sentiment Ranking}\footnote{http://kt.ijs.si/data/Emoji\_sentiment\_ranking} published as a part of a sentiment analysis study\cite{Kralj2015emojis},  and imported them into the database table \inlinecode{im\_emoji\_stats} whose details are shown in Table \ref{tab:im-emoji-stats}.  
+However, not all emojis or emoticons (e.g. 📘 🍾 🙂 🙄 🕶 :) :D )that occurred in our data set were included in the study.
+Which means they had to be manually inserted in the db. 
+Their sentiment scores were determined by finding a similarly defined emoji and making the assumption that they had the same, or at least similar, sentiment. 
+%All emojis that were inserted by hand are marked by a true value in  \inlinecode{is\_determined\_by\_hand} column.
+For example, green book's (📗) sentiment score was used for the missing blue book (📘). 
+An example of missing inserted emojis and their similar counterparts can be found in Table \ref{tab:inserted-emoticons}
+\input{04-framework/02-implementation/tables/inserted-emoticons.tex}
+\input{04-framework/02-implementation/tables/im-emoji-stats.tex}
+
+Tables \ref{tab:im-commento-sentiment}, \ref{tab:im-post-sentiment}, \ref{tab:im-commento-sentiment} and \ref{tab:im-sentiment-api-stats}  
 
 Why json when it violated the 1NN rule? already in mysql, will eventually support json, and easily movable to nosql db, or even elastic search. 
 
+Out of the table columns listed above, the following are in json format but stored as lontext:
+
+\subsubsection*{Vivekn API}
+\begin{description}
+\singlespacing
+ \item[Web url:] http://sentiment.vivekn.com/docs/api/
+ \item[Database columns:] \inlinecode{sentiment\_api1} and \inlinecode{sentiment\_api1\_en}
+\end{description}
+You will receive a JSON response of the form:
+\begin{lstlisting}[
+style=json,
+label={lst:vivekn-json}]
+{ 
+  "result": { 
+    "sentiment": "Positive", 
+    "confidence" : 73.422451 
+  } 
+}
+\end{lstlisting}
+
+\subsubsection*{Text-processing API}
+\begin{description}
+\singlespacing
+ \item[Web url:] http://text-processing.com/docs/sentiment.html
+ \item[Database columns:] \inlinecode{sentiment\_api2} and \inlinecode{sentiment\_api2\_en}
+\end{description}
+Label:	will be either pos if the text is determined to be positive, neg if the text is negative, or neutral if the text is neither pos nor neg.
+Probability:	an object that contains the probability for each label. neg and pos will add up to 1, while neutral is standalone. If neutral is greater than 0.5 then the label will be neutral. Otherwise, the label will be pos or neg, whichever has the greater probability.
+\begin{lstlisting}[
+style=json,
+label={lst:text-processing-json}]
+{
+  "probability": {
+    "neg": 0.68846305481785608,
+    "neutral": 0.38637609994709854,
+    "pos": 0.31153694518214375
+},
+  "label": "neg"
+}
+\end{lstlisting}
+
+\subsubsection*{Indico API}
+\begin{description}
+\singlespacing
+ \item[Web url:] https://indico.io/docs\#sentiment\_hq
+ \item[Database columns:] \inlinecode{sentiment\_api3} and \inlinecode{sentiment\_api4 (hq)}
+\end{description}
+Output: 
+This function will return a number between 0 and 1. This number is a probability representing the likelihood that the analyzed text is positive or negative. Values greater than 0.5 indicate positive sentiment, while values less than 0.5 indicate negative sentiment.
+\begin{lstlisting}[
+style=json,
+label={lst:indico-json}]
+{
+  "results": 0.3468102081511113
+}
+\end{lstlisting}
+
+\input{04-framework/02-implementation/tables/im-commento-sentiment.tex}
+\input{04-framework/02-implementation/tables/im-post-sentiment.tex}
+\input{04-framework/02-implementation/tables/im-sentiment-api-stats.tex}
+
+
+
+
+% --- SUBSECTION SCRIPTS ---
+\subsection*{Sentiment analysis scripts\label{sec:scripts}}
+python
 Emoji analysis
 describe the simple alg 
 https://github.com/mirjamsk/sentiment-analysis/wiki/Emoji-analysis
+
+% --- SUBSECTION WEB SERVER ---
+\subsection*{Web server\label{sec:web-server}}
+Django
+MTV (MVC) pattern

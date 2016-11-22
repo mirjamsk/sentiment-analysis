@@ -1,0 +1,28 @@
+\begin{table}[H]
+\centering
+\onehalfspacing
+
+\begin{tabularx}{0.95\textwidth}{ l || c | X }
+	\hline
+	\multicolumn{3}{l}{ \textbf{im\_post} } \\
+	\hline
+
+ 	\textbf{id} & INT & PRIMARY KEY \\  
+	comments & INT & number of comments the post has \\  
+	content & TEXT & post's content \\  
+	idcanalesocial & INT & FORGEIN KEY to im\_canalesocial: \newline field links to the post's social media account \\  
+	img & TEXT & url to post's accompanying photo \\  
+	inserted\_on & INT & timestamp when the record was inserted \\  
+	likes & INT & number of likes the post has \\  
+	link & TEXT & url to the post on a social media site \\  
+	originalIdPost \ \  & TEXT & identifier used on its social media site \\ 
+	shares & INT & number of shares the post has \\ 
+	timestamp & INT & timestamp when the post was created \\ 
+	updated\_on & INT & timestamp when the record was updated \\ 
+  
+	\hline
+\end{tabularx}
+\caption{Overview of \inlinecode{im\_post} database table}
+\label{tab:im-post}
+
+\end{table}
