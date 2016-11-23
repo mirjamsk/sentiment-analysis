@@ -32,3 +32,8 @@ As one of the future improvements could be finding a better method for spam dete
 
 We can look at spam detection as one of data preprocessing techniques. Currently we have used Akismet for spam detection; it is a web service for recognizing spam comments. To be able to estimate effectiveness of Akismet service, we have determined manually if a comment is a spam or not. Having a small comment dataset it was not time consuming to manually analyze the comments. After the analysis we have calculated the accuracy of chosen spam detection method. Unfortunately, the results have shown that on our dataset Akismet was not so effective.
 
+\section{Out of the black box – Training a model}
+
+Our project has been based on testing different APIs for sentiment analysis and determining which of the used APIs has given the best results. Using APIs as they are could be imagined as using a tool without knowing what is actually going on inside it. This way we could not tune the algorithm to suit our problem domain. By going out of the box, we could build a model that would provide us with better sentiment analysis results. 
+
+Training a model can be seen as producing a function that applied on future data could give sentiment “class label”, in our case positive, negative or neutral value, with higher accuracy then the used APIs. The process of building a model consists of training a model on training set, validating the model and afterwards testing in on the test set. 
