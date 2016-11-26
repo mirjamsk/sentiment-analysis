@@ -4,7 +4,7 @@ Chapter consists of three sections, each of them trying to bring closer the need
 \begin{enumerate}
 	\item Need for sentiment analysis
 	\item Application of sentiment analysis in various companies and non-profit organizations
-	\item Most used tools for sentiment analysis
+	\item Some tools for sentiment analysis
 \end{enumerate}
 
 \section{Need for sentiment analysis}
@@ -19,7 +19,7 @@ Over the years many companies and nonprofit organizations have started applying 
 Cathay Pacific as one of leading airline companies started using one of the commercial solutions for sentiment analysis. They have used Brandwatch platform in order to monitor how their campaign hashtag has been mentioned across social media. Specifically, in which connotation the hashtag has been used, what people talk about when putting it in their posts. Aside the sentiment sensing, they are using the platform to identify trends, such as what are people talking about when traveling and where are they traveling to. This kind of data can help them create new ideas for future developments.
 Nonprofit organizations like American Cancer Society are using sentiment analysis in order to obtain feedback on organized fund raising event. The difference between this kind of sentiment analysis and the one used by Cathay Pacific is that for ACS a model needs to be trained because words used have another connotation for them. For example, words such as “kill” and “cancer” in case of ACM should have positive sentiment. Sensing on social media has shown that ACM had spikes in user engagement every time there was a big fund-raising event. In order to raise more funds, by data analysis they have realized that doing more announcements before, during and after the event could help them to raise people’s awareness about the problem they are fighting against. The ACS also used sentiment analysis to find out what it should be tweeting and posting. For instance, October is Breast Cancer Awareness month and pink ribbons are everywhere. Some NFL teams even wore pink shoes and gloves to raise awareness.\\
 
-\section{Most used tools for sentiment analysis}
+\section{Some tools for sentiment analysis}
 
 \subsection*{Commercial solutions}
 As every commercial product, basic goal is user satisfaction. Commercial solutions provide user with rich customizable, easy to use interfaces for a not so fair price. By paying for the service users, usually medium to large scale companies, receive a platform which contains algorithms for data analysis used as a black box and detailed colorful visualization tools for representing results of the analysis. One of important issues that users wouldn’t deal with, as they would if building their own solutions, is that such platforms usually come with needed infrastructure to support such data intense analysis. Here we will mention few most widely used commercial tools.\\
@@ -39,7 +39,8 @@ Natural Language Toolkit is an open source platform for building programs which 
 Provide set of tools written in Java for purpose of natural language processing. Initially was built to work only with English language, but latest releases support languages such as Arabic, Chinese, French, German and Spanish. It is an integrated framework easy to use for language manipulation on raw inputted text. The result it gives after initial analysis is a good starting point for building application with domain-specific problems. Besides low level natural language processing, it contains as well some traces of deep learning algorithms.\\
 \textit{Text-Processing\\}
 The text-processing is an open source API which returns simple JSON over HTTP web service for text mining and natural language processing. It is an API which supports speech tagging, chunking, sentiment analysis, phrase extraction and named entity recognition. As an open source solution it has its limitations, such as 1000 calls per day per IP. 
-To get the sentiment of a text, users should do an HTTP request with form encoded data containing text to analyze. As a response, users will receive a JSON object with a label marking the sentiment (can be pos as positive, neg as negative or neutral) and a probability for each label.
+To get the sentiment of a text, users should do an HTTP request with form encoded data containing text to analyze. As a response, users will receive a JSON object with a label marking the sentiment (can be pos as positive, neg as negative or neutral) and a probability for each label.\\
 
+Searching around Internet about sentiment analysis has shown us that each of the available solutions has it’s strengths and weaknesses. Seeing that APIs behave differently depending on the data or domain applied on, we came to an idea to build a framework that gives an overview of the open source APIs, concluding their advantages and disadvantages, as well as representing comparison between them. Building a framework that is able to invoke different APIs and show sentiment results with statistical representation of accuracy has been a good indicator of choosing an appropriate solution for a specific problem domain.  
 
 
