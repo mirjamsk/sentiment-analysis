@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Nov 26, 2016 at 04:15 PM
+-- Generation Time: Nov 26, 2016 at 04:32 PM
 -- Server version: 5.5.42
 -- PHP Version: 5.6.10
 
@@ -20,11 +20,34 @@ SET time_zone = "+00:00";
 -- Database: `sentiment_db`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `im_emoji_stats`
+--
+
+CREATE TABLE `im_emoji_stats` (
+  `id` int(10) NOT NULL,
+  `char` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unicode` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `occurrences` int(11) DEFAULT NULL,
+  `position` float DEFAULT NULL,
+  `negative` float NOT NULL,
+  `neutral` float NOT NULL,
+  `positive` float NOT NULL,
+  `sentiment_score` float NOT NULL,
+  `sentiment_bar` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unicode_name` varchar(125) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unicode_block` varchar(125) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_determined_by_hand` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB AUTO_INCREMENT=912 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Dumping data for table `im_emoji_stats`
 --
 
-REPLACE INTO `im_emoji_stats` (`id`, `char`, `image`, `unicode`, `occurances`, `position`, `negative`, `neutral`, `positive`, `sentiment_score`, `sentiment_bar`, `unicode_name`, `unicode_block`, `is_determined_by_hand`) VALUES
+REPLACE INTO `im_emoji_stats` (`id`, `char`, `image`, `unicode`, `occurrences`, `position`, `negative`, `neutral`, `positive`, `sentiment_score`, `sentiment_bar`, `unicode_name`, `unicode_block`, `is_determined_by_hand`) VALUES
 (1, ':)', ':)', ':)', 67, 0, 0.062, 0.218, 0.72, 0.657, NULL, 'Smiley face', 'Keyboard', 1),
 (2, '<3', '<3', '<3', 149, NULL, 0.035, 0.272, 0.693, 0.657, NULL, 'Heart', 'Keyboard', 1),
 (3, '=)', '=)', '=)', 1, 0, 0.062, 0.218, 0.72, 0.657, NULL, 'Smiley face', 'Keyboard', 1),
@@ -416,7 +439,8 @@ REPLACE INTO `im_emoji_stats` (`id`, `char`, `image`, `unicode`, `occurances`, `
 (389, '📞', '📞', '0x1f4de', 0, 0.64, 0.1, 0.4, 0.5, 0.4, '', 'TELEPHONE RECEIVER', 'Miscellaneous Symbols and Pictographs', 0),
 (390, '📡', '📡', '0x1f4e1', 0, 0.554, 0.222, 0.333, 0.444, 0.222, '', 'SATELLITE ANTENNA', 'Miscellaneous Symbols and Pictographs', 0),
 (391, '📢', '📢', '0x1f4e2', 0, 0.546, 0.053, 0.474, 0.474, 0.421, '', 'PUBLIC ADDRESS LOUDSPEAKER', 'Miscellaneous Symbols and Pictographs', 0),
-(392, '📣', '📣', '0x1f4e3', 0, 0.665, 0.182, 0.273, 0.545, 0.364, '', 'CHEERING MEGAPHONE', 'Miscellaneous Symbols and Pictographs', 0),
+(392, '📣', '📣', '0x1f4e3', 0, 0.665, 0.182, 0.273, 0.545, 0.364, '', 'CHEERING MEGAPHONE', 'Miscellaneous Symbols and Pictographs', 0);
+REPLACE INTO `im_emoji_stats` (`id`, `char`, `image`, `unicode`, `occurrences`, `position`, `negative`, `neutral`, `positive`, `sentiment_score`, `sentiment_bar`, `unicode_name`, `unicode_block`, `is_determined_by_hand`) VALUES
 (393, '📥', '📥', '0x1f4e5', 0, 0.982, 0.111, 0.778, 0.111, 0, '', 'INBOX TRAY', 'Miscellaneous Symbols and Pictographs', 0),
 (394, '📯', '📯', '0x1f4ef', 0, 0.974, 0.25, 0.625, 0.125, -0.125, '', 'POSTAL HORN', 'Miscellaneous Symbols and Pictographs', 0),
 (395, '📰', '📰', '0x1f4f0', 0, 0.86, 0.25, 0.25, 0.5, 0.25, '', 'NEWSPAPER', 'Miscellaneous Symbols and Pictographs', 0),
@@ -820,6 +844,27 @@ REPLACE INTO `im_emoji_stats` (`id`, `char`, `image`, `unicode`, `occurances`, `
 (910, '(Y)', '(Y)', '(Y)', 6, 0, 0.115, 0.248, 0.637, 0.521, NULL, 'Facebook thumbs up', 'Keyboard', 1),
 (911, ':-)', ':-)', ':-)', 86, NULL, 0.062, 0.218, 0.72, 0.657, NULL, 'Smiley face with nose', 'Keyboard', 1);
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `im_emoji_stats`
+--
+ALTER TABLE `im_emoji_stats`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `unicode` (`unicode`) USING BTREE,
+  ADD KEY `unicode_3` (`unicode`) USING BTREE;
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `im_emoji_stats`
+--
+ALTER TABLE `im_emoji_stats`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=912;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
