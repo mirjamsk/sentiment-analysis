@@ -4,15 +4,15 @@
 \subsection{Database overview\label{sec:database-overview}}
 All the data acquired or generated is stored in a single relational database called \inlinecode{sentiment\_db}. 
 The logical view of the database is shown in Figure \ref{fig:db-schema}. 
-In favor of clarity parts considered inconsequential to sentiment analysis processes are not disclosed. 
+In favor of clarity, parts considered inconsequential to sentiment analysis processes are not disclosed. 
 Those include, but are not limited to: django sessions, brands etc.
 \input{\DatabaseOverviewPath/diagrams/db-schema.tex}
 
-As previously stated, we have extended and built our framework on top of a preexisting relational MySQL database schema which came with a set of specifications which were adopted and applied to \inlinecode{sentiment\_db}.
+As previously stated, we have extended and built our framework on top of a preexisting relational MySQL database schema which came with a set of specifications that were adopted and applied to \inlinecode{sentiment\_db}.
 Using a version of MySQL greater or equal to 5.5.3 was a hard constraint because in that release MySQL introduced support for \inlinecode{uft8mb4} encoding.  
 As opposed to \inlinecode{uft8}'s three bytes per character maximum, 
 \inlinecode{uft8mb4} uses a maximum of four bytes per character making it fully compatible with \inlinecode{uft8} and, most importantly, able to correctly encode and store emojis.
-It is worth mentioning that only two data tables that were a part of the original database were used and those are \inlinecode{im\_commento} and \inlinecode{im\_post}.
+It is worth mentioning that only two data tables that were a part of the original database were used in analysis and those are \inlinecode{im\_commento} and \inlinecode{im\_post}.
 
 For the sake of completeness, following tables contain details and field descriptions of used data tables. 
 
@@ -31,14 +31,23 @@ An example of missing inserted emojis and their similar counterparts can be foun
 \input{\DatabaseOverviewPath/tables/inserted-emoticons.tex}
 \input{\DatabaseOverviewPath/tables/im-emoji-stats.tex}
 
-Tables \ref{tab:im-commento-sentiment}, \ref{tab:im-post-sentiment}, \ref{tab:im-commento-sentiment} and \ref{tab:im-sentiment-api-stats}  
+\newgeometry{bottom=1cm}
+To keep Tables \ref{tab:im-commento-sentiment}, \ref{tab:im-post-sentiment}, \ref{tab:im-commento-sentiment} and \ref{tab:im-sentiment-api-stats} concise we've bundled descriptions of all \inlinecode{sentimen\_api} columns together. 
+Each of those columns contain sentiment predictions of a specific API used. 
+The $(column, API)$ mappings can be found in table below.
+\input{\DatabaseOverviewPath/tables/column-api-mappings.tex}
 
-Why json when it violated the 1NN rule? already in mysql, will eventually support json, and easily movable to nosql db, or even elastic search. 
+Also, the columns in subsequent tables for which the data type is set to \inlinecode{LONGTEXT}- default to a JSON string. 
+Storing multi-value JSON strings might seem to go against the First Normal Form (1NF) rule which asserts that every column should hold a single value.
+However, MySQL 5.7. has introduced support for JSON. 
+And one of its features is normalization of JSON documents prior to inserting \cite{MySQLjson}.
+Even though we opted for a version without JSON support, we've decided to code for future compatibility in order to avoid database bloat caused by an exaggerated number of columns. 
+This way instead of having multiple columns for each $(API, language)$ configuration, we have only one.
 
-Out of the table columns listed above, the following are in json format but stored as lontext:
-
-
+\input{\DatabaseOverviewPath/tables/im-post-sentiment.tex}
+\restoregeometry
 
 \input{\DatabaseOverviewPath/tables/im-commento-sentiment.tex}
-\input{\DatabaseOverviewPath/tables/im-post-sentiment.tex}
 \input{\DatabaseOverviewPath/tables/im-sentiment-api-stats.tex}
+
+\newpage
