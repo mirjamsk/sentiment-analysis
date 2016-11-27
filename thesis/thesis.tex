@@ -67,7 +67,9 @@
 % --- FRONTPAGE ---
 \frontmatter
 \pagestyle{empty}\pagenumbering{alph}
-\newgeometry{margin=3cm}\input{00-frontpage/frontpage.tex}\restoregeometry
+\newgeometry{margin=3cm}
+\pdfbookmark{Front Page}{front-page}
+\input{00-frontpage/frontpage.tex}\restoregeometry
 
 \cleardoublepage{}
 
@@ -88,6 +90,7 @@
 \pagestyle{fancy}
 
 % --- CHAPTER TABLE OF CONTENTS ---
+\pdfbookmark{Table of contents}{toc}
 \tableofcontents{}
 
 % --- CHAPTERS LIST OF FIGURES ---
