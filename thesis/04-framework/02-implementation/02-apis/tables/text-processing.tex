@@ -1,0 +1,54 @@
+\newsavebox\tpresponse
+\newsavebox\tprequest
+\newsavebox\tpdb
+
+\begin{lrbox}{\tprequest}
+\begin{lstlisting}[style=json]
+{  
+  "text": "Beautiful!" 
+}
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{lrbox}{\tpresponse}
+\begin{lstlisting}[style=json]
+{
+  "label": "neg",
+  "probability": {
+    "neutral": 0.38637609994709854,
+    "neg": 0.68846305481785608,
+    "pos": 0.31153694518214375
+  }
+}
+\end{lstlisting}
+\end{lrbox}
+
+\begin{lrbox}{\tpdb}
+\begin{lstlisting}[style=json]
+{
+  "sentiment_label": "negative",
+  "sentiment_stats": {
+      "positive": 0.311,
+      "negative": 0.688,
+      "neutral" : 0.386
+  }
+}
+\end{lstlisting}
+\end{lrbox}
+
+\begin{table}[H]
+\centering
+\singlespacing
+
+\begin{tabularx}{0.9\textwidth}{ m{30mm}  X }
+\hline  
+  \textbf{request}  & \usebox\tprequest \\ \hline  
+  \textbf{response} & \usebox\tpresponse  \\ \hline  
+  \textbf{stored} & \usebox\tpdb  \\ \hline  
+
+\end{tabularx}
+\caption{Request and response payload to Text-processing API}
+\label{tab:text-processing-api}
+
+\end{table}

@@ -1,0 +1,52 @@
+\newsavebox\vivekresponse
+\newsavebox\viveknrequest
+\newsavebox\vivekndb
+
+\begin{lrbox}{\viveknrequest}
+\begin{lstlisting}[style=json]
+{  
+  "txt": "Beautiful!" 
+}
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{lrbox}{\vivekresponse}
+\begin{lstlisting}[style=json]
+{ 
+  "result": { 
+    "sentiment": "Positive", 
+    "confidence" : 72.422451 
+  } 
+}
+\end{lstlisting}
+\end{lrbox}
+
+\begin{lrbox}{\vivekndb}
+\begin{lstlisting}[style=json]
+{
+  "sentiment_label": "positive",
+  "sentiment_stats": {
+      "positive": 0.724,
+      "negative": 0,
+      "neutral" : 0
+  }
+}
+\end{lstlisting}
+\end{lrbox}
+
+\begin{table}[H]
+\centering
+\singlespacing
+
+\begin{tabularx}{0.9\textwidth}{ m{30mm}  X }
+\hline  
+  \textbf{request}  & \usebox\viveknrequest \\ \hline  
+  \textbf{response} & \usebox\vivekresponse  \\ \hline  
+  \textbf{stored} & \usebox\vivekndb  \\ \hline  
+
+\end{tabularx}
+\caption{Request and response payload to Vivekn API}
+\label{tab:vivekn-api}
+
+\end{table}

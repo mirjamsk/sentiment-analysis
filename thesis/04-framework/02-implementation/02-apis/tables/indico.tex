@@ -1,0 +1,51 @@
+\newsavebox\indicoresponse
+\newsavebox\indicorequest
+\newsavebox\indicodb
+
+\begin{lrbox}{\indicorequest}
+\begin{lstlisting}[style=json]
+{  
+  "text": "Beautiful!" 
+}
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{lrbox}{\indicoresponse}
+\begin{lstlisting}[
+style=json,
+label={lst:indico-json}]
+{
+  "results": 0.3468102081511113
+}
+\end{lstlisting}
+\end{lrbox}
+
+\begin{lrbox}{\indicodb}
+\begin{lstlisting}[style=json]
+{
+  "sentiment_label": "positive",
+  "sentiment_stats": {
+      "positive": 0.654,
+      "negative": 0.346,
+      "neutral" : 0
+  }
+}
+\end{lstlisting}
+\end{lrbox}
+
+\begin{table}[H]
+\centering
+\singlespacing
+
+\begin{tabularx}{0.9\textwidth}{ m{30mm}  X }
+\hline  
+  \textbf{request}  & \usebox\indicorequest \\ \hline  
+  \textbf{response} & \usebox\indicoresponse  \\ \hline  
+  \textbf{stored} & \usebox\indicodb  \\ \hline  
+
+\end{tabularx}
+\caption{Request and response payload to Indico and IndicoHq API endpoints}
+\label{tab:indico-api}
+
+\end{table}
