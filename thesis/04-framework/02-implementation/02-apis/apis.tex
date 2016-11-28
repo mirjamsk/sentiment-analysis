@@ -1,0 +1,127 @@
+\subsection{Sentiment analysis APIs\label{sec:apis}}
+All different responses, and all should conform to this:
+\begin{lstlisting}[
+style=json,
+captionpos=b,
+xleftmargin=.3\textwidth,
+caption={Example sentiment JSON},
+label={lst:default-sentiment-json3}]
+{
+  "sentiment_label": "positive",
+  "sentiment_stats": {
+      "positive": 0.6,
+      "negative": 0.1,
+      "neutral" : 0.3
+  }
+}
+\end{lstlisting}
+
+\subsubsection*{Vivekn API}
+
+\begin{description}
+\singlespacing
+ \item[Author:] Vivek Narayanan
+ \item[Web url:] http://sentiment.vivekn.com/docs/api/
+ \item[Database columns:] \inlinecode{sentiment\_api1} and \inlinecode{sentiment\_api1\_en}
+\end{description}
+As described on the API's website, the tool works by examining individual words and short sequences of words which it then compares against a probability model. The probability model was built on a prelabeled test set of IMDb movie reviews
+and it is based on the \emph{Fast and accurate sentiment classification using an enhanced Naive Bayes model} study \cite{DBLP:journals/corr/abs-1305-6143}
+You will receive a JSON response of the form:
+
+
+\newsavebox\vivekresponse
+\newsavebox\apiidd
+
+\begin{lrbox}{\apiidd}
+\begin{lstlisting}[
+style=json,
+label={lst:api-id-json2}]
+{ 
+  "result": { 
+    "sentiment": "Positive", 
+    "confidence" : 73.422451 
+  } 
+}
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{lrbox}{\vivekresponse}
+\begin{lstlisting}[
+style=json,
+label={lst:vivekn-json}]
+{ 
+  "result": { 
+    "sentiment": "Positive", 
+    "confidence" : 73.422451 
+  } 
+}
+\end{lstlisting}
+\end{lrbox}
+
+
+\begin{table}[H]
+\centering
+\onehalfspacing
+
+\begin{tabularx}{0.95\textwidth}{ p{20mm}  X }
+
+  \textbf{request}   &  \usebox\apiidd \\ \hline  
+  \textbf{response} & \usebox\vivekresponse  \\ 
+
+\end{tabularx}
+\caption{Overview of \inlinecode{im\_sentiment\_api\_stats} database table}
+\label{tab:im-sentiment-api-stat2s}
+
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection*{Text-processing API}
+\begin{description}
+\singlespacing
+ \item[Web url:] http://text-processing.com/docs/sentiment.html
+ \item[Database columns:] \inlinecode{sentiment\_api2} and \inlinecode{sentiment\_api2\_en}
+\end{description}
+Label:	will be either pos if the text is determined to be positive, neg if the text is negative, or neutral if the text is neither pos nor neg.
+Probability:	an object that contains the probability for each label. neg and pos will add up to 1, while neutral is standalone. If neutral is greater than 0.5 then the label will be neutral. Otherwise, the label will be pos or neg, whichever has the greater probability.
+\begin{lstlisting}[
+style=json,
+label={lst:text-processing-json}]
+{
+  "probability": {
+    "neg": 0.68846305481785608,
+    "neutral": 0.38637609994709854,
+    "pos": 0.31153694518214375
+},
+  "label": "neg"
+}
+\end{lstlisting}
+
+\subsubsection*{Indico API}
+\begin{description}
+\singlespacing
+ \item[Web url:] https://indico.io/docs\#sentiment\_hq
+ \item[Database columns:] \inlinecode{sentiment\_api3} and \inlinecode{sentiment\_api4 (hq)}
+\end{description}
+Output: 
+This function will return a number between 0 and 1. This number is a probability representing the likelihood that the analyzed text is positive or negative. Values greater than 0.5 indicate positive sentiment, while values less than 0.5 indicate negative sentiment.
+\begin{lstlisting}[
+style=json,
+label={lst:indico-json}]
+{
+  "results": 0.3468102081511113
+}
+\end{lstlisting}
