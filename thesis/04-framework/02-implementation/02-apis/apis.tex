@@ -25,8 +25,8 @@ The request, response and the form in which the response was stored in \inlineco
  \item[Web url:] http://text-processing.com/docs/sentiment.html
  \item[Database columns:] \inlinecode{sentiment\_api2} and \inlinecode{sentiment\_api2\_en}
 \end{description}
-This API is also trained on movie reviews but uses two binary classifiers. More specifically, it uses hierarchical classification by combining a subjectivity classifier and a polarity classifier. First the subjectivity classifier determines whether the text is objective or subjective. If the text is objective, then the text is classified as neutral. Otherwise the polarity classifier is used to determine if the text is positive or negative.  More details on the implementation can be found in articles  \cite{NaiveBayes}, \cite{Stopwords}, \cite{LowInformationFeatures} and \cite{HierarchicalClassification}.
-The two classifier model introduces a caveat. The sentiment probabilities of the positive and negative labels always sum up to one, while the neutral label is standalone and dominates the result if its probability is greater than 0.5.
+This API is also trained on movie reviews but uses two binary classifiers. More specifically, it uses hierarchical classification by combining a subjectivity classifier and a polarity classifier. First, the subjectivity classifier determines whether the text is objective or subjective. If the text is objective, then it is classified as neutral. Otherwise the polarity classifier is used to determine if the text is positive or negative.  More details on the implementation can be found in articles  \cite{NaiveBayes}, \cite{Stopwords}, \cite{LowInformationFeatures} and \cite{HierarchicalClassification}.
+However, the two classifier model introduces a caveat. Sentiment probabilities of positive and negative labels always sum up to one, while the neutral label is standalone and dominates the result if its probability is greater than 0.5.
 The response, request and the stored JSON strings are shown in Table \ref{tab:text-processing-api}.
 \input{\APIsOverviewPath/tables/text-processing.tex}
 
@@ -39,12 +39,12 @@ The response, request and the stored JSON strings are shown in Table \ref{tab:te
  \item[Web url (hq):] https://indico.io/docs\#sentiment\_hq 
  \item[Database columns:] \inlinecode{sentiment\_api3} and \inlinecode{sentiment\_api4 (hq)}
 \end{description}
-Even though we used all APIs as black boxes, the Indico API was treated as such even more so because implementation details aren't readily available on the website. 
+Even though we used all APIs as black boxes, the Indico API was treated as such even more so because implementation details weren't readily available on its website. 
 It was also the only API that required registration in order to obtain an authorization key to access it. 
 It did, however, provide two different endpoints, a regular sentiment analysis and a high quality (hq) version.
 API's response is a number between 0 and 1. 
 This number represents the likelihood that the analyzed text is positive. 
-Meaning, values greater than 0.5 indicate positive sentiment, while values less than 0.5 indicate negative sentiment. 
+Meaning, values greater than 0.5 indicate positive sentiment, while values below that threshold indicate a negative sentiment. 
 Since we were operating within a three label domain, a script was made to label all likelihoods $\in[a,b]$ as neutral to see how the accuracy (and other metrics) would change.
 The response, request and the stored JSON are listed in Table \ref{tab:indico-api}.
 
