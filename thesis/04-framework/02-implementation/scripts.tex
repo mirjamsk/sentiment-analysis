@@ -1,0 +1,118 @@
+\subsection{Sentiment analysis scripts\label{sec:sentiment-analysis-workflow}}
+
+The logic of all workflows described in Chapter \ref{ch:sentiment-analysis-workflow} are implemented as a collection of python scripts.
+If we were to take the top down approach as we did in Chapter \ref{ch:sentiment-analysis-workflow}, we can start identifying specific nodes in workflow flowcharts to single scripts.
+
+Predicting sentiment, determining real sentiment and the prediction evaluation parts of Figure \ref{fig:analysis-workflow} are realized via 
+\emph{\wrapunderscore{automated\_sentiment\_analysis.py}}, 
+\emph{\wrapunderscore{update\_real\_sentiment\_and\_spam.py}} and 
+\emph{\wrapunderscore{evaluate\_api\_performance.py}}, respectively.
+
+% -- API EVALUATION --
+\subsubsection*{API evaluation script}
+\noindent The \emph{\wrapunderscore{evaluate\_api\_performance.py}}\ script can be evoked via the command line and it stores the results in \inlinecode{im\_sentiment\_api\_stats} database table. It accepts the following optional arguments:
+
+\begin{description}[labelindent=0.7cm, leftmargin=1.7cm]
+\singlespacing
+\item[--help ] shows all available arguments and exits
+\item[--api \textless name\textgreater] 
+	specifies which API $\in$ \lcb 
+	sentiment\_api1, 
+	sentiment\_api1\_en, 
+	sentiment\_api2, 
+	sentiment\_api2\_en, 
+	sentiment\_api3, 
+	sentiment\_api4\rcb\ to evaluate. If not specified, script evaluates all APIs 
+\item[--metric \textless name\textgreater ] specifies which
+	specifies which metric $\in$ \lcb
+	precision, accuracy, recall\rcb\ to calculate. If not specified, script calculates all metrics
+\item[--spam] calculates performance metric(s) for specified API(s) taking into consideration all comments regardless weather or non they were tagged as spam
+\item[--no-spam] calculates performance metric(s) for specified API(s) taking into consideration only the comments not tagged as spam. 
+If neither \inlinecode{no-spam} nor \inlinecode{spam} arguments were specified, the metrics are calculated for both cases
+\item[--emoji] calculates performance metric(s) for specified API(s) of sentiment statistics that accounted for emojis. 
+\item[--no-emoji] calculates performance metric(s) for specified API(s) of sentiment statistics that didn't accounted for emojis. 
+If neither \inlinecode{no-emoji} nor \inlinecode{emoji} arguments were specified, the metrics are calculated for both cases
+\end{description}
+\textbf{Usage and sample output}
+
+
+\begin{verbatim}
+$ python evaluate_api_performance.py --metric accuracy --emoji --spam
+----------------------------------------------------
+Calculations for api: sentiment_api1_emoji with spam
+Real sentiment distribution {
+  "positive": "43.51%", 
+  "neutral": "45.61%", 
+  "negative": "10.88%"
+}
+True positives: {'positive': 1205, 'neutral': 2167, 'negative': 177} 
+False negatives: {'positive': 1439, 'neutral': 605, 'negative': 484} 
+False positives: {'positive': 517, 'neutral': 1694, 'negative': 317} 
+Total sentiment predictions: 6077 
+Accuracy: 0.584000 
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+Updating table im_sentiment_api_stats
+Setting `accuracy_with_spam` = 0.584 
+Where `api_id` = 'sentiment_api1_emoji' 
+... 1 row affected
+----------------------------------------------------
+\end{verbatim}
+
+
+% -- REAL SENTIMENT --
+\subsubsection*{Script for determining real sentiment}
+\noindent The \emph{\wrapunderscore{update\_real\_sentiment\_and\_spam.py}} script can be evoked via the command line and stores the results in \.
+For each comment the script displays its content and prompts user for input to determine: 
+ \begin{enumerate}
+  \item whether or not the comment is only a user tag (e.g @Anna)
+  \item whether or not the comment is spam and if so, to specify a type
+  \item comment sentiment
+\end{enumerate}
+The script accepts the following optional arguments:
+\begin{description}[labelindent=0.7cm, leftmargin=1.7cm]
+\singlespacing
+ \item[--help ] shows all available arguments and exits
+ \item[-ideq \textless nbs\textgreater ] specifies ids of the comments for which \\ we want to determine the real sentiment
+ \item[-idgt \textless nb\textgreater] gets all comments that satisfy $id > nb$
+ \item[-idlt \textless nb\textgreater] gets all comments that satisfy $id < nb$
+\end{description}
+\textbf{Usage and sample output}
+
+\begin{verbatim}
+$  python update_real_sentiment_and_spam.py -ideq 6
+--------------------------------------------------
+Comment_id: 6
+Content: Bellissime!
+English translation: Beautiful!
+- - - - - - - - - - - - - - - - - - - - - - - - - 
+Is this comment ONLY a mention? (y/n): n
+Updating table im_commento_sentiment
+Setting `is_mention` = '0' 
+Where idcommento = 6 
+... 1 row affected
+- - - - - - - - - - - - - - - - - - - - - - - - - 
+Is this comment spam? (y/n): n
+Updating table im_commento_sentiment
+Setting `spam` = '{"type": "", "is_spam": false}' 
+Where idcommento = 6 
+... 1 row affected
+- - - - - - - - - - - - - - - - - - - - - - - - - 
+Determine the real_sentiment:
+pos/neg/neu/mix? pos
+Updating table im_commento_sentiment
+Setting `real_sentiment` = '{
+  "sentiment_stats": {
+    "positive": 1, 
+    "neutral": 0, 
+    "negative": 0
+  }, 
+  "sentiment_label": "positive"
+}'
+Where idcommento = 6 
+... 1 row affected
+--------------------------------------------------
+\end{verbatim}
+
+
+
+

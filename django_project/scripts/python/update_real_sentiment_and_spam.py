@@ -126,8 +126,7 @@ def store_default_real_sentiment(db, comment_id):
 
 
 def determine_and_store_real_sentiment(comment_id, db, real_sentiment):
-    if (comment_id <= 1150 or 3000 <= comment_id <= 4000) and \
-            is_json(real_sentiment) and 'sentiment_label' in json.loads(real_sentiment):
+    if 0 and is_json(real_sentiment) and 'sentiment_label' in json.loads(real_sentiment):
         sentiment = json.loads(real_sentiment)['sentiment_label']
         print('Real sentiment already determined: %s' % sentiment)
     else:

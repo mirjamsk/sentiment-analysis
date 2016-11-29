@@ -111,13 +111,22 @@ def update_single_performance(db, db_emoji, db_update, consider_spam, consider_e
 
     for row in results:
         comment_id = row[0]
-        real_sentiment = json.loads(row[1])
-        api_sentiment = json.loads(row[2])
-        if consider_emoji:
-            api_sentiment = json.loads(db_emoji.fetch_sentiment_by_comment_id(
-                comment_id=comment_id,
-                sentiment=sentiment_api_column)[0][0])
+        try:
+            real_sentiment = json.loads(row[1])
+            api_sentiment = json.loads(row[2])
+        except ValueError:
+            continue
+        if not real_sentiment or not api_sentiment:
+            continue
 
+        if consider_emoji:
+            try:
+               api_sentiment = json.loads(db_emoji.fetch_sentiment_by_comment_id(
+                    comment_id=comment_id,
+                    sentiment=sentiment_api_column)[0][0])
+            except IndexError:
+                continue
+         
         metric.update_stats(
             real_sentiment=real_sentiment,
             predicted_sentiment=api_sentiment)

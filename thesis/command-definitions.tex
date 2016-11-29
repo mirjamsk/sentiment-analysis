@@ -1,3 +1,6 @@
+\newcommand{\lcb}{{\tt {\char '173}}}
+\newcommand{\rcb}{{\tt {\char '175}}}
+
 % centered column for tabularx
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 
@@ -6,6 +9,10 @@
 
 % inline code 
 \newcommand{\inlinecode}{\texttt}
+
+\let\underscore\_
+\newcommand{\wrapunderscore}{\renewcommand{\_}{\underscore\hspace{0pt}}}
+\wrapunderscore
 
 % personalized commands
 \newcommand{\quoted}[1]{``#1''}

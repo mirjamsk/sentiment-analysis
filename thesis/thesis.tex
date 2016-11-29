@@ -16,6 +16,8 @@
 \usepackage{coloremoji}
 \usepackage{tikz}
 \usepackage{tabularx}
+\usepackage{enumitem}
+
 
 % DELETE ME BELOW
 \usepackage{blindtext}
@@ -93,10 +95,6 @@
 \pdfbookmark{Table of contents}{toc}
 \tableofcontents{}
 
-% --- CHAPTERS LIST OF FIGURES ---
-\listoffigures
-% --- CHAPTERS LIST OF TABLES  --- 
-\listoftables
 % LIST OF ALGIRITHMS ----
 %\listof{algorithm}{List of algorithms}
 
@@ -139,6 +137,15 @@
 \bibliographystyle{ieeetr}
 \bibliography{bibliography}
 \addcontentsline{toc}{chapter}{Bibliography}
+
+% --- CHAPTERS LIST OF FIGURES ---
+\listoffigures
+\addcontentsline{toc}{chapter}{List of figures}
+
+% --- CHAPTERS LIST OF TABLES  ---
+\listoftables
+\addcontentsline{toc}{chapter}{List of tables}
+
 
 
 \end{document}
