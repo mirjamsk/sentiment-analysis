@@ -1,6 +1,7 @@
 \subsection{Web server}\label{sec:web-server}
-Linux server. 
-sentiment-analysis.ml
-Web app: Django MTV ( similar to MVC) pattern
-API GUI: Django app REST API ( also possible to do REST via the command line using curne and with the GUI)
-%https://github.com/mirjamsk/sentiment-analysis/wiki/User-manual%3A-the-developed-API
+
+Our application is hosted on Digital ocean droplet, connected to domain name \textit{sentiment-analysis.ml}. Underneath the framework lays a Linux Ubuntu virtual machine with 512MB of RAM memory, 20GB of disk space.
+
+Web application follows Django Model Template View pattern, from now on reffered as MTV, which is similar to Model View Controller pattern. In MTV pattern the \textit{view} sort of plays the role of a controller. In Django’s interpretation of MVC, the view describes the data that gets presented to the user; it’s not necessarily just how the data looks, but which data is presented which has been explained more in depth in Mastering Django: Core\cite{DjangoMTV}. The Model in MTV represents the data access layer, which contains features related to the data: how to access it, how to validate it, which behaviors it has, and the relationships between the data. The Template in MTV is the presentation layer. This layer contains way of representing data in the web page. The View in MTV is the business logic layer. This layer contains the logic that accesses the model and connect it to the one of the templates. Views are usually positioned between models and templates.
+
+Part of our framework's GUI is based on Django REST API which provides a handy way of interacting with the data. For example, providing a default GUI for adding, deleting and editing data. Other than being able to access the API via a browser, it can also be done from the command-line, using tools like curl.
