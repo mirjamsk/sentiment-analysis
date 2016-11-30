@@ -8,10 +8,10 @@ The big picture is shown in Figure \ref{fig:analysis-workflow} and consists of f
   \item Evaluation of that API's performance
 \end{enumerate}
 
-First part is the simplest one and as such doesn't merit a more detailed recounting other than mentioning that we were provided with a small sample dataset which, most relevantly, contained about 6000 comments.
+The first part is the simplest one and as such doesn't merit a more detailed recounting other than mentioning that we were provided with a small sample dataset which, most relevantly, contained about 6000 comments.
 
 In the sections that follow, each of the three remaining parts are broken down into conceptual steps describing the methodology used whilst not cluttering it with too many implementation details.
-Additionally, it is interesting to note that the first and third steps are done only once.
+Additionally, it is interesting to note that the first and third steps are performed only once.
 This means that, for each new API we want to use, the workflow for sentiment analysis effectively consists of only steps 2 and 4, namely sentiment prediction and performance evaluation.
 
 
@@ -20,12 +20,12 @@ This means that, for each new API we want to use, the workflow for sentiment ana
 
 % --- SECTION PREDICTON WORKFLOW ---
 \section{Sentiment prediction workflow\label{sec:sentiment-prediction-workflow}}
-Let's assume we have access to an API for sentiment prediction. And by having access we mean being able to programmatically call the API with a text payload and have it return a prediction in some data format. The end goal is to analyze sentiment of all the comments in our sample dataset and aggregate the obtained data on a per post basis in order to infer whether it is was positively or negatively received, or even if it had no emotional impact whatsoever. And we want this to be done automatically, practically with a push of a proverbial button. By automatizing the process, it is easy to see how it can derive value for possible future ventures that extend far beyond our modest 6000 comment database.
+Let's assume we have access to an API for sentiment prediction. By having access we mean being able to programmatically call the API with a text payload and have it return a prediction in some data format. The end goal is to analyze sentiment of all the comments in our sample dataset and aggregate the obtained data on a per-post basis in order to infer whether it was positively or negatively received, or even if it had no emotional impact whatsoever. And we want this to be done automatically, practically with a push of a proverbial button. By automatizing the process, it is easy to see how it can derive value for possible future ventures that extend far beyond our modest 6000 comment database.
 
 \input{03-sentiment-analysis-workflow/diagrams/sentiment-prediction-workflow.tex}
 
 Figure \ref{fig:prediction-workflow} shows the main concepts that build up the workflow of our sentiment analysis. 
-Since the term \textit{workflow} can be a bit ambiguous, let us clarify exactly what we mean by it. In our case it is simply a python script named named \textit{automated\_sentiment\_analysis.py} that can be run manually, or scheduled to run on a server at desired times/intervals. 
+Since the term \textit{workflow} can be a bit ambiguous, let us clarify exactly what we mean by it. In our case it is simply a python script named \textit{automated\_sentiment\_analysis.py} that can be run manually, or scheduled to run on a server at desired times/intervals. 
 Sections that follow will explain each step in more detail and will also provide motivation for some, perhaps not so obvious, choices.
 
 
@@ -54,7 +54,7 @@ label={lst:default-sentiment-json}]
 
 % --- SUBSECTION TRANSLATE COMMENTS ---
 \subsection*{Translate comments \label{sec:translate-comments}}
-To reiterate, our dataset consists of real comments to posts published by actual fashion brands. Since fashion truly is a global industry, the posted comments are in a myriad of different languages. In our case the number of different languages is somewhere north of 70. 
+To reiterate, our dataset consists of real comments to posts published by actual fashion brands. Since fashion truly is a global industry, the posted comments are in a myriad of different languages. In our case the number of different languages is somewhere above of 70. 
 This provided us with a challenge because most sentiment analysis related APIs handle (well) only content written in English. And the very few that offer support for other languages do so just for a handful of them. This is especially true for the open source variety of APIs that were used for the purposes of this thesis. 
 
 Even thought the rationale for using comments' English translations seems to hold, we wanted numbers to back up our claims. In other words, we wanted to quantify just how much worse the APIs would perform if we fed them comments in their original language as opposed to English. So for two out of four APIs used, we analyzed both, the content in original language and the English language. The results are examined in Chapter \ref{ch:results}, but in short, they are in accordance to what we expected.
@@ -139,4 +139,4 @@ We were interested to have the two last pieces of intelligence mainly out of cur
 % --- SECTION EVALUATION WORKFLOW ---
 
 \section{Evaluation workflow\label{sec:sentiment-evaluation-workflow}}
-Now that we have real sentiment of each comment as well as sentiment predictions, we can evaluate performance of each individual API. Running the \textit{evaluate\_api\_performance.py} will calculate accuracy, precision and recall for each API unless a specific one is specified as an argument. 
+Now that we have the real sentiment of each comment as well as sentiment predictions, we can evaluate the performance of each individual API. Running the \textit{evaluate\_api\_performance.py} will calculate accuracy, precision and recall for each API unless a specific one is specified as an argument. 
