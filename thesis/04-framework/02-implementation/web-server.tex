@@ -1,7 +1,47 @@
 \subsection{Web server}\label{sec:web-server}
 
-Our application is hosted on Digital ocean droplet, connected to domain name \textit{sentiment-analysis.ml}. Underneath the framework lays a Linux Ubuntu virtual machine with 512MB of RAM memory, 20GB of disk space.
+Our web server is hosted on a Digital Ocean server, accessible via the domain name \textit{sentiment-analysis.ml}. The server is set up as a Linux Ubuntu virtual machine with 512MB of RAM memory and 20GB of disk space.
 
-Web application follows Django Model Template View pattern, from now on reffered as MTV, which is similar to Model View Controller pattern. In MTV pattern the \textit{view} sort of plays the role of a controller. In Django’s interpretation of MVC, the view describes the data that gets presented to the user; it’s not necessarily just how the data looks, but which data is presented which has been explained more in depth in Mastering Django: Core\cite{DjangoMTV}. The Model in MTV represents the data access layer, which contains features related to the data: how to access it, how to validate it, which behaviors it has, and the relationships between the data. The Template in MTV is the presentation layer. This layer contains way of representing data in the web page. The View in MTV is the business logic layer. This layer contains the logic that accesses the model and connect it to the one of the templates. Views are usually positioned between models and templates.
+It essentially runs two web applications build with Django 1.9+, the python web framework. 
+Both web applications conform to Django's Model Template View pattern, from now on refereed to as MTV.
+The patter is similar to the better known Model View Controller pattern. 
+They are essentially the same paradigm, only what Django refers to as Template maps to the MVC's View, and Django's View corresponds to MVC's Controller. 
+All the slight variations between the two paradigms have been documented in depth in \textit{Mastering Django: Core}\cite{DjangoMTV}.
+In short, Django’s Model represents the underlying, logical structure of data and the relationships between the data.
+The Template is the presentation layer. More specifically, it's a collection of HTML pages.
+Finally, the View contains all business logic code. Views are usually positioned between models and templates and are used to communicate between them.
 
-Part of our framework's GUI is based on Django REST API which provides a handy way of interacting with the data. For example, providing a default GUI for adding, deleting and editing data. Other than being able to access the API via a browser, it can also be done from the command-line, using tools like curl.
+
+One of the web applications is a more traditional website used to aid development by having results accessible in a presentable and aggregated manner. 
+The other is a REST API with a graphical user interface based on Django's REST API which provides a handy way of interacting with the data. 
+Other than being able to access the API and modify the data via a browser by going to \textit{sentiment-analysis.ml/api/}, it can also be accessed from the command line, using tools like curl. 
+For e.g.
+\begin{Verbatim}[formatcom=\color{darkgray},fontfamily=courier]
+# Get a list of posts:
+$ curl -u username:password \
+       http://sentiment-analysis.ml/api/posts/?page=2 \
+       -H 'Accept: application/json; indent=2'
+
+# Get a specific post's details:
+$ curl -u username:password \
+       http://sentiment-analysis.ml/api/posts/<id>/ \
+       -H 'Accept: application/json; indent=2'
+
+# Get a list of comments:
+$ curl -u username:password \
+       http://sentiment-analysis.ml/api/comments/?page=1 \
+       -H 'Accept: application/json; indent=2'
+
+# Get a specific comment's details:
+$ curl -u username:password \
+       http://sentiment-analysis.ml/api/comments/<id>/ \
+       -H 'Accept: application/json; indent=2'
+
+# Modify comment's real sentiment:
+$ curl -X PUT \
+       -u username:password \
+       http://sentiment-analysis.ml/api/comments/<id>/ \
+       -d '{"real_sentiment":{"sentiment_label": "positive"}}' \
+       -H "Content-Type: application/json" \
+       -H 'Accept: application/json; indent=2'
+\end{Verbatim}

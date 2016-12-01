@@ -1,34 +1,172 @@
--- accuracy only of comments containing emojis vs only of the ones in plain text
--- accuracy only of comments originally in englich vs only of the ones translated
 
-For the sake of completeness, below are the definitions used to calculate those 3 metrics.
+To evaluate APIs three metrics were used: accuracy, precision and recall. 
+They were calculated by running the\emph{\wrapunderscore{evaluate\_api\_performance.py}}\ script. 
+For the sake of completeness, below are the formulas used to calculate those 3 metrics.
+
 Accuracy is the simplest of all metrics as it is just the fraction of correctly classified comment sentiments.
-\[Accuracy = \frac{number\ of\ correct\ prediction}{total\ number \ of\ comments}\]
+\[Accuracy = \frac{number\ of\ correct\ predictions}{total\ number \ of\ comments}\]
 
 Precision and recall, on the other hand, are a bit more complex to understand and are calculated separately for each sentiment label $ \in \{ positive, negative, neutral \}$. 
-They use concepts such as $True\ Positive$, $False\ Positive$  and $False\ Negative$.
-In the context of out framework, these concepts are calculated as:
+While their calculation is quite straightforward in a binary classification problem, it gets a bit more challenging to intuit the logic in a multi-class problem. 
+Primarily because the concepts used such as \inlinecode{positive}are traditionally explained by a single confusion matrix and in this case they would have to be explained by three- one for each of the classification labels.
+To minimize redundancy, a confusion matrix for the \inlinecode{positive} sentiment class is shown in Table \ref{tab:confusion-matrix}.
+\begin{table}[H]
+\centering
+\doublespacing
+\begin{tabularx}{0.65\textwidth}{  | c | c | c | c|  }
+	\hline
+	\backslashbox{predicted}{true} & \inlinecode{positive} & \inlinecode{negative} & \inlinecode{neutral} \\
+	 \hline
+ 	\inlinecode{positive} &  TP  & FP & FP  \\ \hline
+ 	\inlinecode{negative} &  FN  & - & - \\ \hline
+ 	\inlinecode{neutral}  &  FN  & - & - \\ \hline
+\end{tabularx}
+\caption{ Confusion matrix for the \inlinecode{positive} sentiment label}
+\label{tab:confusion-matrix}
+\end{table}
+
+\noindent The following definitions are used in the case of calculating $TP,FP,FN$ values for the \inlinecode{positive} sentiment label (the same rationale can be extended for the \inlinecode{negative} and \inlinecode{neutral} labels:
 \begin{description}
- \item[True Positive] 
- correctly predicted labels
-correctly identified like pairs {real sentiment, predicted sentiment} 
- {positive,positive}, {negative negative}
- \begin{description}
- \item[One] first item
- \item[Two] second item
- \item[Three] third item
+ \item[True Positive (TP):] 
+ number of correctly predicted labels. 
+ More specifically, number of correctly identified pairs 
+ \textit{\{real, predicted\}}: \textit{\{positive, positive\}}
+
+ \item[False Positive (FP):]  
+ number of times the API predicted the label in question when it shouldn't have.
+ More specifically, it would be the total number of misclassified pairs 
+ \textit{\{real, predicted\}}: \textit{\{negative, positive\}} and \textit{\{neutral, positive\}}
+
+ \item[False negative (FN):] 
+ number of times the API didn't predict the label when it should have. 
+ More specifically, it would be the total number of misclassified pairs 
+ \textit{\{real, predicted\}}: \textit{\{positive, negative\}} and \textit{\{positive, neutral\}}
 \end{description}
 
- \item[False Positive]  
- number of times it didn't predict the label when it should have
- incorrectly identified {negative, neutral}
- \item[False negative] 
- umber of times it predicted the label when it shouldn't have 
-\end{description}
+With this information we can proceed in defining the other two metrics used.
 
-Recall is the proportion of {positive, negative, neutral} comments were actually predicted as {positive, negative, neutral}. In other words, out of all the {positive, negative, neutral} examples, what fraction did the classifier pick up?
+Recall is the proportion of true \textit{\{positive, negative, neutral\}} comments that were actually predicted correctly. In other words, out of all truly \textit{\{positive, negative, neutral\}} examples, what fraction did the classifier manage to pick up?
 \[Recall = \frac{TP}{TP + FN }\]
 
 
-Precision is the proportion of labels that were predicted as {positive,negative, neutral} actually are {positive,negative, neutral}. In other words, out of all the examples the classifier labeled as {positive,negative, neutral}, what fraction were correct?
+Precision tells us what proportion of all the labels that were predicted as \textit{\{positive, negative, neutral\}} truly are \textit{\{positive, negative, neutral\}} . In other words, out of all the examples the classifier labeled as \textit{\{positive, negative, neutral\}} what fraction was correct?
 \[Precision = \frac{TP}{TP + FP }\]
+
+In our dataset we had a total of 6088 comments out of which we hand labeled: 
+10.89\% as negative, 45.49\% as neutral and 43.62\% as positive. 
+It is obvious there is a bias in our data towards neutral and positive sentiments. 
+This may be due to a small sample size, but more likely it is because people tend to leave more positive feedbacks rather than negative. 
+In the bar charts below are the accuracy measurements for each API.
+As expected, the accuracy improves slightly when spam comments are not taken into consideration, but the biggest impact on accuracy has to be the usage of English translations containing emojis.
+Almost all APIs had accuracy over 60\%.
+Even though that might seem low at first, there exists an inherent problem with calculating the accuracy of sentiment predictions. 
+It is the fact that human accuracy when it comes to determining sentiment tends to be around 80\%. Which means people tend to agree on sentiment only around 80\% of the time\cite{80PercentAccuracy}. 
+Having that in mind shines a different light on the results. 
+Now Text-processing API's accuracy of 74\% seems even more impressive.
+\pgfplotsset{width=0.95\textwidth}
+\begin{tikzpicture}
+\begin{axis}[
+    title style={yshift=-1cm,},
+    title=API accuracy including spam comments,
+	ybar,
+	ymin=0,
+	ymax=1,
+	ylabel={Accuracy},
+	enlargelimits=0,
+	enlarge x limits=0.2,
+	symbolic x coords={api1,api2,api3,api4},
+	xtick=data,
+	nodes near coords,
+    bar width=16pt,
+    ymajorgrids = true,
+]
+\addplot [ draw=none, fill=ppurple] coordinates {(api1,0.4867) (api2,0.5294) (api3,0) (api4,0)};
+\addplot [ draw=none, fill=rred] coordinates {(api1,0.5481) (api2,0.5917) (api3,0.4822) (api4,0.5596)};
+\addplot [ draw=none, fill=bblue] coordinates {(api1,0.5846) (api2,0.6656) (api3,0) (api4,0) };
+\addplot [ draw=none, fill=ggreen] coordinates {(api1,0.636) (api2,0.717) (api3,0.583) (api4,0.605)};
+\end{axis}
+\end{tikzpicture}
+
+\pgfplotsset{width=0.95\textwidth}
+\noindent\begin{tikzpicture}
+\begin{axis}[
+    title style={yshift=-1cm,},
+    title=API accuracy without spam comments,
+	ybar,
+	ymin=0,
+	ymax=1,
+	ylabel={Accuracy},
+	enlargelimits=0,
+	enlarge x limits=0.2,
+	legend style={at={(0.5,-0.1)}, anchor=north,legend columns=2, column sep=15pt},
+	symbolic x coords={api1,api2,api3,api4},
+	xtick=data,
+	nodes near coords,
+    bar width=16pt,
+    ymajorgrids = true,
+]
+\addplot [ draw=none, fill=ppurple] coordinates {(api1,0.4764) (api2,0.5242) (api3,0) (api4,0)};
+\addplot [ draw=none, fill=rred] coordinates {(api1,0.5546) (api2,0.6028) (api3,0.4942) (api4,0.5786)};
+\addplot [ draw=none, fill=bblue] coordinates {(api1,0.5828) (api2,0.6734) (api3,0) (api4,0) };
+\addplot [ draw=none, fill=ggreen] coordinates {(api1,0.649) (api2,0.7396) (api3,0.6042) (api4,0.6292)};
+\legend{original language, English translation, original language with emoji, English with emoji}
+\end{axis}
+\end{tikzpicture}
+
+To go through each and every precision and recall value calculated would be a bit excessive. 
+All the data is accessible via browser by going to \textit{sentiment-analysis.ml/stats/}. 
+For this reason, the following two bar charts contain only the precision and recall metrics for all variants of Text-processing API which is the best performing terms of accuracy.
+
+\pgfplotsset{width=0.95\textwidth}
+\noindent\begin{tikzpicture}
+\begin{groupplot}[
+    group style={
+        group name=my plots,
+        group size=1 by 2,
+        xlabels at=edge bottom,
+        xticklabels at=edge bottom,
+        vertical sep=10pt
+    },
+    title style={yshift=-1cm,},
+	ybar,
+	ymin=0,
+	ymax=1,
+	enlargelimits=0,
+	enlarge x limits=0.2,
+	legend style={at={(0.91,-0.15)}, anchor=north,legend columns=1, row sep=10pt},
+	symbolic x coords={{original language, English translation, original language with emoji, English with emoji}},
+	x tick label style={rotate=45,anchor=east},
+	xtick=data,
+	nodes near coords,
+    ymajorgrids = true,
+]
+\nextgroupplot[title=Recall for Text-processing API, ylabel={Recall}, bar width=16pt]
+\addplot  [ draw=none, fill=ggreen] coordinates
+ {(original language,0.2592) (English translation,0.4292) (original language with emoji,0.6124) (English with emoji,0.7507)};
+
+\addplot [ draw=none, fill=lightgray] coordinates 
+{(original language,0.8872) (English translation,0.8293) (original language with emoji,0.8476) (English with emoji,0.7977)};
+
+\addplot [ draw=none, fill=rred] coordinates 
+{(original language,0.2663) (English translation,0.475) (original language with emoji,0.2844) (English with emoji,0.4841)};
+
+\nextgroupplot[title=Precision for Text-processing API, ylabel={Precision}, bar width=16pt]
+\addplot  [ draw=none, fill=ggreen] coordinates
+ {(original language, 0.7631) (English translation,0.7978) (original language with emoji,0.822) (English with emoji,0.8307)};
+
+\addplot [ draw=none, fill=lightgray] coordinates 
+{(original language,0.4977) (English translation,0.5757) (original language with emoji, 0.6259) (English with emoji,0.7438)};
+
+\addplot [ draw=none, fill=rred] coordinates 
+{(original language,0.3327) (English translation, 0.3801) (original language with emoji,0.3876) (English with emoji, 0.4313)};
+
+\legend{positive, neutral, negative}
+\end{groupplot}
+\end{tikzpicture}
+
+
+
+%-- accuracy only of comments containing emojis vs only of the ones in plain text%
+%-- accuracy only of comments originally in englich vs only of the ones translated
+
+
