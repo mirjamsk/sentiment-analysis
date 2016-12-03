@@ -1,5 +1,7 @@
 # Sentiment analysis tesina
 
+### Thesis: [pdf][9]
+
 ### Description
 The repo contains software developed as a part of a master thesis on sentiment analysis of social media posts regarding the fashion industry. The live site lives on  [sentiment-analysis.ml][1]
 
@@ -22,3 +24,4 @@ The wiki consists of:
 [6]: ../../wiki/External-API-issues-&-solutions
 [7]: ../../wiki/User-manual:-the-developed-API
 [8]: ../../wiki/User-manual:-scripts-to-analyze-sentiment-with-external-APIs
+[9]: ./thesis/thesis.pdf
