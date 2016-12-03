@@ -5,7 +5,7 @@ It is obvious there is a bias in our data towards neutral and positive sentiment
 This may be due to a small sample size, but more likely it is because people tend to leave more positive feedbacks rather than negative. 
 
 To evaluate APIs three metrics were used: accuracy, precision and recall. 
-They were calculated by running the\emph{\wrapunderscore{evaluate\_api\_performance.py}}\ script. 
+They were calculated by running the \emph{\wrapunderscore{evaluate\_api\_performance.py}}\ script. 
 For the sake of completeness, below are the formulas used to calculate those 3 metrics.
 
 Accuracy is the simplest of all metrics as it is just the fraction of correctly classified comment sentiments.
@@ -13,7 +13,7 @@ Accuracy is the simplest of all metrics as it is just the fraction of correctly 
 
 Precision and recall, on the other hand, are a bit more complex to understand and are calculated separately for each sentiment label $ \in \{ positive, negative, neutral \}$. 
 While their calculation is quite straightforward in a binary classification problem, it gets a bit more challenging to intuit the logic in a multi-class problem. 
-Primarily because the concepts used such as \inlinecode{positive}are traditionally explained by a single confusion matrix and in this case they would have to be explained by three- one for each of the classification labels.
+Primarily because the concepts used such as \inlinecode{positive} are traditionally explained by a single confusion matrix and in this case they would have to be explained by three- one for each of the classification labels.
 To minimize redundancy, a confusion matrix for the \inlinecode{positive} sentiment class is shown in Table \ref{tab:confusion-matrix}.
 \begin{table}[H]
 \centering
