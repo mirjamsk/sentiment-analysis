@@ -40,7 +40,9 @@
 \setcounter{tocdepth}{3}
 
 % pdf properties
-\hypersetup{pdftitle={Working title}, pdfauthor={Milica Jovanović, Mirjam Škarica}}
+\hypersetup{
+	pdftitle={A framework for comparing open source sentiment analysis APIs}, pdfauthor={Milica Jovanović, Mirjam Škarica}
+}
 
 % set page page count from the first chaprer's page
 \fancypagestyle{plain}{
@@ -66,6 +68,7 @@
 \input{command-definitions.tex}
 
 \begin{document}
+
 % --- FRONTPAGE ---
 \frontmatter
 \pagestyle{empty}\pagenumbering{alph}
@@ -95,9 +98,6 @@
 \pdfbookmark{Table of contents}{toc}
 \tableofcontents{}
 
-% LIST OF ALGIRITHMS ----
-%\listof{algorithm}{List of algorithms}
-
 % reset page count & number style
 \cleardoublepage{}\mainmatter
 \renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
@@ -121,16 +121,12 @@
 \input{04-framework/framework.tex}
 
 % --- CHAPTER RESULTS ---
-\chapter{Results\label{ch:results}}
+\chapter{Results of APIs comparison\label{ch:results}}
 \input{05-results/results.tex}
 
 % --- CHAPTER CONCUSION ---
 \chapter{Conclusion\label{ch:conclusion}}
 \input{06-conclusion/conclusion.tex}
-
-% --- CHAPTER FUTURE WORK ---
-%\chapter{Future work\label{ch:future-work}}
-%\input{07-future-work/future-work.tex}
 
 
 % --- CHAPTER BIBLIOGRAPHY ---
