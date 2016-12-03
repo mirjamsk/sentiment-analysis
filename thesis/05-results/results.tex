@@ -1,6 +1,13 @@
+\newcommand*{\ResultsPath}{05-results}
+In our dataset we had a total of 6088 comments out of which 6.02\% were labeled as spam and 24.7\% contained at least one emoji or emoticon. 
+As far as determining real sentiment by hand goes: 
+10.89\% of the comments were labeled as negative, 45.49\% as neutral and 43.62\% as positive. 
+It is obvious there is a bias in our data towards neutral and positive sentiments. 
+This may be due to a small sample size, but more likely it is because people tend to leave more positive feedbacks rather than negative. 
 
 To evaluate APIs three metrics were used: accuracy, precision and recall. 
 They were calculated by running the\emph{\wrapunderscore{evaluate\_api\_performance.py}}\ script. 
+
 For the sake of completeness, below are the formulas used to calculate those 3 metrics.
 
 Accuracy is the simplest of all metrics as it is just the fraction of correctly classified comment sentiments.
@@ -52,23 +59,39 @@ Recall is the proportion of true \textit{\{positive, negative, neutral\}} commen
 Precision tells us what proportion of all the labels that were predicted as \textit{\{positive, negative, neutral\}} truly are \textit{\{positive, negative, neutral\}} . In other words, out of all the examples the classifier labeled as \textit{\{positive, negative, neutral\}} what fraction was correct?
 \[Precision = \frac{TP}{TP + FP }\]
 
-In our dataset we had a total of 6088 comments out of which we hand labeled: 
-10.89\% as negative, 45.49\% as neutral and 43.62\% as positive. 
-It is obvious there is a bias in our data towards neutral and positive sentiments. 
-This may be due to a small sample size, but more likely it is because people tend to leave more positive feedbacks rather than negative. 
+The calculated metrics can be found in their entirety in Tables  \ref{tab:recall-all-results}, \ref{tab:precision-all-results} and \ref{tab:accuracy-all-results}.
+However, the data in a table format is a bit dense and presents a challenge to anyone who wants to gain valuable insights from it. 
+To help with the visualization data was also presented in form of a few bar charts. The first two showing accuracy across all APIs, and the rest displaying precision and recall for Text-processing API.
 
-The first two bar charts below show accuracy measurements for each API.
-As expected, the accuracy improves slightly when spam comments are not taken into consideration, but the biggest impact on accuracy has to be the usage of English translations containing emojis.
-Almost all APIs had accuracy over 60\%.
-Even though that might seem overwhelming at first glance, there exists an inherent problem with calculating the accuracy of sentiment predictions. 
-The fact is, when it comes to determining sentiment human accuracy tends to be around 80\%. Which means people tend to agree on sentiment only around 80\% of the time\cite{80PercentAccuracy}. 
-This shines a different light on the results. 
-Now Text-processing API's accuracy of 74\% seems like quite an impressive feat.
+If we take a closer look at the accuracy charts we can immediately see that predictions which used English translations had higher accuracy over the predictions made using content in original language. 
+In fact, the accuracy was improved by 11.34\% on average.
 
-To go through each and every precision and recall value calculated would be a bit excessive. 
-All the data is accessible at \textit{sentiment-analysis.ml/stats/}. 
-For this reason, the latter two bar charts contain only the precision and recall metrics for all variants of the Text-processing API which is the best performing API w.r.t accuracy.
+Taking comments marked as spam out of the equation does improve overall accuracy but by a very small margin of 1\%. 
+This can be because the fraction of spam data was relatively low  6.02\% and hence couldn't have a big impact on the metric.
 
+But the biggest impact on accuracy has to be the usage of English translations containing emojis. 
+Accuracy of predicted sentiments of translated comments improved on average 19.39\% when emojis were taking into account. 
+What is even more interesting to note is the fact that emoji sensitive sentiment predictions of comments in original language outperform English emoji-less predictions by 9\% w.r.t to accuracy.
+Both of these numbers prov that we were correct in assuming that emojis were a very important factor when it comes to determining content sentiment.
+
+All APIs had improved their accuracy to be above 60\% with the interventions our framework introduced. 
+The interventions being translating comments and taking emojis into account. 
+And out of all Text-processing API predicted sentiment of comments 74\% ofthe time.
+That is great result indeed because when it comes to determining sentiment even humans can't do it 100\% accurately. 
+Indeed, human accuracy tends to be around 80\%. 
+Which means people tend to agree on sentiment only around 80\% of the time. 
+This shines a different light on the results \cite{80PercentAccuracy}. 
+
+Looking at the recall and precision bar charts of the Text-processing API 
+we can see how both metrics improved with using English translations and emojis.
+But the improvement is much more prominent with respect to recall and the positive label. 
+Which means that the classifier managed to pick up a larger number of positive comments then originally.
+However, we it does seam the API pick up on the positive and neutral comments just fine, but one labeled negative not do much. 
+The reason could be that the data is a somewhat skewed in favor of the positive and neutral labels. But we would need more data (labeled negative (more than 10.89\% at least) in order for us to confidently conclude APIs don't perform well.
+
+
+
+\newpage 
 \pgfplotsset{width=0.95\textwidth}
 \noindent\begin{tikzpicture}
 \begin{groupplot}[
@@ -87,24 +110,25 @@ For this reason, the latter two bar charts contain only the precision and recall
 	enlargelimits=0,
 	enlarge x limits=0.2,
 	legend style={at={(0.5,-0.1)}, anchor=north,legend columns=2, column sep=15pt},
-	symbolic x coords={api1,api2,api3,api4},
+	symbolic x coords={Vivekn,Text-processing,Indico,IndicoHQ},
 	xtick=data,
 	nodes near coords,
     ymajorgrids = true,
 ]
 \nextgroupplot[title=API accuracy including spam comments, bar width=16pt]
-\addplot [ draw=none, fill=ppurple] coordinates {(api1,0.4867) (api2,0.5294) (api3,0) (api4,0)};
-\addplot [ draw=none, fill=rred] coordinates {(api1,0.5481) (api2,0.5917) (api3,0.4822) (api4,0.5596)};
-\addplot [ draw=none, fill=bblue] coordinates {(api1,0.5846) (api2,0.6656) (api3,0) (api4,0) };
-\addplot [ draw=none, fill=ggreen] coordinates {(api1,0.636) (api2,0.717) (api3,0.583) (api4,0.605)};
+\addplot [ draw=none, fill=ppurple] coordinates {(Vivekn,0.4867) (Text-processing,0.5294) (Indico,0) (IndicoHQ,0)};
+\addplot [ draw=none, fill=rred] coordinates {(Vivekn,0.5481) (Text-processing,0.5917) (Indico,0.4822) (IndicoHQ,0.5596)};
+\addplot [ draw=none, fill=bblue] coordinates {(Vivekn,0.5846) (Text-processing,0.6656) (Indico,0) (IndicoHQ,0) };
+\addplot [ draw=none, fill=ggreen] coordinates {(Vivekn,0.636) (Text-processing,0.717) (Indico,0.583) (IndicoHQ,0.605)};
 
 \nextgroupplot[title=API accuracy without spam comments, bar width=16pt]
-\addplot [ draw=none, fill=ppurple] coordinates {(api1,0.4764) (api2,0.5242) (api3,0) (api4,0)};
-\addplot [ draw=none, fill=rred] coordinates {(api1,0.5546) (api2,0.6028) (api3,0.4942) (api4,0.5786)};
-\addplot [ draw=none, fill=bblue] coordinates {(api1,0.5828) (api2,0.6734) (api3,0) (api4,0) };
-\addplot [ draw=none, fill=ggreen] coordinates {(api1,0.649) (api2,0.7396) (api3,0.6042) (api4,0.6292)};
+\addplot [ draw=none, fill=ppurple] coordinates {(Vivekn,0.4764) (Text-processing,0.5242) (Indico,0) (IndicoHQ,0)};
+\addplot [ draw=none, fill=rred] coordinates {(Vivekn,0.5546) (Text-processing,0.6028) (Indico,0.4942) (IndicoHQ,0.5786)};
+\addplot [ draw=none, fill=bblue] coordinates {(Vivekn,0.5828) (Text-processing,0.6734) (Indico,0) (IndicoHQ,0) };
+\addplot [ draw=none, fill=ggreen] coordinates {(Vivekn,0.649) (Text-processing,0.7396) (Indico,0.6042) (IndicoHQ,0.6292)};
 \legend{original language, English translation, original language with emoji, English with emoji}
 \end{groupplot}
+\label{tab:fffrecall-all-results}
 \end{tikzpicture}
 
 
@@ -158,3 +182,54 @@ For this reason, the latter two bar charts contain only the precision and recall
 %-- accuracy only of comments containing emojis vs only of the ones in plain text%
 %-- accuracy only of comments originally in englich vs only of the ones translated
 
+
+\begin{table}[H]
+\centering
+\onehalfspacing
+    \begin{tabular}{l|p{3.2cm}|p{3.2cm}}
+    % specify table head
+    \bfseries API configuration & 
+    \bfseries Precision without spam  & 
+    \bfseries Precision with spam comments
+    % specify source
+    \csvreader[head to column names]{\ResultsPath/sentiment_api_stats.csv}{}%
+    % specify coloumns 
+    {\\\hline\api & \precision & \precisionspam}
+    \end{tabular}
+\caption{Precision stats}
+\label{tab:precision-all-results}
+\end{table}
+
+\begin{table}[H]
+\centering
+\onehalfspacing
+    \begin{tabular}{l|p{3.2cm}|p{3.2cm}}
+    % specify table head
+    \bfseries API configuration & 
+    \bfseries Recall without spam comments & 
+    \bfseries Recall with spam comments
+    % specify source
+    \csvreader[head to column names]{\ResultsPath/sentiment_api_stats.csv}{}%
+    % specify coloumns 
+    {\\\hline\api & \recall & \recallspam}
+    \end{tabular}
+\caption{Recall stats}
+\label{tab:recall-all-results}
+\end{table}
+
+\begin{table}[H]
+\centering
+\doublespacing
+    \begin{tabular}{l|p{3.2cm}|p{3.2cm}}
+    % specify table head
+    \bfseries API configuration & 
+    \bfseries Accuracy without spam& 
+    \bfseries Accuracy with spam comments
+    % specify source
+    \csvreader[head to column names]{\ResultsPath/sentiment_api_stats.csv}{}%
+    % specify coloumns 
+    {\\\hline\api & \accuracy & \accuracyspam}
+    \end{tabular}
+\caption{Accuracy stats}
+\label{tab:accuracy-all-results}
+\end{table}
